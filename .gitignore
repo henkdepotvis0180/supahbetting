@@ -1,0 +1,6 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+paper_bets.jsonl
+.pytest_cache/
