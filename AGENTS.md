@@ -35,7 +35,7 @@ De tools zijn *nog niet* direct aan elkaar gekoppeld. Het importformaat in READM
 ## Live-feed instructies v0.4
 - supahbetting/live_scores.py levert een streng begrensde, gecachte OpenLigaDB scorefeed.
 - supahbetting/static/live.js is de aparte interface voor live wedstrijden en doelpuntentijdlijn.
-- API-routes: GET /api/live/leagues, GET /api/live/matches?league=all|bl1|bl2|bl3|ucl|dfb|ffb1|la1 en GET /api/live/matches/<id>?league=<shortcut>.
+- API-routes: GET /api/live/leagues, GET /api/live/matches?league=all|bl1|bl2|bl3|ucl|dfb|ffb1|la1|pl en GET /api/live/matches/<id>?league=<shortcut>.
 - OpenLigaDB-data vallen onder Open Database License (ODbL) 1.0: behoud bronvermelding en controleer eisen voor databases.
 - Status estimated_live betekent alleen **mogelijk bezig**, afgeleid van aftraptijd; nooit presenteren als officieel bevestigd.
 - Geen live score omzetten naar bookmakerodds, model-xG, uitslagen-afhandeling of echte inzet zonder gescheiden verificatie.
