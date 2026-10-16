@@ -108,7 +108,7 @@ def _identifier(value):
 def _clean(value, max_length=100):
     if not isinstance(value, str):
         return ""
-    return " ".join(ch for ch in value if ch.isprintable()).strip()[:max_length]
+    return " ".join("".join(ch for ch in value if ch.isprintable()).split())[:max_length]
 
 
 def _kickoff(raw):
