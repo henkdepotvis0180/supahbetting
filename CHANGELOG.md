@@ -1,7 +1,7 @@
 # Changelog
 
 ## v0.4.0 — 2026-10-17
-- Live OpenLigaDB-scores zonder API-key: Bundesliga 1/2/3, Champions League, DFB-Pokal, Frauen-Bundesliga en La Liga (community).
+- Live OpenLigaDB-scores zonder API-key: Bundesliga 1/2/3, Champions League, DFB-Pokal, Frauen-Bundesliga, La Liga en Premier League (community).
 - Klikbare wedstrijdkaarten, scorebord, doelpuntenfeed met minuten/spelers en zichtbare bronupdates.
 - Automatische verversing (90 seconden wedstrijden / 45 seconden details) zolang het tabblad actief is.
 - Server-side HTTPS-bronallowlist, time-outs, begrensde antwoorden, caching, 120 seconden retry-backoff en stale-melding.
