@@ -17,7 +17,7 @@
         <span class="logo" aria-hidden="true">S</span>
         <div><strong>Supah<span>Betting</span></strong><small>Voetbalanalyse &amp; combinaties</small></div>
       </div>
-      <div class="header-right"><span class="mode-badge"><span class="status-dot"></span> PAPER MODE</span><span class="version">v0.3.0</span></div>
+      <div class="header-right"><span class="mode-badge"><span class="status-dot"></span> PAPER MODE</span><span class="version">v0.4.0</span></div>
     </div>
   </header>
   <main class="container">
@@ -36,6 +36,49 @@
       </div>
       <button type="button" id="demo-button" class="btn btn-quiet">Voorbeeldwedstrijden laden</button>
     </section>
+
+    <section class="live-section" id="live" aria-labelledby="live-title">
+      <div class="section-header live-header">
+        <div>
+          <div class="eyebrow"><span class="live-pulse" aria-hidden="true"></span> OPENBARE WEDSTRIJDGEGEVENS</div>
+          <h2 id="live-title">Live wedstrijdcentrum</h2>
+          <p>Klik op een wedstrijd voor de actuele stand en een kleine doelpuntenfeed. De gegevens worden automatisch ververst.</p>
+        </div>
+        <div class="live-controls">
+          <label for="live-league" class="sr-only">Selecteer competitie</label>
+          <select id="live-league">
+            <option value="all">Alle Duitse competities</option>
+            <option value="bl1">Bundesliga</option>
+            <option value="bl2">2. Bundesliga</option>
+            <option value="bl3">3. Liga</option>
+          </select>
+          <button type="button" id="live-refresh" class="btn btn-quiet">↻ Verversen</button>
+        </div>
+      </div>
+      <div class="live-status-row">
+        <span id="live-updated" class="muted" aria-live="polite">Livebron laden…</span>
+        <span id="live-warning" class="live-warning hidden" role="status"></span>
+      </div>
+      <div id="live-list" class="live-grid" aria-live="polite">
+        <div class="empty">Wedstrijdgegevens worden opgehaald…</div>
+      </div>
+      <div class="live-foot">
+        <span>⚠ Status ‘mogelijk bezig’ is een inschatting op basis van de aftraptijd; live updates kunnen vertragen.</span>
+        <span>Data: <a href="https://www.openligadb.de/" target="_blank" rel="noopener noreferrer">OpenLigaDB</a> · <a href="https://www.openligadb.de/lizenz" target="_blank" rel="noopener noreferrer">ODbL 1.0</a></span>
+      </div>
+    </section>
+
+    <dialog id="live-dialog" class="live-dialog" aria-labelledby="live-detail-title">
+      <div class="live-dialog-shell">
+        <div class="live-dialog-top">
+          <div><div class="eyebrow">WEDSTRIJDDETAILS</div><h2 id="live-detail-title">Wedstrijd</h2></div>
+          <button id="live-close" class="close-dialog" type="button" aria-label="Sluit wedstrijd">✕</button>
+        </div>
+        <div id="live-detail" aria-live="polite">
+          <p class="muted">Wedstrijd laden…</p>
+        </div>
+      </div>
+    </dialog>
 
     <section class="stats-grid" aria-label="Overzicht resultaten">
       <div class="stat"><span class="stat-label">Openstaande slips</span><strong id="stat-open">—</strong><small>Alleen gesimuleerd</small></div>
