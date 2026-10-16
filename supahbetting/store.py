@@ -253,6 +253,14 @@ class Store:
         result["currency"] = "EUR (fictief)"
         return result
 
+    def model_metrics(self):
+        from .evaluation import score_settled_matches
+        with self.connection() as db:
+            rows = db.execute(
+                "SELECT * FROM matches WHERE result_home IS NOT NULL ORDER BY id"
+            ).fetchall()
+        return score_settled_matches([dict(row) for row in rows])
+
     def seed_demo(self):
         demo = [
             ("Demo Noord", "Demo Zuid", 1.70, 1.05, 2.05, 3.45, 3.85),
