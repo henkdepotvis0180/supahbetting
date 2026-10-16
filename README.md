@@ -1,10 +1,15 @@
-# SupahBetting v0.3.0
+# SupahBetting v0.4.0
 
 **Lokaal Nederlandstalig voetbalanalyseplatform met een betrouwbare basis voor enkelvoudige én combinatie-betslips.**
 
-SupahBetting is software voor onderzoek en **fictieve weddenschappen**. Er is geen live odds-feed, geen verbinding met bookmakers en geen functie om echt geld in te zetten. De modelkansen zijn nog niet gekalibreerd of onafhankelijk gevalideerd. Een positieve model-EV is **geen bewijs van winstgevendheid**.
+SupahBetting is software voor onderzoek en **fictieve weddenschappen**. Nieuw in v0.4: openbare live **scoredata en doelpunten**. Er zijn **geen live bookmakerquoteringen**, geen directe bookmakeraccounts en geen functie voor echt geld. De modelkansen zijn nog niet gekalibreerd of onafhankelijk gevalideerd. Een positieve model-EV is **geen bewijs van winstgevendheid**.
 
 ## Wat is werkend?
+
+- **Live**: acht OpenLigaDB-competities, klikbare wedstrijdkaarten, scorebord en doelpunten met minuten.
+- Automatische verversing: lijst ongeveer 90 seconden, geopende wedstrijd ongeveer 45 seconden.
+- Optioneel alleen handmatig geverifieerde officiële openbare YouTube-embed; geen automatisch gevonden videostreams.
+- Geplande wedstrijden overnemen naar analyse: teamnamen en aftrap, maar nooit fictieve xG/odds invullen.
 
 - Een overzichtelijke responsieve (ook mobiel bruikbare) webinterface, volledig in het Nederlands.
 - Wedstrijden invoeren: teamnamen, optionele aftraptijd, verwachte doelpunten (xG), bron en 1X2-quoteringen.
@@ -23,11 +28,11 @@ SupahBetting is software voor onderzoek en **fictieve weddenschappen**. Er is ge
 
 Vereist **Python 3.11+**. Alleen de standaardbibliotheek is nodig voor het dashboard.
 
-1. Open de [ontwikkelbranch](https://github.com/henkdepotvis0180/supahbetting/tree/feature/unified-betting-intelligence) of haal hem binnen via Git.
+1. Open de [hoofdbranch](https://github.com/henkdepotvis0180/supahbetting) of haal hem binnen via Git.
 2. Kies **Code → Download ZIP** en pak de ZIP volledig uit, of gebruik:
 
    ```powershell
-   git clone --branch feature/unified-betting-intelligence https://github.com/henkdepotvis0180/supahbetting.git
+   git clone https://github.com/henkdepotvis0180/supahbetting.git
    cd supahbetting
    ```
 
@@ -51,6 +56,51 @@ De lokale database wordt aangemaakt in `.supahbetting/data.sqlite3`. Maak hierva
 5. Vul onder **Wedstrijduitslagen invoeren** een uitslag in; de status en winst/verlies worden automatisch bijgewerkt.
 
 Klik op een andere markt binnen dezelfde wedstrijd om die selectie te vervangen. Niet mogelijk: twee markten van dezelfde wedstrijd op één combinatie.
+
+## Live wedstrijdcentrum (v0.4.0)
+
+Klik op een wedstrijdkaart om een klein scorebord, de huidige bronstatus en een **doelpuntenfeed** met minuten, doelpuntenmakers en eventuele penalty-/eigen-doelpuntmarkeringen te openen. De feed geeft geen doorlopende videocommentaar en geen actuele bookmakerprijzen.
+
+Bron: [OpenLigaDB](https://www.openligadb.de/), openbare community-data onder [Open Database License (ODbL) 1.0](https://www.openligadb.de/lizenz). Lezen vereist geen account of API-key.
+
+Gecontroleerde competities:
+- Bundesliga (bl1), 2. Bundesliga (bl2), 3. Liga (bl3)
+- Champions League (ucl)
+- DFB-Pokal (dfb)
+- Frauen-Bundesliga (ffb1)
+- La Liga (la1; communitybron, mogelijk onvolledig)
+- Premier League (pl; communitybron, mogelijk onvolledig)
+
+De shortcuts zijn bevestigd aan de hand van de [competitie-index 2026](https://beta.openligadb.de/Leagues?season=2026). De Nederlandse Eredivisie is via deze bron nog niet bevestigd. Dit is geen compleet overzicht van alle competities ter wereld.
+
+**Verversing:** de browser haalt wedstrijdlijsten op met een interval van 90 seconden en een geopend wedstrijddetail om de 45 seconden. De Python-server heeft een eigen TTL-cache, een beperkte wachttijd en 120 seconden terughoudende retry na een fout. Als de bron niet bereikbaar is, kan een eerder opgehaald resultaat blijven staan, duidelijk gemarkeerd als verouderd. "Mogelijk bezig" is een **inschatting** op basis van de aftraptijd en géén officieel bevestigde wedstrijdstatus. OpenLigaDB wordt door vrijwilligers bijgehouden, waardoor standen en goals vertraagd of onjuist kunnen zijn.
+
+### Eventuele officiële openbare livestream bekijken
+
+OpenLigaDB levert geen videocontent. SupahBetting gaat niet naar ongeautoriseerde voetbalstreams zoeken.
+
+Wanneer een **officiële rechthebbende** een openbare YouTube-video beschikbaar stelt die in een andere website mag worden ingesloten, kun je die per wedstrijd handmatig toevoegen:
+
+1. Zoek het numerieke OpenLigaDB-wedstrijdnummer op.
+2. Maak een lokaal bestand: .supahbetting/official_broadcasts.json (de map bestaat na de eerste start).
+3. Gebruik het onderstaande JSON-formaat (het voorbeeld-ID is een placeholder):
+
+    {
+      "bl1:123456": "https://www.youtube-nocookie.com/embed/AAAAAAAAAAA"
+    }
+
+4. Vervang het wedstrijdnummer en de YouTube-video-ID door gecontroleerde echte waarden.
+5. Open de betreffende wedstrijd en klik zelf op "Officiële video tonen".
+
+De server accepteert uitsluitend de vaste HTTPS-YouTube-nocookie-embedvorm. De instelling is optioneel en wordt niet naar GitHub gepusht. **SupahBetting kan de uitzendrechten of beschikbaarheid niet automatisch beoordelen.** Een openbaar linkje betekent niet automatisch dat insluiten is toegestaan; YouTube kan embeds bovendien uitschakelen. Zorg dat je toestemming hebt.
+
+### Veiligheid en datakwaliteit
+
+- Vastgelegde bronhost (api.openligadb.de), HTTPS, geen redirects, maximumantwoordgrootte, time-out, cache en zichtbare fouten.
+- De live-feed en je **fictieve weddenschappen zijn gescheiden**. Live scores worden nooit gepresenteerd als bookmakerquoteringen of winstgevende voorspellingen.
+- Een wedstrijd uit de feed kan als uitgangspunt voor een **nieuwe analyse** worden gekozen; het formulier vereist daarna eigen xG/odds.
+- De ODbL-datalicentie kan extra eisen stellen bij herpublicatie of het opbouwen en verspreiden van afgeleide databases; raadpleeg de licentietekst.
+- Alleen lokaal beschikbaar op 127.0.0.1, geen accountbeveiliging of publieke hosting.
 
 ## Eigen data importeren (CSV of JSON)
 
@@ -100,7 +150,7 @@ GitHub Actions draait de tests onder Python 3.11 en 3.12 en controleert JavaScri
 ## Huidige beperkingen
 
 - Alleen **1X2**-selecties, maximaal één markt per wedstrijd per ticket.
-- Geen live feed van Toto, Unibet of andere aanbieders; alleen ingevoerde of geïmporteerde odds.
+- Geen live **odds-feed** van Toto, Unibet of andere bookmakers. Er is nu wel een afzonderlijke openbare score- en doelpuntenfeed.
 - Geen direct gekoppeld ProphitBet-/OddsHarvester-/Prediict-proces.
 - De kans op een combinatie wordt vermenigvuldigd onder de **aanname van onafhankelijke wedstrijden**. Dit is ook bij verschillende wedstrijden niet altijd juist.
 - Geen kalibratie of chronologische out-of-sample-backtest; de EV-waarden zijn onderzoeksindicaties.

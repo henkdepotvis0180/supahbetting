@@ -7,10 +7,11 @@ import logging
 import re
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import urlsplit
+from urllib.parse import parse_qs, urlsplit
 
 from .domain import MARKETS, ValidationError, quote_slip
 from .store import Store
+from .live_scores import ATTRIBUTION, LEAGUES, LiveScores, LiveDataUnavailable, InvalidLiveRequest
 
 ROOT = Path(__file__).parent / "static"
 JSON_LIMIT = 24_576
@@ -46,10 +47,11 @@ def preview(store, payload):
     return {"quote": quote_slip(legs, payload.get("stake")), "legs": legs}
 
 
-def make_handler(store):
+def make_handler(store, live_scores=None):
     """Create a request handler with isolated store, useful for integration tests."""
+    live_scores = live_scores if live_scores is not None else LiveScores()
     class Handler(BaseHTTPRequestHandler):
-        server_version = "SupahBetting/0.3"
+        server_version = "SupahBetting/0.4"
 
         def _headers(self, code, mimetype, length):
             self.send_response(code)
@@ -63,7 +65,8 @@ def make_handler(store):
                 "Content-Security-Policy",
                 "default-src 'self'; script-src 'self'; style-src 'self'; "
                 "connect-src 'self'; img-src 'self' data:; object-src 'none'; "
-                "base-uri 'none'; frame-ancestors 'none'",
+                "base-uri 'none'; frame-ancestors 'none'; "
+                "frame-src https://www.youtube-nocookie.com",
             )
             self.end_headers()
 
@@ -111,8 +114,53 @@ def make_handler(store):
                 self._check_host()
                 path = self._path()
                 if path == "/api/health":
-                    return self.reply(200, {"status": "ok", "version": "0.3.0",
+                    return self.reply(200, {"status": "ok", "version": "0.4.0",
                                             "mode": "paper_only", "live_odds": False})
+                if path == "/api/live/leagues":
+                    return self.reply(200, {
+                        "leagues": live_scores.leagues(),
+                        "provider": "OpenLigaDB",
+                        "score_feed_only": True,
+                    })
+                if path == "/api/live/matches":
+                    params = parse_qs(urlsplit(self.path).query)
+                    league = params.get("league", ["all"])[0]
+                    if league == "all":
+                        results = []
+                        warnings = []
+                        stamps = []
+                        for code in LEAGUES:
+                            try:
+                                data = live_scores.list_matches(code)
+                                results.extend(data["matches"])
+                                stamps.append(data["fetched_at"])
+                                if data["warning"] or data["stale"]:
+                                    warnings.append(f"{LEAGUES[code]}: brongegevens verouderd")
+                            except LiveDataUnavailable:
+                                warnings.append(f"{LEAGUES[code]}: bron niet bereikbaar")
+                        if not stamps:
+                            raise LiveDataUnavailable("Geen competities bereikbaar")
+                        return self.reply(200, {
+                            "matches": sorted(
+                                results, key=lambda m: (m["kickoff"] or "9999", m["id"])
+                            ),
+                            "league": "all",
+                            "stale": bool(warnings),
+                            "warnings": warnings,
+                            "fetched_at": min(stamps),
+                            "refresh_seconds": 90,
+                            "source": ATTRIBUTION,
+                        })
+                    data = live_scores.list_matches(league)
+                    data["warnings"] = [data["warning"]] if data["warning"] else []
+                    return self.reply(200, data)
+                live_match = re.fullmatch(r"/api/live/matches/([1-9][0-9]{0,9})", path)
+                if live_match:
+                    params = parse_qs(urlsplit(self.path).query)
+                    league = params.get("league", [""])[0]
+                    return self.reply(
+                        200, live_scores.match_detail(int(live_match.group(1)), league)
+                    )
                 if path == "/api/matches":
                     return self.reply(200, {"matches": store.list_matches()})
                 if path == "/api/slips":
@@ -126,6 +174,7 @@ def make_handler(store):
                     "/index.html": ("index.html", "text/html; charset=utf-8"),
                     "/style.css": ("style.css", "text/css; charset=utf-8"),
                     "/app.js": ("app.js", "text/javascript; charset=utf-8"),
+                    "/live.js": ("live.js", "text/javascript; charset=utf-8"),
                 }
                 if path in assets:
                     name, mimetype = assets[path]
@@ -133,8 +182,10 @@ def make_handler(store):
                     self._headers(200, mimetype, len(data))
                     return self.wfile.write(data)
                 return self.reply(404, {"error": "Niet gevonden"})
-            except ValidationError as exc:
+            except (ValidationError, InvalidLiveRequest) as exc:
                 return self.reply(400, {"error": str(exc)})
+            except LiveDataUnavailable as exc:
+                return self.reply(502, {"error": str(exc)})
             except Exception:
                 LOG.exception("Unhandled GET failure")
                 return self.reply(500, {"error": "Interne serverfout"})
@@ -189,7 +240,7 @@ def main():
     store = Store(args.db)
     server = ThreadingHTTPServer(("127.0.0.1", args.port), make_handler(store))
     server.daemon_threads = True
-    print(f"SupahBetting v0.3: http://127.0.0.1:{args.port}", flush=True)
+    print(f"SupahBetting v0.4: http://127.0.0.1:{args.port}", flush=True)
     print("Alleen lokaal, fictieve inzetten. Druk Ctrl+C om te stoppen.", flush=True)
     try:
         server.serve_forever(poll_interval=0.2)
