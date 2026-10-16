@@ -22,6 +22,10 @@ LEAGUES = {
     "bl1": "Bundesliga",
     "bl2": "2. Bundesliga",
     "bl3": "3. Liga",
+    "ucl": "Champions League",
+    "dfb": "DFB-Pokal",
+    "ffb1": "Frauen-Bundesliga",
+    "la1": "La Liga (community)",
 }
 BASE_URL = "https://api.openligadb.de"
 ATTRIBUTION = {
@@ -32,7 +36,7 @@ ATTRIBUTION = {
 }
 USER_AGENT = "SupahBetting/0.4 (+https://github.com/henkdepotvis0180/supahbetting)"
 YOUTUBE_EMBED = re.compile(r"^https://www\.youtube-nocookie\.com/embed/([A-Za-z0-9_-]{11})$")
-BROADCAST_KEY = re.compile(r"^(bl1|bl2|bl3):([1-9][0-9]{0,9})$")
+BROADCAST_KEY = re.compile(r"^(" + "|".join(re.escape(slug) for slug in LEAGUES) + r"):([1-9][0-9]{0,9})$")
 
 # Limit upstream bandwidth and avoid cascading failure on a slow/unavailable service.
 MAX_UPSTREAM_BYTES = 850_000
@@ -56,7 +60,8 @@ class _NoRedirects(HTTPRedirectHandler):
 
 def _request_json(path):
     # Never allow the user to supply the remote destination; no redirects.
-    if not re.fullmatch(r"/getmatchdata/(?:bl[123]|[1-9][0-9]{0,9})", path):
+    allowed_slug = "|".join(re.escape(slug) for slug in LEAGUES)
+    if not re.fullmatch(r"/getmatchdata/(?:" + allowed_slug + r"|[1-9][0-9]{0,9})", path):
         raise InvalidLiveRequest("Ongeldige bronroute")
     req = Request(
         BASE_URL + path,
