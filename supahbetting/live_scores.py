@@ -26,6 +26,7 @@ LEAGUES = {
     "dfb": "DFB-Pokal",
     "ffb1": "Frauen-Bundesliga",
     "la1": "La Liga (community)",
+    "pl": "Premier League (community)",
 }
 BASE_URL = "https://api.openligadb.de"
 ATTRIBUTION = {
