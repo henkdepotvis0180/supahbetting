@@ -15,6 +15,7 @@ SupahBetting is software voor onderzoek en **fictieve weddenschappen**. Er is ge
 - Gesimuleerde inzetten in **SQLite** met oorspronkelijke quoteringen vastgelegd op het tijdstip van opslaan.
 - Handmatig uitslagen invoeren en automatisch combinatietickets afrekenen. Reeds afgerekende resultaten zijn onwijzigbaar.
 - Dashboard met openstaande inzet, gerealiseerd fictief resultaat en gerealiseerde ROI (afzonderlijk van theoretische EV).
+- **Modelkwaliteit** op afgehandelde wedstrijden: multiclass Brier-score en log-loss ten opzichte van odds zonder bookmaker-marge. Dit is nog geen out-of-sample-backtest.
 - CSV/JSON-import via een gedocumenteerd tussenschema; fictieve voorbeeldwedstrijden met één klik.
 - API-inputvalidatie, SQLite-transacties, alleen localhost, strikte HTTP-headers en regressietests.
 
