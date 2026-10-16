@@ -33,6 +33,16 @@ async function api(path, method = "GET", body = null) {
   return data;
 }
 
+function renderQuality() {
+  const m = state.quality;
+  if (!m) return;
+  $("quality-count").textContent = String(m.evaluated_matches);
+  $("quality-model").textContent = m.model_brier === null ? "—" : num(m.model_brier);
+  $("quality-market").textContent = m.market_brier === null ? "—" : num(m.market_brier);
+  $("quality-warning").textContent = m.warning +
+    " Brier-scores zijn voorspellingsfouten, niet rendement of een garantie op winst.";
+}
+
 function renderStats() {
   const stats = state.stats;
   if (!stats) return;
@@ -194,14 +204,16 @@ function renderHistory() {
 
 async function refresh() {
   try {
-    const [matches, slips, stats] = await Promise.all([
-      api("/api/matches"), api("/api/slips"), api("/api/stats")
+    const [matches, slips, stats, quality] = await Promise.all([
+      api("/api/matches"), api("/api/slips"), api("/api/stats"),
+      api("/api/model-metrics")
     ]);
     state.matches = matches.matches;
     state.slips = slips.slips;
     state.stats = stats;
+    state.quality = quality;
     state.legs = state.legs.filter(l => state.matches.some(m => m.id === l.match_id && !m.is_settled));
-    renderStats(); renderMatches(); renderSettlement(); renderHistory();
+    renderStats(); renderQuality(); renderMatches(); renderSettlement(); renderHistory();
     await updateQuote();
   } catch (err) {
     notify(err.message, true);
