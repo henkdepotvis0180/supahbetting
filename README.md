@@ -6,7 +6,7 @@ SupahBetting is software voor onderzoek en **fictieve weddenschappen**. Nieuw in
 
 ## Wat is werkend?
 
-- **Live**: zeven OpenLigaDB-competities, klikbare wedstrijdkaarten, scorebord en doelpunten met minuten.
+- **Live**: acht OpenLigaDB-competities, klikbare wedstrijdkaarten, scorebord en doelpunten met minuten.
 - Automatische verversing: lijst ongeveer 90 seconden, geopende wedstrijd ongeveer 45 seconden.
 - Optioneel alleen handmatig geverifieerde officiële openbare YouTube-embed; geen automatisch gevonden videostreams.
 - Geplande wedstrijden overnemen naar analyse: teamnamen en aftrap, maar nooit fictieve xG/odds invullen.
