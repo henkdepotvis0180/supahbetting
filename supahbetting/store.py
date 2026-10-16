@@ -240,9 +240,9 @@ class Store:
                    COALESCE(SUM(CASE WHEN status='open' THEN stake ELSE 0 END),0) AS open_stake,
                    COALESCE(SUM(CASE WHEN status!='open' THEN stake ELSE 0 END),0) AS settled_stake,
                    COALESCE(SUM(CASE WHEN status!='open' THEN profit ELSE 0 END),0) AS realized_profit,
-                   SUM(CASE WHEN status='won' THEN 1 ELSE 0 END) AS won,
-                   SUM(CASE WHEN status='lost' THEN 1 ELSE 0 END) AS lost,
-                   SUM(CASE WHEN status='open' THEN 1 ELSE 0 END) AS opened
+                   COALESCE(SUM(CASE WHEN status='won' THEN 1 ELSE 0 END),0) AS won,
+                   COALESCE(SUM(CASE WHEN status='lost' THEN 1 ELSE 0 END),0) AS lost,
+                   COALESCE(SUM(CASE WHEN status='open' THEN 1 ELSE 0 END),0) AS opened
                 FROM slips
             """).fetchone()
         result = dict(data)
