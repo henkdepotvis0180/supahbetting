@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="SupahBetting: lokaal onderzoeksdashboard voor voetbalmodellen en gesimuleerde combinatieweddenschappen.">
+  <title>SupahBetting — voetbalanalyse</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#wedstrijden">Naar wedstrijden</a>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand" aria-label="SupahBetting">
+        <span class="logo" aria-hidden="true">S</span>
+        <div><strong>Supah<span>Betting</span></strong><small>Voetbalanalyse &amp; combinaties</small></div>
+      </div>
+      <div class="header-right"><span class="mode-badge"><span class="status-dot"></span> PAPER MODE</span><span class="version">v0.3.0</span></div>
+    </div>
+  </header>
+  <main class="container">
+    <div class="notice info" role="note">
+      <span aria-hidden="true">ⓘ</span>
+      <div><strong>Onderzoeksomgeving — geen echte inzetten.</strong>
+        Kansen zijn gebaseerd op handmatig ingevoerde xG-waarden en een eenvoudig Poisson-model; niet op gevalideerde live voorspellingen. Quoteringen zijn handmatig en geen actuele bookmakersprijzen.
+      </div>
+    </div>
+
+    <section class="hero" aria-labelledby="intro-title">
+      <div>
+        <div class="eyebrow">Één plek voor jouw wedstrijdanalyse</div>
+        <h1 id="intro-title">Slimmer vergelijken. <span>Helder rekenen.</span></h1>
+        <p>Bekijk per wedstrijd de modelkansen en bookmakersquoteringen. Bouw een enkelvoudige of combinatie-betslip en test fictief wat jouw strategie oplevert.</p>
+      </div>
+      <button type="button" id="demo-button" class="btn btn-quiet">Voorbeeldwedstrijden laden</button>
+    </section>
+
+    <section class="stats-grid" aria-label="Overzicht resultaten">
+      <div class="stat"><span class="stat-label">Openstaande slips</span><strong id="stat-open">—</strong><small>Alleen gesimuleerd</small></div>
+      <div class="stat"><span class="stat-label">Fictieve inzet open</span><strong id="stat-exposure">—</strong><small>Nog niet afgerekend</small></div>
+      <div class="stat"><span class="stat-label">Gerealiseerd resultaat</span><strong id="stat-profit">—</strong><small>Alleen afgehandelde slips</small></div>
+      <div class="stat"><span class="stat-label">Gerealiseerde ROI</span><strong id="stat-roi">—</strong><small>Niet de verwachte model-EV</small></div>
+    </section>
+
+    <div id="message" class="toast hidden" aria-live="polite"></div>
+
+    <section id="wedstrijden" class="workspace" aria-labelledby="matches-title">
+      <div class="matches-column">
+        <div class="section-header">
+          <div><div class="eyebrow">STAP 1</div><h2 id="matches-title">Wedstrijden &amp; kansen</h2>
+            <p>Voer wedstrijden in en klik op een quotering om een selectie aan je betslip toe te voegen.</p></div>
+          <button id="refresh-button" class="btn btn-quiet" type="button">↻ Vernieuwen</button>
+        </div>
+
+        <details class="panel add-panel" id="match-editor">
+          <summary><span>＋ Nieuwe wedstrijd invoeren</span><span class="summary-hint">xG + quoteringen</span></summary>
+          <form id="match-form" class="form-grid">
+            <label>Thuisteam <input name="home_team" required maxlength="70" placeholder="Bijv. Ajax" autocomplete="off"></label>
+            <label>Uitteam <input name="away_team" required maxlength="70" placeholder="Bijv. PSV" autocomplete="off"></label>
+            <label>Aftrap (optioneel) <input name="kickoff" type="datetime-local"></label>
+            <label>Bron <input name="source" value="Handmatig" required maxlength="80"></label>
+            <label>xG thuis <input name="home_xg" type="number" min="0" max="8" step=".01" value="1.50" required></label>
+            <label>xG uit <input name="away_xg" type="number" min="0" max="8" step=".01" value="1.10" required></label>
+            <label>Odds thuis (1) <input name="odds_home" type="number" min="1.01" max="100" step=".01" value="2.15" required></label>
+            <label>Odds gelijk (X) <input name="odds_draw" type="number" min="1.01" max="100" step=".01" value="3.35" required></label>
+            <label>Odds uit (2) <input name="odds_away" type="number" min="1.01" max="100" step=".01" value="3.55" required></label>
+            <div class="form-footer">
+              <small>Gebruik controleerbare eigen gegevens. Het systeem haalt nog geen live odds op.</small>
+              <button class="btn btn-primary" type="submit">Wedstrijd opslaan</button>
+            </div>
+          </form>
+        </details>
+
+        <div class="filters" role="group" aria-label="Filter wedstrijden">
+          <button class="filter active" type="button" data-filter="open" aria-pressed="true">Beschikbaar <span id="count-open"></span></button>
+          <button class="filter" type="button" data-filter="all" aria-pressed="false">Alle wedstrijden</button>
+          <label class="search-field"><span class="sr-only">Zoek wedstrijd</span><input id="search" placeholder="Zoek een team…" autocomplete="off"></label>
+        </div>
+        <div id="match-list" class="match-list" aria-live="polite"><div class="empty">Wedstrijden laden…</div></div>
+      </div>
+
+      <aside class="slip-column" aria-labelledby="slip-title">
+        <section class="panel betslip">
+          <div class="slip-top"><div><div class="eyebrow">STAP 2</div><h2 id="slip-title">Jouw betslip</h2></div>
+          <span id="slip-count" class="count-badge">0 selecties</span></div>
+          <div class="slip-types">
+            <span id="slip-type" class="type-pill">Nog geen selectie</span>
+            <small>Maximaal 8 verschillende wedstrijden</small>
+          </div>
+          <div id="slip-legs" class="slip-legs"><div class="slip-empty">Kies links een quotering om te beginnen.</div></div>
+          <div class="stake-row"><label for="stake">Fictieve inzet (€)</label>
+            <input id="stake" type="number" min=".01" max="10000" step=".01" value="5.00" inputmode="decimal"></div>
+          <div id="slip-summary" class="slip-summary" aria-live="polite">
+            <div class="summary-row"><span>Gecombineerde odds</span><strong>—</strong></div>
+            <div class="summary-row"><span>Modelkans</span><strong>—</strong></div>
+            <div class="summary-row"><span>Mogelijke uitbetaling</span><strong>—</strong></div>
+          </div>
+          <div id="slip-edge" class="edge-box hidden"></div>
+          <button id="save-slip" type="button" class="btn btn-primary btn-block" disabled>Fictieve betslip bewaren</button>
+          <p class="slip-note">De kansen van verschillende wedstrijden worden vermenigvuldigd onder de aanname van onafhankelijkheid. Combinaties uit één wedstrijd zijn daarom geblokkeerd. Werkelijke winst is niet gegarandeerd.</p>
+        </section>
+      </aside>
+    </section>
+
+    <section class="history-section" aria-labelledby="history-title">
+      <div class="section-header"><div><div class="eyebrow">STAP 3</div><h2 id="history-title">Resultaten &amp; historie</h2>
+        <p>Voer echte uitslagen handmatig in om je fictieve tickets eerlijk af te rekenen.</p></div></div>
+      <div class="history-grid">
+        <section class="panel history-panel">
+          <h3>Wedstrijduitslagen invoeren</h3>
+          <div id="settle-list"><p class="muted">Geen open wedstrijden.</p></div>
+        </section>
+        <section class="panel history-panel">
+          <h3>Opgeslagen betslips</h3>
+          <div id="slip-history"><p class="muted">Nog geen fictieve weddenschappen.</p></div>
+        </section>
+      </div>
+    </section>
+
+    <section class="quality-section" aria-labelledby="quality-title">
+      <div class="section-header"><div><div class="eyebrow">MODELCONTROLE</div><h2 id="quality-title">Hoe betrouwbaar zijn de kansen?</h2>
+        <p>Vergelijk de voorspelfout van het Poisson-model met de bookmakerskansen zonder marge.
+        Lagere scores zijn beter; pas na voldoende onafhankelijke observaties worden ze betekenisvol.</p></div></div>
+      <div class="quality-grid">
+        <div class="panel quality-panel"><span class="stat-label">Afgehandelde wedstrijden</span><strong id="quality-count">—</strong>
+          <small>Handmatig ingevoerde uitslagen</small></div>
+        <div class="panel quality-panel"><span class="stat-label">Brier-score model</span><strong id="quality-model">—</strong>
+          <small>Lager is beter</small></div>
+        <div class="panel quality-panel"><span class="stat-label">Brier-score markt</span><strong id="quality-market">—</strong>
+          <small>Bookmakerkansen zonder marge</small></div>
+      </div>
+      <p class="quality-warning" id="quality-warning">Nog onvoldoende gegevens voor een betrouwbare evaluatie.</p>
+    </section>
+
+    <section class="explain" aria-labelledby="faq-title">
+      <h2 id="faq-title">Hoe lees je deze cijfers?</h2>
+      <div class="explain-grid">
+        <div><strong>Modelkans</strong><p>Geschatte kans op de uitslag, berekend met een Poisson-model op basis van jouw xG-invoer.</p></div>
+        <div><strong>Fair odds</strong><p>1 gedeeld door de modelkans. Een theoretische neutrale quotering, geen bookmakersaanbod.</p></div>
+        <div><strong>Model-EV</strong><p>Verwacht rendement volgens het model: (kans × odds) − 1. Positief betekent niet bewezen winst.</p></div>
+        <div><strong>Combinatie</strong><p>De quoteringen worden vermenigvuldigd. Je moet alle selecties goed hebben; het risico neemt doorgaans sterk toe.</p></div>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">SupahBetting · Lokale onderzoekssoftware · Geen gokadvies · Geen account- of bookmakerkoppeling</footer>
+</body>
+</html>
