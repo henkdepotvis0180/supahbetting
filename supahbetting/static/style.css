@@ -150,3 +150,11 @@ input:focus{outline:2px solid var(--mint);outline-offset:0;border-color:transpar
  .hero h1{font-size:1.9rem}.explain-grid{grid-template-columns:1fr}
  .stats-grid .stat strong{font-size:1.45rem}
 }
+
+.quality-section{margin-top:52px}
+.quality-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.quality-panel{padding:19px}
+.quality-panel strong{display:block;font-size:1.5rem;margin:5px 0}
+.quality-panel small{color:var(--muted);font-size:.72rem}
+.quality-warning{font-size:.78rem;margin-top:11px}
+@media(max-width:650px){.quality-grid{grid-template-columns:1fr}.quality-panel{padding:15px}}
