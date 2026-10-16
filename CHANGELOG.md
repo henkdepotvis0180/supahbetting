@@ -6,6 +6,7 @@
 - Verwerping van meerdere selecties uit dezelfde wedstrijd vanwege correlatierisico.
 - SQLite-transacties, opgeslagen odds- en modelkans-snapshots, winst/verlies bij handmatig ingevoerde resultaten.
 - Scheiding tussen theoretische EV en gerealiseerde fictieve ROI.
+- Modelkwaliteitscontrole met Brier-score en log-loss tegenover de bookmakerskansen zonder marge (sample-waarschuwing).
 - Nieuwe gevalideerde JSON-API op localhost met securityheaders en afgeschermde origin/host.
 - CSV/JSON-import met standaardkolommen en fictieve demo-data.
 - Unit- en API-integratietests, Windows-startscript en CI-matrix.
