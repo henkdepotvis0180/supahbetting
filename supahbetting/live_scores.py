@@ -89,6 +89,16 @@ def _number(value):
     return number if 0 <= number <= 200 else None
 
 
+def _identifier(value):
+    if isinstance(value, bool) or value is None:
+        return None
+    try:
+        identifier = int(value)
+    except (ValueError, TypeError, OverflowError):
+        return None
+    return identifier if 1 <= identifier <= 9999999999 else None
+
+
 def _clean(value, max_length=100):
     if not isinstance(value, str):
         return ""
@@ -168,7 +178,7 @@ def _status(raw, kickoff):
 def normalize_match(raw, league=""):
     if not isinstance(raw, dict):
         raise InvalidLiveRequest("Ongeldig wedstrijdobject")
-    identifier = _number(raw.get("matchID"))
+    identifier = _identifier(raw.get("matchID"))
     team1 = raw.get("team1") if isinstance(raw.get("team1"), dict) else {}
     team2 = raw.get("team2") if isinstance(raw.get("team2"), dict) else {}
     if identifier is None or identifier == 0:
