@@ -11,7 +11,7 @@ from urllib.parse import parse_qs, urlsplit
 
 from .domain import MARKETS, ValidationError, quote_slip
 from .store import Store
-from .live_scores import LEAGUES, LiveScores, LiveDataUnavailable, InvalidLiveRequest
+from .live_scores import ATTRIBUTION, LEAGUES, LiveScores, LiveDataUnavailable, InvalidLiveRequest
 
 ROOT = Path(__file__).parent / "static"
 JSON_LIMIT = 24_576
@@ -149,11 +149,7 @@ def make_handler(store, live_scores=None):
                             "warnings": warnings,
                             "fetched_at": min(stamps),
                             "refresh_seconds": 90,
-                            "source": live_scores.list_matches("bl1")["source"]
-                            if "bl1" in [m["league"] for m in results] else
-                            {"name": "OpenLigaDB", "url": "https://www.openligadb.de/",
-                             "license": "ODbL 1.0",
-                             "license_url": "https://www.openligadb.de/lizenz"},
+                            "source": ATTRIBUTION,
                         })
                     data = live_scores.list_matches(league)
                     data["warnings"] = [data["warning"]] if data["warning"] else []
