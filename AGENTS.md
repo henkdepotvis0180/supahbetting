@@ -5,6 +5,7 @@ Projectdoel: één overzichtelijke Nederlandstalige voetbalanalyse-app met afzon
 ## Architectuur
 - `supahbetting/domain.py`: inputvalidatie, onafhankelijk Poisson-model, EV en combinatiekansen.
 - `supahbetting/store.py`: lokale SQLite, odds-/kanssnapshots en settlements.
+- `supahbetting/evaluation.py`: Brier- en log-loss-benchmark op geregistreerde uitslagen.
 - `supahbetting/server.py`: localhost HTTP API en statische assets.
 - `supahbetting/static/`: Nederlandstalige responsieve browserinterface.
 - `supahbetting/importers.py`: veilige CSV/JSON import uit externe pipelines.
