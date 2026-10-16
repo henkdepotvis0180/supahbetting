@@ -119,6 +119,8 @@ def make_handler(store):
                     return self.reply(200, {"slips": store.list_slips()})
                 if path == "/api/stats":
                     return self.reply(200, store.stats())
+                if path == "/api/model-metrics":
+                    return self.reply(200, store.model_metrics())
                 assets = {
                     "/": ("index.html", "text/html; charset=utf-8"),
                     "/index.html": ("index.html", "text/html; charset=utf-8"),
