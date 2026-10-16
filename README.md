@@ -69,6 +69,7 @@ Gecontroleerde competities:
 - DFB-Pokal (dfb)
 - Frauen-Bundesliga (ffb1)
 - La Liga (la1; communitybron, mogelijk onvolledig)
+- Premier League (pl; communitybron, mogelijk onvolledig)
 
 De shortcuts zijn bevestigd aan de hand van de [competitie-index 2026](https://beta.openligadb.de/Leagues?season=2026). De Nederlandse Eredivisie is via deze bron nog niet bevestigd. Dit is geen compleet overzicht van alle competities ter wereld.
 
