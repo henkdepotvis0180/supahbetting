@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.8.2 — 2026-10-17
+- 6.417 extra **echt gespeelde** OpenFootball CC0-wedstrijden uit 2017/18–2019/20 toegevoegd; totaal **19.884** voor het Poisson-/doelpuntenmodel.
+- Wedstrijd- en bronintegriteit: 19 source-jsonbestanden, bron-SHA's en ontbrekende datasets beschreven in `data/historical/provenance_pre2020.json`.
+- Via GitHub Actions volledig hertraind model `supahbetting/models/baseline.json` (modelversie 0.10.0); het vorige scoremodel v0.9.0 blijft onder een eigen bestandsnaam als terugvaloptie bewaard.
+- Chronologische modelvergelijking vastgelegd in `training_reports/historical_depth_2026-10-17.json`.
+- 2025/26 log loss verbeterd van 0,98432 naar 0,98370; recente 2026/27 log loss licht verslechterd van 0,97842 naar 0,98071. **Geen grote of bewezen verbetering**, geen winstgarantie.
+- Validatie: 2.351 wedstrijden 2024/25; toets: 2.037 wedstrijden 2025/26; aanvullende 295 in 2026/27. Parameters blijven gekozen op 2024/25; geen toekomstscore-lekkage.
+- OpenFootball levert nog geen volledige resultaten na 20 september 2026; geen actuele blessures, bookmakerprijzen of volledige livescores bijgetraind.
+- Het historische Elo-/vormmodel blijft ongewijzigd; dashboard toont aantal extra historische resultaten.
+- Train-only workflow plus normale unit- en JavaScript-regressietests, licentievermelding en Nederlandse documentatie.
+- Geen massale download van externe bookmakerdata in strijd met fair-usevoorwaarden.
+
+
 ## v0.8.1 — 2026-10-17
 - Poisson-model uitgebreid met **295 extra daadwerkelijk afgeronde wedstrijden** uit 2026/27 (bron: OpenFootball, CC0).
 - Trainingsomvang 13.172 → **13.467** resultaten, in zeven competities. Voor België ontbreken actuele 2026/27-scores.
