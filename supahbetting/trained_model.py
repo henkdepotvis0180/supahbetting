@@ -28,7 +28,8 @@ from typing import Any
 
 DATA_DIR = Path("data/historical")
 MODEL_FILE = Path(__file__).parent / "models" / "baseline.json"
-TRAINING_VERSION = "0.9.0"
+TRAINING_VERSION = "0.10.0"
+EARLY_SEASONS = ("2017-18", "2018-19", "2019-20")
 CURRENT_SEASON = "2026-27"
 VALIDATION_SEASON = "2024-25"
 TEST_SEASON = "2025-26"
@@ -138,7 +139,7 @@ def load_matches(folder=DATA_DIR):
                     raise TrainingError("Onrealistische wedstrijduitslag")
                 season = row["season"]
                 match = re.fullmatch(r"(20[0-3][0-9])-([0-9]{2})", season)
-                if (not match or int(match.group(1)) < 2020 or
+                if (not match or int(match.group(1)) < 2017 or
                         int(match.group(2)) != (int(match.group(1)) + 1) % 100 or
                         day.year not in (int(match.group(1)),
                                          int(match.group(1)) + 1)):
@@ -394,8 +395,8 @@ def train(data_dir=DATA_DIR, output=MODEL_FILE):
         league: {
             season: sum(r["league"] == league and r["season"] == season
                         for r in matches)
-            for season in ("2020-21","2021-22","2022-23","2023-24",
-                           "2024-25","2025-26","2026-27")
+            for season in EARLY_SEASONS + ("2020-21","2021-22","2022-23",
+                                   "2023-24","2024-25","2025-26","2026-27")
         }
         for league in LEAGUES
     }
@@ -424,6 +425,7 @@ def train(data_dir=DATA_DIR, output=MODEL_FILE):
         "trained_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "source": {
             "project": "openfootball/football.json",
+            "older_season_provenance_file": "data/historical/provenance_pre2020.json",
             "homepage": "https://github.com/openfootball/football.json",
             "license": "CC0 1.0 Universal",
             "source_is_real_historical_results": True,
@@ -456,6 +458,8 @@ def train(data_dir=DATA_DIR, output=MODEL_FILE):
             ),
         },
         "training_matches": len(matches),
+        "added_older_results": sum(r["season"] in EARLY_SEASONS for r in matches),
+        "training_start_date": min(r["date"] for r in matches),
         "last_observed_result_date": max(match["date"] for match in matches),
         "prospective_matches": current_count,
         "leagues": {league: state.serialize() for league, state in states.items()},
