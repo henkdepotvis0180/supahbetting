@@ -119,12 +119,14 @@ class SportsDBTests(unittest.TestCase):
     def test_free_calls_and_deduplicated_results(self):
         data = self.feed.list_matches("4337")
         self.assertEqual(len(data["matches"]), 3)
-        self.assertEqual(len(self.paths), 3)
+        self.assertEqual(len(self.paths), 5)
         self.assertIn("GEEN live", data["coverage_note"])
+        self.assertTrue(any("2026-10-18" in path for path in self.paths))
+        self.assertTrue(any("2026-10-16" in path for path in self.paths))
         self.assertFalse(data["stale"])
         again = self.feed.list_matches("4337")
         self.assertEqual(len(again["matches"]), 3)
-        self.assertEqual(len(self.paths), 3)
+        self.assertEqual(len(self.paths), 5)
 
     def test_match_detail(self):
         item = self.feed.match_detail(2030101, "4337")
