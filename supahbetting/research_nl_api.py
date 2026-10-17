@@ -167,7 +167,8 @@ def refresh_nl_api(*, now=None, data_dir=LOCAL, provider=None, model=None,
                           note="Lokale 2016+ basis ontbreekt; oude gegevens niet vervangen.")
         else:
             report=collect_verified_finals(
-                entries,model,now=now,path=directory/"provider_finals_local.json"
+                entries,model,now=now,path=directory/"provider_finals_local.json",
+                max_age_days=380
             )
             candidate,train_state=rebuild_augmented_if_needed(inventory,folder=directory)
             result.update(new_confirmed=report["new"],
