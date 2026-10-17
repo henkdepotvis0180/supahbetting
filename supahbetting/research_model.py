@@ -70,7 +70,7 @@ def train_candidate(inventory, baseline_path=MODEL_FILE):
     candidate["training_matches"] = len(matches)
     candidate["training_start_date"] = matches[0]["date"]
     candidate["last_observed_result_date"] = matches[-1]["date"]
-    candidate["added_older_results"] = sum(m["season"] == "2016-17" for m in matches)
+    candidate["added_older_results"] = sum(int(m["season"][:4]) < 2020 for m in matches)
     candidate["prospective_matches"] = sum(
         m["season"] == CURRENT_SEASON for m in matches
     )
@@ -83,10 +83,23 @@ def train_candidate(inventory, baseline_path=MODEL_FILE):
         candidate["evaluation"][name] = summarize(metrics[season])
     for league in LEAGUES:
         candidate["leagues"][league] = states[league].serialize()
+        league_rows = [m for m in matches if m["league"] == league]
+        season_counts = {}
+        for m in league_rows:
+            season_counts[m["season"]] = season_counts.get(m["season"], 0) + 1
+        diagnostics = candidate["evaluation"]["by_league"][league]
+        diagnostics["season_matches"] = season_counts
+        prior_count = season_counts.get(VALIDATION_SEASON, 0)
+        test_count = season_counts.get(TEST_SEASON, 0)
+        diagnostics["test_coverage_vs_previous_season"] = (
+            round(test_count / prior_count, 3) if prior_count else None
+        )
+        diagnostics["test_incomplete_or_stale"] = (
+            not prior_count or test_count < prior_count * 0.97
+        )
+        diagnostics["prospective_partial"] = season_counts.get(CURRENT_SEASON, 0) < 100
         for name, season in periods:
-            candidate["evaluation"]["by_league"][league][name] = summarize(
-                by_league[(season, league)]
-            )
+            diagnostics[name] = summarize(by_league[(season, league)])
     candidate["source"] = {
         "project": "openfootball/football.json",
         "homepage": "https://github.com/openfootball/football.json",
