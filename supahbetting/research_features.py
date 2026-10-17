@@ -122,7 +122,7 @@ def validate_evidence(item, *, now=None):
         "match_date": match_date, "team": team,
         "player": player, "status": value if category == "squad_availability" else None,
         "metrics": metrics,
-        "notes": (item.get("notes") or "")[:280] if isinstance(item.get("notes"), str) else "",
+        # No free-text notes: prevents accidental medical details or rumors.
     }
     fingerprint = hashlib.sha256(json.dumps(
         cleaned, sort_keys=True, ensure_ascii=False
