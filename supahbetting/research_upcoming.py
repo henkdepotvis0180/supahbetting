@@ -15,7 +15,7 @@ from .external_feeds import (
     FootballData, fetch_bounded_json, normalize_sportsdb,
 )
 from .github_training_sync import SyncError
-from .live_scores import LiveScores
+from .live_scores import LiveScores, LiveDataUnavailable
 from .research_data import LOCAL, atomic_json
 from .trained_model import (
     LEAGUES, PROVIDER_LEAGUES, TrainingError, load_pretrained, norm,
@@ -351,7 +351,7 @@ def fetch_provider_schedules(*, now=None, football_data=None,
                         fetched.append(row)
                 if result.get("stale") or result.get("warnings"):
                     warnings.append("football-data " + provider_code + ": bron mogelijk vertraagd")
-            except (OSError, ValueError, RuntimeError) as exc:
+            except (OSError, ValueError, RuntimeError, LiveDataUnavailable) as exc:
                 warnings.append("football-data " + provider_code + ": " + type(exc).__name__)
             # Six maximum queries per refresh, under free 10/min allowance.
             if pause and sports_fetcher is None:
@@ -379,7 +379,7 @@ def fetch_provider_schedules(*, now=None, football_data=None,
                             fetched.append(row)
                     except (ValueError, KeyError, TypeError):
                         pass
-            except (OSError, ValueError, RuntimeError) as exc:
+            except (OSError, ValueError, RuntimeError, LiveDataUnavailable) as exc:
                 warnings.append("TheSportsDB " + provider_code + ": " + type(exc).__name__)
             # Four requests x seven leagues = 28. Space requests across >60 s.
             if pause:
@@ -392,7 +392,7 @@ def fetch_provider_schedules(*, now=None, football_data=None,
                 row = _normalize(event, "openliga", league, now)
                 if row:
                     fetched.append(row)
-        except (OSError, ValueError, RuntimeError) as exc:
+        except (OSError, ValueError, RuntimeError, LiveDataUnavailable) as exc:
             warnings.append("OpenLigaDB " + provider_code + ": " + type(exc).__name__)
     return fetched, sorted(set(warnings))
 
