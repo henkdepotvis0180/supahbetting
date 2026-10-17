@@ -11,7 +11,8 @@ from urllib.parse import parse_qs, urlsplit
 
 from .domain import MARKETS, ValidationError, quote_slip
 from .store import Store
-from .live_scores import ATTRIBUTION, LEAGUES, LiveScores, LiveDataUnavailable, InvalidLiveRequest
+from .live_scores import LiveScores, LiveDataUnavailable, InvalidLiveRequest
+from .external_feeds import ProviderHub
 
 ROOT = Path(__file__).parent / "static"
 JSON_LIMIT = 24_576
@@ -47,11 +48,12 @@ def preview(store, payload):
     return {"quote": quote_slip(legs, payload.get("stake")), "legs": legs}
 
 
-def make_handler(store, live_scores=None):
+def make_handler(store, live_scores=None, provider_hub=None):
     """Create a request handler with isolated store, useful for integration tests."""
     live_scores = live_scores if live_scores is not None else LiveScores()
+    provider_hub = provider_hub if provider_hub is not None else ProviderHub(openliga=live_scores)
     class Handler(BaseHTTPRequestHandler):
-        server_version = "SupahBetting/0.4"
+        server_version = "SupahBetting/0.5"
 
         def _headers(self, code, mimetype, length):
             self.send_response(code)
@@ -114,8 +116,10 @@ def make_handler(store, live_scores=None):
                 self._check_host()
                 path = self._path()
                 if path == "/api/health":
-                    return self.reply(200, {"status": "ok", "version": "0.4.0",
+                    return self.reply(200, {"status": "ok", "version": "0.5.0",
                                             "mode": "paper_only", "live_odds": False})
+                if path == "/api/live/providers":
+                    return self.reply(200, provider_hub.catalog())
                 if path == "/api/live/leagues":
                     return self.reply(200, {
                         "leagues": live_scores.leagues(),
@@ -124,42 +128,26 @@ def make_handler(store, live_scores=None):
                     })
                 if path == "/api/live/matches":
                     params = parse_qs(urlsplit(self.path).query)
+                    provider = params.get("provider", ["openliga"])[0]
                     league = params.get("league", ["all"])[0]
-                    if league == "all":
-                        results = []
-                        warnings = []
-                        stamps = []
-                        for code in LEAGUES:
-                            try:
-                                data = live_scores.list_matches(code)
-                                results.extend(data["matches"])
-                                stamps.append(data["fetched_at"])
-                                if data["warning"] or data["stale"]:
-                                    warnings.append(f"{LEAGUES[code]}: brongegevens verouderd")
-                            except LiveDataUnavailable:
-                                warnings.append(f"{LEAGUES[code]}: bron niet bereikbaar")
-                        if not stamps:
-                            raise LiveDataUnavailable("Geen competities bereikbaar")
-                        return self.reply(200, {
-                            "matches": sorted(
-                                results, key=lambda m: (m["kickoff"] or "9999", m["id"])
-                            ),
-                            "league": "all",
-                            "stale": bool(warnings),
-                            "warnings": warnings,
-                            "fetched_at": min(stamps),
-                            "refresh_seconds": 90,
-                            "source": ATTRIBUTION,
-                        })
-                    data = live_scores.list_matches(league)
-                    data["warnings"] = [data["warning"]] if data["warning"] else []
-                    return self.reply(200, data)
+                    if not isinstance(provider, str) or len(provider) > 35:
+                        raise InvalidLiveRequest("Ongeldige databron")
+                    if not isinstance(league, str) or len(league) > 16:
+                        raise InvalidLiveRequest("Ongeldige competitie")
+                    return self.reply(200, provider_hub.list_matches(provider, league))
                 live_match = re.fullmatch(r"/api/live/matches/([1-9][0-9]{0,9})", path)
                 if live_match:
                     params = parse_qs(urlsplit(self.path).query)
+                    provider = params.get("provider", ["openliga"])[0]
                     league = params.get("league", [""])[0]
+                    if not isinstance(provider, str) or len(provider) > 35:
+                        raise InvalidLiveRequest("Ongeldige databron")
+                    if not isinstance(league, str) or len(league) > 16:
+                        raise InvalidLiveRequest("Ongeldige competitie")
                     return self.reply(
-                        200, live_scores.match_detail(int(live_match.group(1)), league)
+                        200, provider_hub.match_detail(
+                            provider, int(live_match.group(1)), league
+                        )
                     )
                 if path == "/api/matches":
                     return self.reply(200, {"matches": store.list_matches()})
@@ -240,7 +228,7 @@ def main():
     store = Store(args.db)
     server = ThreadingHTTPServer(("127.0.0.1", args.port), make_handler(store))
     server.daemon_threads = True
-    print(f"SupahBetting v0.4: http://127.0.0.1:{args.port}", flush=True)
+    print(f"SupahBetting v0.5: http://127.0.0.1:{args.port}", flush=True)
     print("Alleen lokaal, fictieve inzetten. Druk Ctrl+C om te stoppen.", flush=True)
     try:
         server.serve_forever(poll_interval=0.2)

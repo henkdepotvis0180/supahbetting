@@ -222,3 +222,14 @@ input:focus{outline:2px solid var(--mint);outline-offset:0;border-color:transpar
  .live-dialog-shell{padding:16px}
  .live-detail-result{font-size:1.7rem;min-width:76px}
 }
+
+/* v0.5: provider selection and data quality notes */
+.live-controls{flex-wrap:wrap;justify-content:flex-end}
+.live-controls select{min-width:185px;max-width:100%;flex:1 1 180px}
+.live-controls #live-provider{min-width:235px}
+.live-source-note{font-size:.77rem;line-height:1.55;color:var(--yellow);margin:0 0 14px}
+@media(max-width:690px){
+ .live-controls{justify-content:stretch;width:100%}
+ .live-controls #live-provider,.live-controls #live-league{width:100%;flex:1 1 100%}
+ .live-controls .btn{width:100%}
+}

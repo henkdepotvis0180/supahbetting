@@ -18,7 +18,7 @@
         <span class="logo" aria-hidden="true">S</span>
         <div><strong>Supah<span>Betting</span></strong><small>Voetbalanalyse &amp; combinaties</small></div>
       </div>
-      <div class="header-right"><span class="mode-badge"><span class="status-dot"></span> PAPER MODE</span><span class="version">v0.4.0</span></div>
+      <div class="header-right"><span class="mode-badge"><span class="status-dot"></span> PAPER MODE</span><span class="version">v0.5.0</span></div>
     </div>
   </header>
   <main class="container">
@@ -42,10 +42,16 @@
       <div class="section-header live-header">
         <div>
           <div class="eyebrow"><span class="live-pulse" aria-hidden="true"></span> OPENBARE WEDSTRIJDGEGEVENS</div>
-          <h2 id="live-title">Live wedstrijdcentrum</h2>
-          <p>Klik op een wedstrijd voor de actuele stand en een kleine doelpuntenfeed. De gegevens worden automatisch ververst.</p>
+          <h2 id="live-title">Live &amp; internationale wedstrijden</h2>
+          <p>Selecteer een databron en competitie. Klik op een wedstrijd voor de stand en beschikbare gebeurtenissen. Niet elke gratis bron levert echte livegegevens.</p>
         </div>
         <div class="live-controls">
+          <label for="live-provider" class="sr-only">Selecteer databron</label>
+          <select id="live-provider" aria-label="Databron">
+            <option value="openliga">OpenLigaDB · scores</option>
+            <option value="sportsdb">TheSportsDB · beperkt gratis</option>
+            <option value="football-data">football-data.org · vertraagd (API-key)</option>
+          </select>
           <label for="live-league" class="sr-only">Selecteer competitie</label>
           <select id="live-league">
             <option value="all">Alle beschikbare competities</option>
@@ -65,12 +71,13 @@
         <span id="live-updated" class="muted" aria-live="polite">Livebron laden…</span>
         <span id="live-warning" class="live-warning hidden" role="status"></span>
       </div>
+      <p id="live-source-note" class="muted live-source-note" aria-live="polite">OpenLigaDB: gratis communitystanden en doelpunten. Andere bronnen kunnen vertraagd of beperkt zijn.</p>
       <div id="live-list" class="live-grid" aria-live="polite">
         <div class="empty">Wedstrijdgegevens worden opgehaald…</div>
       </div>
       <div class="live-foot">
-        <span>⚠ Status ‘mogelijk bezig’ is een inschatting op basis van de aftraptijd; live updates kunnen vertragen.</span>
-        <span>Data: <a href="https://www.openligadb.de/" target="_blank" rel="noopener noreferrer">OpenLigaDB</a> · <a href="https://www.openligadb.de/lizenz" target="_blank" rel="noopener noreferrer">ODbL 1.0</a></span>
+        <span>⚠ OpenLigaDB-status kan geschat zijn; TheSportsDB is beperkt en football-data.org gratis is vertraagd. Geen live bookmakerodds.</span>
+        <span>Bron: <a id="live-source-link" href="https://www.openligadb.de/" target="_blank" rel="noopener noreferrer">OpenLigaDB</a> · <a id="live-license-link" href="https://www.openligadb.de/lizenz" target="_blank" rel="noopener noreferrer">ODbL 1.0</a></span>
       </div>
     </section>
 

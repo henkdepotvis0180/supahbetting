@@ -1,6 +1,6 @@
 'use strict';
 
-const liveUi = {league:'all', matches:[], selected:null, current:null, request:0, detailRequest:0};
+const liveUi = {provider:'sportsdb', league:'4337', catalog:[], matches:[], selected:null, current:null, request:0, detailRequest:0};
 const liveEl = id => document.getElementById(id);
 const liveEscape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
@@ -37,6 +37,81 @@ function liveStatus(match) {
     liveEscape(match.status_label || 'Onbekende status') + '</span>';
 }
 
+function liveDisplayProviderMeta(result) {
+  const meta = {
+    openliga: ['OpenLigaDB','https://www.openligadb.de/','ODbL 1.0','https://www.openligadb.de/lizenz'],
+    sportsdb: ['TheSportsDB','https://www.thesportsdb.com/','API-voorwaarden','https://www.thesportsdb.com/docs/api'],
+    'football-data': ['football-data.org','https://www.football-data.org/','API-voorwaarden','https://www.football-data.org/pricing']
+  };
+  const p = meta[liveUi.provider] || meta.openliga;
+  liveEl('live-source-link').textContent = p[0];
+  liveEl('live-source-link').href = p[1];
+  liveEl('live-license-link').textContent = p[2];
+  liveEl('live-license-link').href = p[3];
+  if (result && result.coverage_note) {
+    liveEl('live-source-note').textContent =
+      (liveUi.provider === 'football-data'
+        ? 'Football data provided by the Football-Data.org API. ' : '') +
+      result.coverage_note;
+  } else {
+    const selected = liveUi.catalog.find(item => item.id === liveUi.provider);
+    liveEl('live-source-note').textContent =
+      (liveUi.provider === 'football-data'
+        ? 'Football data provided by the Football-Data.org API. ' : '') +
+      ((selected && selected.note) || 'Controleer de beschikbaarheid en vertraging bij deze databron.');
+  }
+}
+
+async function liveInitializeProviders() {
+  try {
+    const catalog = await liveGet('/api/live/providers');
+    liveUi.catalog = catalog.providers || [];
+    const providerSelect = liveEl('live-provider');
+    providerSelect.replaceChildren();
+    for (const provider of liveUi.catalog) {
+      const option = document.createElement('option');
+      option.value = provider.id;
+      option.textContent = provider.label + (!provider.enabled ? ' (API-sleutel vereist)' : '');
+      providerSelect.append(option);
+    }
+    if (!liveUi.catalog.some(p => p.id === liveUi.provider)) liveUi.provider = 'openliga';
+    providerSelect.value = liveUi.provider;
+    livePopulateLeagues();
+  } catch (error) {
+    liveUi.provider = 'openliga';
+    liveUi.league = 'bl1';
+    liveEl('live-provider').value = 'openliga';
+    liveEl('live-league').value = 'bl1';
+    liveEl('live-source-note').textContent = 'De broncatalogus kon niet worden geladen: ' + error.message;
+  }
+  liveReload(true);
+}
+
+function livePopulateLeagues() {
+  const leagueSelect = liveEl('live-league');
+  const provider = liveUi.catalog.find(item => item.id === liveUi.provider);
+  if (!provider) return;
+  leagueSelect.replaceChildren();
+  if (provider.id === 'openliga') {
+    const all = document.createElement('option');
+    all.value = 'all';
+    all.textContent = 'Alle OpenLigaDB competities (kan langer duren)';
+    leagueSelect.append(all);
+  }
+  for (const league of provider.leagues) {
+    const option = document.createElement('option');
+    option.value = league.code;
+    option.textContent = league.name;
+    leagueSelect.append(option);
+  }
+  const suggested = liveUi.provider === 'sportsdb' ? '4337' :
+    liveUi.provider === 'football-data' ? 'DED' : 'bl1';
+  const available = [...leagueSelect.options].some(o => o.value === liveUi.league);
+  if (!available || liveUi.league === 'all') liveUi.league = suggested;
+  leagueSelect.value = liveUi.league;
+  liveDisplayProviderMeta(null);
+}
+
 function liveDraw() {
   const host = liveEl('live-list');
   if (!liveUi.matches.length) {
@@ -59,11 +134,11 @@ function liveDraw() {
       '</strong><strong>' + liveEscape(m.away_team) + '</strong></div>' +
       '<span class="live-game-score">' + liveScore(m) + '</span></div>' +
       '<div class="live-game-bottom">' + liveStatus(m) +
-      '<span class="live-action">Bekijk feed →</span></div></button>';
+      '<span class="live-action">Bekijk details →</span></div></button>';
   }).join('');
 }
 
-function liveWarnings(warnings, fetched) {
+function liveWarnings(warnings, fetched, seconds=90) {
   const warn = liveEl('live-warning');
   if (warnings.length) {
     warn.textContent = '⚠ ' + warnings.join(' · ');
@@ -73,7 +148,7 @@ function liveWarnings(warnings, fetched) {
     warn.classList.add('hidden');
   }
   liveEl('live-updated').textContent = fetched ?
-    'Bron laatst opgehaald: ' + liveTime(fetched) + ' · verversing elke 90 seconden' :
+    'Bron laatst opgehaald: ' + liveTime(fetched) + ' · broncache ± ' + String(seconds) + ' sec' :
     'Nog geen livegegevens opgehaald';
 }
 
@@ -82,10 +157,11 @@ async function liveReload(showLoading=false) {
   const request = ++liveUi.request;
   if (showLoading) liveEl('live-list').innerHTML = '<div class="empty">Wedstrijden laden…</div>';
   try {
-    const result = await liveGet('/api/live/matches?league=' + encodeURIComponent(liveUi.league));
+    const result = await liveGet('/api/live/matches?provider=' + encodeURIComponent(liveUi.provider) + '&league=' + encodeURIComponent(liveUi.league));
     if (request !== liveUi.request) return;
     liveUi.matches = result.matches;
-    liveWarnings(result.warnings || (result.warning ? [result.warning] : []), result.fetched_at);
+    liveWarnings(result.warnings || (result.warning ? [result.warning] : []), result.fetched_at, result.refresh_seconds);
+    liveDisplayProviderMeta(result);
     liveDraw();
   } catch (error) {
     if (request !== liveUi.request) return;
@@ -162,7 +238,7 @@ async function liveLoadDetail(quiet=false) {
   const selected = liveUi.selected;
   if (!quiet) liveEl('live-detail').innerHTML = '<p class="muted">Wedstrijdfeed wordt geladen…</p>';
   try {
-    const result = await liveGet('/api/live/matches/' + selected.id + '?league=' + encodeURIComponent(selected.league));
+    const result = await liveGet('/api/live/matches/' + selected.id + '?provider=' + encodeURIComponent(selected.provider) + '&league=' + encodeURIComponent(selected.league));
     if (requested !== liveUi.detailRequest || !liveEl('live-dialog').open) return;
     liveUi.current = result;
     liveRenderDetail(result);
@@ -183,7 +259,7 @@ async function liveLoadDetail(quiet=false) {
 function liveOpen(matchId, league) {
   const dialog = liveEl('live-dialog');
   if (dialog.open) return;
-  liveUi.selected = {id:matchId,league};
+  liveUi.selected = {id:matchId,league,provider:liveUi.provider};
   liveUi.current = null;
   dialog.showModal();
   liveLoadDetail();
@@ -202,7 +278,10 @@ function liveUseForAnalysis(match) {
   editor.open = true;
   form.elements.namedItem('home_team').value = match.home_team;
   form.elements.namedItem('away_team').value = match.away_team;
-  form.elements.namedItem('source').value = 'OpenLigaDB (schemapunt; xG en odds handmatig)';
+  const providerName = {
+    openliga: 'OpenLigaDB', sportsdb: 'TheSportsDB', 'football-data': 'football-data.org'
+  }[liveUi.provider] || 'Externe bron';
+  form.elements.namedItem('source').value = providerName + ' (teams/tijd; xG/odds handmatig)';
   const date = match.kickoff ? new Date(match.kickoff) : null;
   form.elements.namedItem('kickoff').value = date && !Number.isNaN(date.getTime()) ?
     new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().slice(0,16) : '';
@@ -215,6 +294,13 @@ function liveUseForAnalysis(match) {
 }
 
 function liveInit() {
+  liveEl('live-provider').addEventListener('change', event => {
+    liveUi.provider = event.target.value;
+    liveUi.league = '';
+    liveUi.matches = [];
+    livePopulateLeagues();
+    liveReload(true);
+  });
   liveEl('live-league').addEventListener('change', event => {
     liveUi.league = event.target.value;
     liveUi.matches = [];
@@ -234,7 +320,7 @@ function liveInit() {
     liveUi.selected = null;
     liveUi.current = null;
   });
-  liveReload(true);
+  liveInitializeProviders();
   window.setInterval(() => {
     if (document.visibilityState === 'visible') liveReload();
   }, 90000);

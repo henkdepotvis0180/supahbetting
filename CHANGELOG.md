@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.5.0 — 2026-10-17
+- Multi-provider wedstrijdoverzicht: OpenLigaDB, gratis TheSportsDB v1 en optioneel football-data.org v4.
+- Eredivisie, Eerste Divisie, Belgische Pro League en internationale competities.
+- TheSportsDB: gratis beperkte wedstrijdgegevens voor gisteren/vandaag/morgen, geen echte live scores.
+- football-data.org: persoonlijke API-sleutel in lokale omgevingsvariabele, vertraagde scores en 10-minuten-cache.
+- Eén klikbare wedstrijdpopup, dynamisch bron-/competitiefilter en zichtbare bron-, vertragings- en licentievermeldingen.
+- HTTPS-hostallowlists, timeouts, redirects blokkeren, caching en offline tests voor alle providers.
+- Geen automatische bookmakerodds, geen bron-onafhankelijke winstgarantie en geen ongeautoriseerde video.
+
+
 ## v0.4.0 — 2026-10-17
 - Live OpenLigaDB-scores zonder API-key: Bundesliga 1/2/3, Champions League, DFB-Pokal, Frauen-Bundesliga, La Liga en Premier League (community).
 - Klikbare wedstrijdkaarten, scorebord, doelpuntenfeed met minuten/spelers en zichtbare bronupdates.
