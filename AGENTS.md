@@ -76,3 +76,16 @@ De tools zijn *nog niet* direct aan elkaar gekoppeld. Het importformaat in READM
 - Toon nooit oude of ongedateerde boekmakerquotes als live prijzen. Positive EV van niet onafhankelijk gekalibreerde modellen is geen bewezen voordeel.
 - Tests: python -m unittest discover -s tests -v; Python 3.11+; node --check supahbetting/static/research.js.
 - Bij uitbreiding ondersteunt het systeem nieuwe adapters via native exports, bronregistratie en expliciete geïsoleerde tests.
+
+## v0.7 Historisch getraind model
+- Databron: openfootball/football.json (CC0 1.0 Universal), snapshots in data/historical/{nl.1,be.1,en.1,de.1,es.1,it.1,fr.1}.csv; herkomst data/historical/README.md.
+- Reproduceerbare training: python -m supahbetting.trained_model; gegenereerd artefact supahbetting/models/baseline.json; optionele Windows-knop train_model.bat.
+- Gebruik geen shot-xG-claim: output is empirische verwachte goals geleerd op basis van eindstanden, niet echte xG-gebeurtenissen.
+- Hyperparameterkeuze strikt uit 2024/25 (validatie), 2025/26 is chronologisch gehouden test. Eerder-die-dag resultaten mogen nooit in voorspellingen van dezelfde speeldag lekken.
+- Modelkwaliteit altijd vergelijken met referentie door Brier en log loss. Per-league incomplete brondata tonen; Belgisch seizoen heeft grote gaten.
+- Modelbestand mee publiceren zodat gebruiker niet zelf hoeft te trainen. Geen automatische trainingsrun bij opstarten nodig.
+- API /api/trained/status en POST /api/trained/predict. Alleen bekende provider/league/teams en bewuste aliasregels; geen onzekere fuzzy matching.
+- Live geplande wedstrijden mogen uitsluitend getrainde doelpuntverwachting invullen; bookmakerodds blijven leeg en moeten onafhankelijk worden ingevoerd.
+- Hertraining op nieuwe wedstrijden mag eerdere 2024/25-val/hyperparameters en 2025/26-testgrens nooit retrospectief lekken.
+- De originele ProphitBet-, OddsHarvester- en Prediict-programma's worden niet in-process getraind of gekopieerd. Native CSV/JSON-exportadapters blijven.
+- Niet claimen dat een betere Brier-score tegen een gemiddelde referentie bewijst dat bookmakerprijzen te verslaan zijn.
