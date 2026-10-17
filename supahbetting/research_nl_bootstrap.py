@@ -9,7 +9,7 @@ from datetime import datetime,timezone
 import json
 from pathlib import Path
 
-from .research_data import LOCAL,atomic_json
+from .research_data import LOCAL,atomic_json,seasons
 from .trained_model import LEAGUES
 
 PUBLISHED=Path("data/research/verified")
@@ -73,7 +73,7 @@ def bootstrap(*, directory=LOCAL, published=PUBLISHED):
         "license":"CC0-1.0",
         "fetched_at_utc":datetime.now(timezone.utc).isoformat(),
         "latest_result_date":latest,
-        "season_range":["2015-16",datetime.now(timezone.utc).date().strftime("%Y-%y")],
+        "season_range":["2015-16",seasons(datetime.now(timezone.utc).date())[-1]],
         "last_full_check_at_utc":None,
         "matches":records,"fixtures":[],
         "coverage":coverage,"failed_sources":[],
