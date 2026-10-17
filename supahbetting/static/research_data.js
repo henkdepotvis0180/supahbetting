@@ -15,6 +15,13 @@
     : "Nog niet gemeten";
   const date = value => value && /^\d{4}-\d{2}-\d{2}$/.test(value)
     ? value.split("-").reverse().join("-") : "Geen datum";
+  const checkedAt = iso => {
+    const stamp = new Date(iso);
+    if (!iso || Number.isNaN(stamp.getTime())) return "onbekend";
+    return new Intl.DateTimeFormat("nl-BE", {
+      dateStyle:"medium", timeStyle:"short", timeZone:"Europe/Brussels"
+    }).format(stamp);
+  };
   function tile(label, value, description="") {
     const outer=text("div","","panel research-insight");
     outer.replaceChildren(
@@ -79,7 +86,9 @@
       tile("Nieuwste eindstand",date(report.last_verified_result_date),
         recentText+(quality.is_stale?" · BRON ACHTERLOPEND":"")),
       tile("Echte toekomstige tests",numeric(prospective.graded_predictions),
-        "Alleen voorspellingen vastgelegd vóór de speeldag"),
+        "Alleen uitslagen van vooraf geregistreerde voorspellingen"),
+      tile("Vooraf geregistreerde prognoses",numeric(prospective.issued_before_match),
+        "Wachten op bevestigde eindstanden uit een actuele bron"),
       tile("Prospectieve log loss",decimal(prospective.prospective_logloss),
         "Lager is beter; geen winstgarantie"),
       tile("Historische test log loss",decimal(periods.test?.model_logloss),
@@ -89,7 +98,7 @@
           report.initial_backfill_matches)+" historische uitslagen")
     );
     status.replaceChildren(
-      text("strong","Broncontrole: "+(report.last_checked_at_utc || "onbekend")),
+      text("strong","Broncontrole: "+checkedAt(report.last_checked_at_utc)),
       text("span"," · GitHub: "+(monitor.sync_state || "geen status")),
       text("span"," · "+(report.missing_sources?.length || 0)+" ontbrekende bronbestanden"),
       text("span",quality.is_stale?" · Waarschuwing: scores zijn verouderd":
