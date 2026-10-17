@@ -242,6 +242,20 @@ def normalize_sportsdb(raw, league):
     else:
         status, label = "unknown", "Gratis wedstrijdgegevens · niet live"
     stamp = parse_utc(raw.get("strTimestamp"))
+    # TheSportsDB v1 returns UTC soccer event timestamps without a "Z" suffix
+    # in some responses. Its other sports can use local time, so never apply
+    # this interpretation outside explicitly declared Soccer matches.
+    if not stamp and _clean(raw.get("strSport"), 20).casefold() == "soccer":
+        source_stamp = raw.get("strTimestamp")
+        source_day = raw.get("dateEvent")
+        if (isinstance(source_stamp, str)
+                and re.fullmatch(r"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}", source_stamp)
+                and source_day == source_stamp[:10]):
+            try:
+                stamp = (datetime.fromisoformat(source_stamp)
+                         .replace(tzinfo=timezone.utc).isoformat())
+            except ValueError:
+                pass
     if not stamp:
         fallback = _clean(raw.get("dateEvent"), 12)
         clock = _clean(raw.get("strTime"), 12)
