@@ -1,10 +1,13 @@
-# SupahBetting v0.4.0
+# SupahBetting v0.5.0
 
 **Lokaal Nederlandstalig voetbalanalyseplatform met een betrouwbare basis voor enkelvoudige én combinatie-betslips.**
 
-SupahBetting is software voor onderzoek en **fictieve weddenschappen**. Nieuw in v0.4: openbare live **scoredata en doelpunten**. Er zijn **geen live bookmakerquoteringen**, geen directe bookmakeraccounts en geen functie voor echt geld. De modelkansen zijn nog niet gekalibreerd of onafhankelijk gevalideerd. Een positieve model-EV is **geen bewijs van winstgevendheid**.
+SupahBetting is software voor onderzoek en **fictieve weddenschappen**. Nieuw in v0.5: **meerdere voetbalgegevensbronnen**, waaronder Nederlandse en Belgische competities; de bestaande OpenLigaDB-community-doelpuntenfeed blijft aanwezig. Er zijn **geen live bookmakerquoteringen**, geen directe bookmakeraccounts en geen functie voor echt geld. De modelkansen zijn nog niet gekalibreerd of onafhankelijk gevalideerd. Een positieve model-EV is **geen bewijs van winstgevendheid**.
 
 ## Wat is werkend?
+
+- **Nieuw v0.5:** kies een databron en competitie in één dashboard. TheSportsDB gratis toont beperkt de Eredivisie/Eerste Divisie, België en internationale competities; football-data.org voegt vertraagde scores toe met een optionele persoonlijke API-sleutel.
+- Backend-cache per vaste API-route, duidelijke foutafhandeling, bron- en vertragingslabels, geen live bookmakerodds.
 
 - **Live**: acht OpenLigaDB-competities, klikbare wedstrijdkaarten, scorebord en doelpunten met minuten.
 - Automatische verversing: lijst ongeveer 90 seconden, geopende wedstrijd ongeveer 45 seconden.
@@ -56,6 +59,48 @@ De lokale database wordt aangemaakt in `.supahbetting/data.sqlite3`. Maak hierva
 5. Vul onder **Wedstrijduitslagen invoeren** een uitslag in; de status en winst/verlies worden automatisch bijgewerkt.
 
 Klik op een andere markt binnen dezelfde wedstrijd om die selectie te vervangen. Niet mogelijk: twee markten van dezelfde wedstrijd op één combinatie.
+
+## Nederlandse, Belgische en internationale competities (v0.5)
+
+Gebruik boven in het **Live wedstrijdcentrum** de twee dropdowns voor databron en competitie.
+
+| Databron | Competerende dekking | Gratis gegevens | Sleutel |
+|---|---|---|---|
+| OpenLigaDB | Bundesliga 1/2/3, UCL, DFB-Pokal, vrouwen-Bundesliga, La Liga, Premier League (community) | Community-scores en doelpuntentijdlijn, mogelijk vertraagd | Niet nodig |
+| TheSportsDB v1 | Eredivisie, Eerste Divisie, Belgische Pro League, Premier League, Championship, Scottish Premiership, Bundesliga, Serie A, Ligue 1, La Liga, MLS, Brazilië, Oostenrijk | **Beperkte selectie**: maximaal één volgende, één vorige en tot drie wedstrijden op de huidige dag. **Geen echte livescores of doelpuntenfeed** in gratis v1 | Ingebouwde openbare gedeelde sleutel 123 |
+| football-data.org v4 | Eredivisie, Premier League, La Liga, Bundesliga, Serie A, Ligue 1, Portugal, Champions League, Championship, Brazilië, WK, EK (afhankelijk van abonnement) | Gratis basisgegevens en **vertraagde** standen. Eventtijdlijnen kunnen ontbreken | Persoonlijke API-sleutel |
+
+Beschikbare wedstrijden en abonnementsrechten worden bepaald door de aanbieders. De app verzint geen ontbrekende scores, doelpunten of livestreams. Bronstatus en vertragingsmeldingen staan zichtbaar in de interface.
+
+### Gratis football-data.org instellen op Windows
+
+TheSportsDB werkt direct zonder persoonlijke sleutel. Voor de grotere wedstrijdlijst via football-data.org:
+
+1. Registreer gratis op https://www.football-data.org/client/register en ontvang je persoonlijke token.
+2. Open Windows Start en zoek **Omgevingsvariabelen voor uw account bewerken**.
+3. Voeg bij de **gebruikersvariabelen** een nieuwe variabele toe: naam **FOOTBALL_DATA_API_KEY**, waarde jouw token.
+4. Sluit het bestaande SupahBetting-venster en start opnieuw met **start_dashboard.bat**.
+5. Kies de bron **football-data.org**, daarna bijvoorbeeld **Eredivisie**.
+
+De API-sleutel wordt uitsluitend door de lokale Python-server als HTTP-header gebruikt, niet naar de browser gestuurd en niet opgeslagen in GitHub. **Deel hem niet in chats of je repository.** Zonder sleutel werken OpenLigaDB en TheSportsDB gewoon door.
+
+De gratis [football-data.org](https://www.football-data.org/pricing) API omvat volgens de aanbieder 12 competities, **vertraagde scores** en 10 API-calls per minuut. SupahBetting cachet per competitie 10 minuten en vraagt nooit alle competities tegelijk op bij deze provider.
+
+### Klikbare wedstrijdpopup en eventueel officiële video
+
+Alle bronnen gebruiken dezelfde popup met teamnamen, score, status, bronupdate en beschikbare doelpunten.
+
+- **OpenLigaDB:** doelpuntenfeed wanneer de bron doelpunten registreert.
+- **TheSportsDB gratis:** beperkt speelschema en recente uitslagen, geen volledige feed.
+- **football-data.org gratis:** vertraagde resultaten. Gedetailleerde doelpuntengebeurtenissen zijn afhankelijk van een uitgebreider abonnement.
+
+De videospeler is optioneel: alleen een handmatig geverifieerde, officiële YouTube-nocookie-embed mag worden toegevoegd in het lokaal genegeerde bestand **.supahbetting/official_broadcasts.json**. De sleutels worden per provider verschillend opgebouwd:
+
+- OpenLigaDB: bl1:123456
+- TheSportsDB: tsdb-4337:123456
+- football-data.org: fd-DED:123456
+
+Gebruik de werkelijke wedstrijd-ID en een officiële video waarvoor insluiten is toegestaan. Het programma doorzoekt geen ongeautoriseerde streamsites.
 
 ## Live wedstrijdcentrum (v0.4.0)
 
