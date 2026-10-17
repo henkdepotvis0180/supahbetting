@@ -155,8 +155,20 @@ def refresh_nl_api(*, now=None, data_dir=LOCAL, provider=None, model=None,
             _write_status(status_path,result)
             return result
         entries=confirmed_results(raw,now=now,season=season_year(now))
-        result.update(source_matches=len(raw["matches"]),full_time_rows=len(entries),
-                      status="loaded",access="granted")
+        latest_api_score=max((m["date"] for m in entries),default=None)
+        days_behind=((now.date()-datetime.fromisoformat(latest_api_score).date()).days
+                     if latest_api_score else None)
+        result.update(
+            source_matches=len(raw["matches"]),full_time_rows=len(entries),
+            latest_api_score_date=latest_api_score,
+            days_since_latest_api_score=days_behind,
+            status=("loaded_but_lagging" if days_behind is None or days_behind>=3
+                    else "loaded"),access="granted",
+            note=("API gaf wel toegang, maar de nieuwste vastgelegde uitslag is "
+                  +str(days_behind)+" dagen oud; controleer competitiestatus.")
+                  if days_behind is not None and days_behind>=3 else
+                  "API heeft eindstanden bevestigd, niet automatisch een compleet seizoen."
+        )
         if model is None:
             model=_load_model()
         if model is None:
@@ -204,9 +216,9 @@ def main():
         print("API-sleutel optioneel: configureer_speelschema_api.bat")
     if state["status"]=="subscription_required":
         print("Eredivisie-toegang is beperkt bij dit API-abonnement; geen omzeiling.")
-    return 0 if state["status"] in ("loaded","no_api_key",
-                                   "subscription_required","rate_limited",
-                                   "stale_api_cache") else 1
+    return 0 if state["status"] in ("loaded","loaded_but_lagging",
+                                   "no_api_key","subscription_required",
+                                   "rate_limited","stale_api_cache") else 1
 
 
 if __name__=="__main__":
