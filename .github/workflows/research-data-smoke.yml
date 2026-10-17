@@ -1,0 +1,61 @@
+name: Research data v0.12 checks
+
+on:
+  push:
+    branches: [feature/research-data-v0.12.0]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  offline-tests:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ['3.11', '3.12']
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: All Python regressions, including leakage and privacy gates
+        run: python -m unittest discover -s tests -v
+      - name: Compile Python modules
+        run: python -m compileall -q supahbetting
+      - name: Verify research monitor CLI
+        run: python -m supahbetting.research_monitor --help
+      - name: Verify no local API credentials required for public evidence report
+        run: python -m supahbetting.research_features
+      - name: Validate dashboard JavaScript (Linux Node)
+        if: runner.os == 'Linux'
+        run: |
+          node --check supahbetting/static/research_data.js
+          node --check supahbetting/static/trained.js
+
+  limited-public-data-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Inspect two actual CC0 source schemas (not a full bulk scan)
+        run: |
+          python - <<'PY'
+          from datetime import datetime, timezone
+          from supahbetting.research_data import retrieve,parse_source
+          now=datetime.now(timezone.utc).date()
+          for league,season in (('en.1','2016-17'),('en.1','2026-27')):
+              data,status,url=retrieve(league,season)
+              print(season,status,url)
+              if data is not None:
+                  played,future=parse_source(data,league,season,now)
+                  print('finished',len(played),'scheduled',len(future))
+                  assert played or future, 'Empty sample; inspect upstream source'
+          PY
