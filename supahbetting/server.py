@@ -207,6 +207,7 @@ def make_handler(store, live_scores=None, provider_hub=None, research_hub=None, 
                     "/live.js": ("live.js", "text/javascript; charset=utf-8"),
                     "/research.js": ("research.js", "text/javascript; charset=utf-8"),
                     "/trained.js": ("trained.js", "text/javascript; charset=utf-8"),
+                    "/trained.js": ("trained.js", "text/javascript; charset=utf-8"),
                 }
                 if path in assets:
                     name, mimetype = assets[path]
