@@ -128,7 +128,7 @@ class UpcomingTests(unittest.TestCase):
             self.assertEqual(state["prospective_evaluation"]["graded_total"],0)
             self.assertEqual(state["prospective_evaluation"]["new_void"],1)
 
-    def test_provider_scan_respects_throttled_four_requests_per_league(self):
+    def test_provider_scan_respects_throttled_five_requests_per_league(self):
         requests=[]
         class DisabledFootball:
             enabled=False
@@ -142,7 +142,7 @@ class UpcomingTests(unittest.TestCase):
             now=NOW,football_data=DisabledFootball(),
             sports_fetcher=source,openliga=EmptyOpenliga(),pause=0)
         self.assertEqual(items,[])
-        self.assertEqual(len(requests),28)
+        self.assertEqual(len(requests),35)
         self.assertTrue(any("API-token" in warning for warning in warnings))
 
     def test_no_provider_data_results_in_provisional_archived_only(self):
