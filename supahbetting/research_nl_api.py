@@ -190,3 +190,24 @@ def refresh_nl_api(*, now=None, data_dir=LOCAL, provider=None, model=None,
                       note="API of dataset kon niet worden gevalideerd; niets overschreven.")
     _write_status(status_path,result)
     return result
+
+
+def main():
+    from .research_nl_bootstrap import bootstrap
+    bootstrap()
+    inventory_path=LOCAL/"inventory.json"
+    inventory=json.loads(inventory_path.read_text(encoding="utf-8")) if inventory_path.is_file() else {}
+    state=refresh_nl_api(inventory=inventory)
+    print(json.dumps(state,ensure_ascii=False,indent=2))
+    print("Ruwe API-resultaten worden NIET naar de openbare GitHub-branch geüpload.")
+    if state["status"]=="no_api_key":
+        print("API-sleutel optioneel: configureer_speelschema_api.bat")
+    if state["status"]=="subscription_required":
+        print("Eredivisie-toegang is beperkt bij dit API-abonnement; geen omzeiling.")
+    return 0 if state["status"] in ("loaded","no_api_key",
+                                   "subscription_required","rate_limited",
+                                   "stale_api_cache") else 1
+
+
+if __name__=="__main__":
+    raise SystemExit(main())
