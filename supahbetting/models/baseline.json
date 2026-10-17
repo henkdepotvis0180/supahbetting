@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model_type": "online_empirical_bayes_poisson",
   "version": "0.7.0",
-  "trained_at": "2026-10-17T09:49:29+00:00",
+  "trained_at": "2026-10-17T09:57:27+00:00",
   "source": {
     "project": "openfootball/football.json",
     "homepage": "https://github.com/openfootball/football.json",
