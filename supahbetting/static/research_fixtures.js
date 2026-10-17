@@ -173,6 +173,34 @@
       el("span"," · Vooraf opgeslagen voorspellingen: "+registered),
       el("span"," · Echt beoordeeld: "+graded)
     );
+    const eredivisie=dataset.nl_result_source||{};
+    if(eredivisie.status && eredivisie.status!=="not_checked"){
+      const labels={
+        loaded:"Eredivisie API gecontroleerd",
+        no_api_key:"Eredivisie: API-sleutel ontbreekt",
+        subscription_required:"Eredivisie: jouw API-abonnement geeft geen DED-toegang",
+        rate_limited:"Eredivisie: API-verzoeklimiet bereikt",
+        stale_api_cache:"Eredivisie: API-bron tijdelijk verouderd",
+        no_inventory:"Eredivisie: historische trainingsbasis ontbreekt",
+        no_model:"Eredivisie: model ontbreekt",
+        error:"Eredivisie: update kon niet worden gevalideerd",
+        api_http_error:"Eredivisie: HTTP-bronfout"
+      };
+      const label=labels[eredivisie.status]||"Eredivisie: "+eredivisie.status;
+      note.append(el("p",label+
+        (eredivisie.model_last_score_date?
+         " · bijgewerkte modeldata t/m "+eredivisie.model_last_score_date:"")+
+        (eredivisie.new_confirmed?
+         " · nieuwe uitslagen "+eredivisie.new_confirmed:"")+
+        (eredivisie.http_status?" · HTTP "+eredivisie.http_status:""),
+        eredivisie.status==="loaded"?"fixture-info":"fixture-warning"));
+    }
+    const csv=dataset.nl_manual_history||{};
+    if(csv.matches){
+      note.append(el("p","Eredivisie historische CSV: "+csv.matches+
+        " wedstrijden uit "+csv.seasons+" seizoenen (uitsluitend lokaal).",
+        "fixture-info"));
+    }
     const update=dataset.local_data_update;
     if(update?.added)note.append(el("p",
       update.added+" nieuw bevestigde uitslagen zijn lokaal verwerkt."+
@@ -197,7 +225,8 @@
         el("strong","Modelstatus: "+m.level.toUpperCase()+" · "+(m.model_version||"ontbreekt")),
         el("span"," · Historische dekking: "+(m.leagues_with_10_seasons??0)+"/"+
           (m.active_league_count??6)+" competities met 10+ seizoenen"),
-        el("span"," · Laatste uitslag: "+(m.model_data_through||"onbekend")),
+        el("span"," · Eredivisie-model t/m: "+(m.nl_model_data_through||"onbekend")),
+        el("span"," · Overige modeldata t/m: "+(m.model_data_through||"onbekend")),
         el("p",m.warn+" · Geen aangetoonde winst tegen bookmakers."),
         ...(missingTen.length?[el("p","Nog geen 10 seizoenen voor: "+missingTen.join("; "),
           "fixture-warning")]:[])
