@@ -160,3 +160,47 @@ modelvariant promoten, zonder terugkijkfouten.
 
 **Deze v0.13-branch blijft onderzoekssoftware, zonder echte inzetten of
 integratie met bookmakeraccounts.**
+
+
+## 6. Herstel: TheSportsDB geeft herhaaldelijk HTTP-fouten
+
+Als je in het monitorvenster voor meerdere competities dezelfde melding
+`Request naar sportsdb mislukt ... HTTPError` ziet, betekent dat een
+**externe bronfout** en niet een defecte CPU of mislukte lokale modeltraining.
+De gratis TheSportsDB-v1-sleutel `123` wordt nog op de officiële site
+gedocumenteerd; een HTTP-fout op je pc bewijst **niet** dat die sleutel
+wereldwijd buiten werking is.
+
+**Reparatie in deze researchbranch:**
+
+- Het exacte HTTP-statusnummer (zoals 403, 404, 429 of 5xx) wordt nu gelogd.
+  HTTP 403 betekent vaak dat toegang voor dit verzoek wordt geweigerd;
+  HTTP 429 betekent dat er te veel verzoeken zijn gedaan. Zonder statuscode
+  weten we niet welk probleem op jouw verbinding optreedt.
+- Na **één** fout stopt TheSportsDB voor die controlecyclus; er volgen
+  dus geen tientallen verzoeken naar andere datums en competities.
+  OpenLigaDB en een eventueel geconfigureerde football-data.org API blijven
+  afzonderlijk werken.
+- Sommige echte voetbalmatches hebben een `strTimestamp` zonder
+  tijdzone-aanduiding. Als TheSportsDB **uitdrukkelijk Soccer** aangeeft,
+  met een overeenkomstige `dateEvent` en een volledige ISO-tijd, wordt
+  die volgens de gepubliceerde API-conventie als UTC gelezen. Voor andere
+  sporten of twijfelachtige datums blijft de tijd onbekend.
+- De monitor houdt de bestaande lokale getrainde modellen intact;
+  mislukte extra API-aanvragen overschrijven de historische data niet.
+
+**Updateprocedure:** sluit de monitor- en dashboardvensters. Bij een Git-installatie
+kun je `update_supahbetting.bat` gebruiken; bij een ZIP-installatie download
+je de nieuwste ZIP van deze branch en behoud je `.supahbetting/` en
+`data/research/`. Start opnieuw met `start_supahbetting.bat`. Voor een
+onmiddellijke handmatige controle gebruik je `ververs_speelschema.bat`.
+De eerste TheSportsDB-storing geeft nu één duidelijke melding met HTTP-code
+in plaats van een lange foutlijst.
+
+**Als je steeds HTTP 403/429 krijgt:** gebruik indien toegestaan de
+<https://www.thesportsdb.com/docs/api> en controleer de HTTP-status
+zonder de provider te belasten. Een officieel
+<https://www.football-data.org/>-token (eigen, lokaal ingesteld via
+`configureer_speelschema_api.bat`) biedt een onafhankelijke bron.
+Een werkende provider is géén garantie op een compleet speelschema of
+recente modeltrainingsdata.
