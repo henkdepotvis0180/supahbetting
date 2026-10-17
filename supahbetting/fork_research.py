@@ -53,7 +53,7 @@ class ResearchStore:
                     source TEXT NOT NULL,
                     kind TEXT NOT NULL CHECK(kind IN ('prediction','odds')),
                     market TEXT NOT NULL CHECK(market IN ('home','draw','away')),
-                    value REAL NOT NULL CHECK(value > 0),
+                    value REAL NOT NULL CHECK(value >= 0),
                     bookmaker TEXT NOT NULL DEFAULT '',
                     observed_at TEXT NOT NULL DEFAULT '',
                     source_file TEXT NOT NULL DEFAULT '',
