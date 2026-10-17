@@ -97,7 +97,7 @@ def read_historical_csv(path):
             hk, ak = team_key(home), team_key(away)
             hg = _goals(_choose(row, "home_score", "FTHG", "home_goals"))
             ag = _goals(_choose(row, "away_score", "FTAG", "away_goals"))
-            league_raw = _choose(row, "league", "league_code", "Div", "division", "competition")
+            league_raw = _choose(row, "competition_code", "league_code", "league", "Div", "division", "competition")
             league = DIVISION_NAMES.get(league_raw.upper(), league_raw.upper() or "GLOBAL")
             if not (day and hk and ak and hk != ak and hg is not None and ag is not None):
                 invalid += 1
