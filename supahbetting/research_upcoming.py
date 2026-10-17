@@ -409,7 +409,7 @@ def build_upcoming(*, model=None, inventory=None, fetched=None, now=None,
 
 def fetch_provider_schedules(*, now=None, football_data=None,
                              sports_fetcher=None, openliga=None, pause=2.2,
-                             knvb_fetcher=None):
+                             knvb_fetcher=None, skip_eredivisie_football_data=False):
     """Bounded provider discovery with free-tier pacing and 429 fast-stop.
 
     SportsDB free v1 is partial by design. Schedules are never exhaustive.
@@ -422,6 +422,11 @@ def fetch_provider_schedules(*, now=None, football_data=None,
     football_data = football_data if football_data is not None else FootballData()
     if football_data.enabled:
         for provider_code, league in PROVIDER_LEAGUES["football-data"].items():
+            if provider_code == "DED" and skip_eredivisie_football_data:
+                # The authorized full-season DED endpoint has already been
+                # checked this cycle. Avoid duplicate calls against the same
+                # scarce free-tier token; KNVB supplies independent fixtures.
+                continue
             try:
                 result = football_data.list_matches(provider_code)
                 for event in result.get("matches", []):
@@ -577,10 +582,7 @@ def refresh_upcoming(*, inventory=None, data_dir=LOCAL, now=None,
         if inventory is None:
             path = data_dir / "inventory.json"
             inventory = json.loads(path.read_text(encoding="utf-8")) if path.is_file() else {}
-        if provider_fetcher is None:
-            fetched, errors = fetch_provider_schedules(now=now)
-        else:
-            fetched, errors = provider_fetcher(now=now)
+        fetched, errors = [], []
         base_model = model if model is not None else _load_model()
         # v0.14: a separately authorized DED full-season results API can
         # repair weeks of missing scores, not just the last 3 matchdays.
@@ -613,6 +615,17 @@ def refresh_upcoming(*, inventory=None, data_dir=LOCAL, now=None,
                     "Nederlandse uitslagencontrole mislukt ("+
                     type(exc).__name__+"); oude modelgegevens behouden"
                 )
+        # Dutch results are the priority. Fetch them FIRST, then optionally
+        # other league schedules; this prevents a foreign-league HTTP 429
+        # from exhausting the DED budget before any NL training can occur.
+        if provider_fetcher is None:
+            extra_fixtures, provider_errors = fetch_provider_schedules(
+                now=now, skip_eredivisie_football_data=True
+            )
+        else:
+            extra_fixtures, provider_errors = provider_fetcher(now=now)
+        fetched.extend(extra_fixtures)
+        errors.extend(provider_errors)
         refresh_state = {"updated": False, "added": 0,
                          "conflicts": 0, "local_retrained": False}
         if isinstance(inventory, dict) and len(inventory.get("matches", [])) >= 1000 and base_model:
