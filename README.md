@@ -1,8 +1,28 @@
-# SupahBetting v0.8.1
+# SupahBetting v0.8.2
 
 **Lokaal Nederlandstalig voetbalanalyseplatform met een betrouwbare basis voor enkelvoudige én combinatie-betslips.**
 
-SupahBetting is software voor onderzoek en **fictieve weddenschappen**. Vanaf v0.8 bevat het **twee daadwerkelijk getrainde, afzonderlijke voetbalmodellen**: een Elo-/vormmodel en een zeven-competities doelpunten-/Poisson-model. Nieuw in v0.5: **meerdere voetbalgegevensbronnen**, waaronder Nederlandse en Belgische competities; de bestaande OpenLigaDB-community-doelpuntenfeed blijft aanwezig. Er zijn **geen live bookmakerquoteringen**, geen directe bookmakeraccounts en geen functie voor echt geld. Het aparte getrainde basismodel heeft een chronologische historische toets gehad, maar is niet tegen actuele bookmakers geijkt. Het eerste Elo-/vormmodel gebruikt data tot 2024; het tweede model heeft nieuwe bronuitslagen uit 2025/26, maar per competitie zijn sommige bestanden onvolledig. Een positieve model-EV is **geen bewijs van winstgevendheid**.
+SupahBetting is software voor onderzoek en **fictieve weddenschappen**. Vanaf v0.8 bevat het **twee daadwerkelijk getrainde, afzonderlijke voetbalmodellen**: een Elo-/vormmodel en een zeven-competities doelpunten-/Poisson-model. Nieuw in v0.5: **meerdere voetbalgegevensbronnen**, waaronder Nederlandse en Belgische competities; de bestaande OpenLigaDB-community-doelpuntenfeed blijft aanwezig. Er zijn **geen live bookmakerquoteringen**, geen directe bookmakeraccounts en geen functie voor echt geld. Het aparte getrainde basismodel heeft chronologische historische toetsen gehad, maar is niet tegen actuele bookmakers geijkt. Het eerste Elo-/vormmodel gebruikt data tot 2024; het tweede model heeft nieuwe bronuitslagen uit 2025/26, maar per competitie zijn sommige bestanden onvolledig. Een positieve model-EV is **geen bewijs van winstgevendheid**.
+
+## Extra historische modeltraining (v0.8.2 — 17 oktober 2026)
+
+Het Poisson-/doelpuntenmodel is opnieuw getraind via GitHub Actions op **19.884 echte eindstanden** uit zeven competities. Dit zijn **6.417 extra historische wedstrijden** bovenop de 13.467 resultaten uit v0.8.1. Alle extra records komen uit de [OpenFootball CC0-database](https://github.com/openfootball/football.json), seizoenen **2017/18, 2018/19 en 2019/20**. Voor de Eredivisie en Belgische competitie waren 2017/18-bronbestanden niet beschikbaar. De COVID-seizoenen 2019/20 zijn in sommige competities onvolledig. Bronbestanden en Git-hashes zijn vastgelegd in `data/historical/provenance_pre2020.json`.
+
+**Meer trainen is niet automatisch beter.** Daarom is het vernieuwde Poisson-model (modelversie 0.10.0) retrospectief vergeleken met het vorige Poisson-model (versie 0.9.0). Beide modellen zijn met dezelfde historische wedstrijduitkomsten beoordeeld. Lagere Brier en log loss zijn beter:
+
+| Chronologische dataset | Vorig model Brier | Nieuw model Brier | Vorig model log loss | Nieuw model log loss |
+|---|---:|---:|---:|---:|
+| Validatie 2024/25 (2.351 wedstrijden) | 0,59830 | **0,59779** | 1,00188 | **1,00103** |
+| Toets 2025/26 (2.037 wedstrijden) | 0,58474 | **0,58431** | 0,98432 | **0,98370** |
+| Recente toets 2026/27 (295 wedstrijden) | **0,57990** | 0,58166 | **0,97842** | 0,98071 |
+
+Dit zijn **kleine, gemengde verschillen**: iets beter over 2024/25 en 2025/26, **iets slechter** op de veel kleinere 2026/27-steekproef. De nieuwe versie wordt voor extra onderzoek aangeboden, niet als aantoonbaar superieur op actuele wedstrijden. Omdat beide modellen op deze testresultaten zijn vergeleken, is verdere modelkeuze op deze toets niet onafhankelijk; nieuwe toekomstige wedstrijden zijn noodzakelijk voor een echt prospectieve beslissing.
+
+**Behouden bestanden:** `supahbetting/models/baseline.json` bevat de uitgebreid getrainde scoremodelversie 0.10.0; `supahbetting/models/baseline_v0.9.0.json` is het vorige, geteste scoremodel om te vergelijken of terug te zetten. Het afzonderlijke Elo-/vormmodel `models/baseline_v1.json` blijft ongewijzigd. Het volledige, door GitHub Actions berekende rapport staat in `training_reports/historical_depth_2026-10-17.json`.
+
+**Actualiteit:** er zijn geen nieuwe eindstanden na **20 september 2026** gevonden in de gebruikte OpenFootball-bestanden. Deze extra training verbetert de historische basis, maar voegt geen informatie toe over actuele opstellingen, blessures, bookmakers of evenementen tussen 20 september en 17 oktober. Er is **geen historische odds-benchmark**, geen bewezen positieve betting-ROI en geen automatische echte weddenschap. Historische odds van football-data.co.uk zijn vanwege de [fair-usevoorwaarden](https://football-data.co.uk/contact.php) niet grootschalig automatisch verzameld.
+
+**Reproduceerbare training:** in `.github/workflows/historical-depth-training.yml` wordt het model vanaf de open resultaten hertraind, aan het vorige model getoetst en als controleerbaar JSON-model met rapport geüpload. Op je eigen pc kun je `train_model.bat` gebruiken, maar dit is niet nodig om het meegeleverde model te openen. Op dezelfde data herhaald trainen levert geen nieuwe kennis op.
 
 ## Extra training met seizoen 2026/27 (v0.8.1)
 
