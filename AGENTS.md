@@ -88,3 +88,14 @@ De tools zijn sinds v0.6 gekoppeld via hun native CSV/JSON-exportbestanden. De e
 - Team-mapping mag alleen via exact verifieerbare namen/curated aliases, geen fuzzy joins.
 - Model-uitvoer niet zonder aanvullende validatie of toestemming in bookmaker-/bettingautomatisering opnemen, en geen geld inzetten. Winstgevendheid niet bewezen.
 - Python CI unit tests + Node scriptcheck, trainingworkflow met aparte sklearn-afhankelijkheden.
+
+## v0.8 — Twee afzonderlijke getrainde modellen (BEIDE behouden)
+- Model 1 uit v0.7: supahbetting/baseline_model.py met JSON models/baseline_v1.json; Elo/vorm en logistische regressie. Training via supahbetting/train_baseline.py, train_baseline.bat en bestaande trainingsworkflow.
+- Model 2 uit v0.8: supahbetting/trained_model.py met JSON supahbetting/models/baseline.json; empirisch uit echte historische goals, 7 competities incl. Eredivisie/BE. Train via train_model.bat; een zelfstandige train-historical-poisson workflow. GEEN scikit-learn bij runtime.
+- Data van model 2: openfootball/football.json CC0 en data/historical CSV-snapshots. Toon incomplete competitiebronnen; gebruik geen fictieve eindstanden of onbekende clubmatch.
+- Endpoint model 1 blijft GET /api/model/status en POST /api/model/predict. Endpoint model 2: GET /api/trained/status en POST /api/trained/predict. Zorg dat beide onafhankelijk blijven.
+- In browser: bestaande model.js en nieuwe trained.js. Train-status niet verwarren met onafhankelijke bookmakerprestatie of gokadvies.
+- Getrainde Poisson-output is verwachte goals op basis van resultaten, **niet** officiële schot-xG. Bij live geplande wedstrijd kunnen doelen worden ingevuld maar NOOIT bookmakerprijzen.
+- Voor model 2: hyperparameterkeuze op 2024/25, chronologische scoretest op 2025/26 (alle matches op dezelfde dag voorspellen voordat die dag wordt geleerd). Als het uiteindelijke model op de testperiode is verder gefit, de oude testscore NOOIT als onafhankelijke evaluatie van die bijgewerkte parameters presenteren.
+- Bij nieuwe seizoenen: voeg rechtmatige historische CSV's toe, behoud gelijke labels en chronologische tests; dezelfde kalenderdag niet lekken.
+- Prediict/ProphitBet upstream trainen is nog separaat en niet identiek aan deze twee modelconstructies. Geen broncode van Prediict kopiëren of user/secure credentials meesturen.
