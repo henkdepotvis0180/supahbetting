@@ -283,3 +283,44 @@ color:#dce8f5}
 .baseline-probability strong{color:#a9ead7}
 .model-result small,.model-warning{font-size:.75rem;color:#eccf9a;line-height:1.55}
 .model-warning{margin:8px 0 0}
+
+/* v0.7: trained historical-goals baseline, clear experimental status */
+.trained-section{margin:32px 0 38px}
+.trained-section .section-header{align-items:center}
+.trained-tag{font-size:.72rem;color:#aeead6;border:1px solid #427d64;
+ background:#193b33;border-radius:18px;padding:7px 11px;white-space:nowrap}
+.trained-stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:15px 0}
+.trained-stat{padding:14px 15px;min-width:0}
+.trained-stat span{display:block;color:var(--muted);font-size:.73rem}
+.trained-stat strong{display:block;color:#edf7ff;font-size:1.36rem;overflow-wrap:anywhere;margin:6px 0 2px}
+.trained-stat small{font-size:.7rem;color:var(--muted);line-height:1.45}
+.trained-form-panel{padding:20px}
+.trained-form-panel h3{margin-bottom:4px}
+.trained-form-panel p{font-size:.8rem;margin:0 0 15px}
+.trained-form{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) auto;align-items:end;gap:12px}
+.trained-form label{display:grid;gap:5px;font-size:.8rem;color:#d2e1ec}
+.trained-form select{width:100%;height:42px;background:#0d1828;color:#e5f1fb;
+ border:1px solid #40536b;border-radius:8px;padding:8px}
+.trained-form button{min-height:42px}
+.trained-result{margin-top:19px;border-top:1px solid var(--edge);padding-top:14px}
+.trained-result h3{margin-bottom:8px}
+.trained-prob-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.trained-prob{background:#1a3042;border:1px solid #3c5f6d;border-radius:10px;padding:12px}
+.trained-prob span{display:block;color:var(--muted);font-size:.76rem}
+.trained-prob strong{display:block;color:var(--mint);font-size:1.35rem}
+.trained-extra,.trained-warning,.trained-note{color:var(--muted);font-size:.76rem;line-height:1.55}
+.trained-warning{color:#f7d7a2}
+.trained-note{margin-top:12px}
+@media(max-width:1050px){
+ .trained-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .trained-form{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .trained-form button{grid-column:1/-1}
+}
+@media(max-width:650px){
+ .trained-stat-grid{grid-template-columns:1fr 1fr}
+ .trained-form{grid-template-columns:1fr}
+ .trained-prob-grid{grid-template-columns:1fr}
+ .trained-section .section-header{align-items:flex-start;flex-direction:column}
+ .trained-form-panel{padding:14px}
+ .trained-tag{white-space:normal}
+}

@@ -26,3 +26,4 @@ jobs:
           node --check supahbetting/static/live.js
           node --check supahbetting/static/research.js
           node --check supahbetting/static/model.js
+          node --check supahbetting/static/trained.js

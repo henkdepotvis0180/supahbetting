@@ -209,7 +209,7 @@ function liveRenderDetail(detail) {
         '<button type="button" id="live-model-predict" class="btn btn-quiet">Bereken modelkansen</button>' +
         '<div id="live-model-result" class="model-result" aria-live="polite"></div></div>' : '') +
     '<div class="live-detail-actions">' +
-    (detail.status === 'scheduled' ? '<button id="live-use-analysis" type="button" class="btn btn-primary">Gebruik wedstrijd voor analyse</button>' : '') +
+    (detail.status === 'scheduled' ? '<button id="live-use-analysis" type="button" class="btn btn-primary">Gebruik wedstrijd + verwachte goals</button>' : '') +
     '<button id="live-reload-detail" type="button" class="btn btn-quiet">↻ Feed verversen</button></div>' +
     '<div class="live-mini-foot">Data: <a href="https://www.openligadb.de/" target="_blank" rel="noopener noreferrer">OpenLigaDB</a> · ' +
     '<a href="https://www.openligadb.de/lizenz" target="_blank" rel="noopener noreferrer">ODbL 1.0</a>. ' +
@@ -282,7 +282,7 @@ function liveClose() {
   if (liveEl('live-dialog').open) liveEl('live-dialog').close();
 }
 
-function liveUseForAnalysis(match) {
+async function liveUseForAnalysis(match) {
   const editor = liveEl('match-editor');
   const form = liveEl('match-form');
   editor.open = true;
@@ -301,6 +301,23 @@ function liveUseForAnalysis(match) {
   liveClose();
   editor.scrollIntoView({behavior:'smooth',block:'start'});
   form.elements.namedItem('home_xg').focus({preventScroll:true});
+  // Separate complementary historical-score model; old Elo probabilities remain intact.
+  if (window.SupahTrained && typeof window.SupahTrained.applyFromLive === 'function') {
+    try {
+      const predicted=await window.SupahTrained.applyFromLive(
+        match,liveUi.provider,match.league
+      );
+      if(typeof notify==='function'){
+        notify('Poisson-model heeft verwachte goals ingevuld ('+
+          predicted.confidence+'). Bookmakerodds moet je zelf toevoegen.');
+      }
+    }catch(error){
+      if(typeof notify==='function'){
+        notify('Het aanvullende Poisson-model herkent deze wedstrijd niet: '+
+          error.message+'. Je kunt de goals handmatig invullen.',true);
+      }
+    }
+  }
 }
 
 function liveInit() {

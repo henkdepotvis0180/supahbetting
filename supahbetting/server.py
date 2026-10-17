@@ -17,6 +17,8 @@ from .provider_config import make_local_config
 from .fork_research import ResearchStore
 from .fork_bridge import BridgeError
 from .baseline_model import BaselineError, load_baseline, predict as baseline_predict, public_status
+from .trained_model import (TrainingError, load_pretrained, predict_trained,
+                            PROVIDER_LEAGUES)
 
 ROOT = Path(__file__).parent / "static"
 JSON_LIMIT = 24_576
@@ -52,7 +54,7 @@ def preview(store, payload):
     return {"quote": quote_slip(legs, payload.get("stake")), "legs": legs}
 
 
-def make_handler(store, live_scores=None, provider_hub=None, research_hub=None, baseline=None):
+def make_handler(store, live_scores=None, provider_hub=None, research_hub=None, baseline=None, trained=None):
     """Create a request handler with isolated store, useful for integration tests."""
     live_scores = live_scores if live_scores is not None else LiveScores()
     provider_hub = provider_hub if provider_hub is not None else ProviderHub(openliga=live_scores)
@@ -63,8 +65,13 @@ def make_handler(store, live_scores=None, provider_hub=None, research_hub=None, 
             baseline = load_baseline()
         except BaselineError as exc:
             model_error = str(exc)
+    if trained is None:
+        try:
+            trained = load_pretrained()
+        except TrainingError:
+            trained = None
     class Handler(BaseHTTPRequestHandler):
-        server_version = "SupahBetting/0.7"
+        server_version = "SupahBetting/0.8"
 
         def _headers(self, code, mimetype, length):
             self.send_response(code)
@@ -127,7 +134,7 @@ def make_handler(store, live_scores=None, provider_hub=None, research_hub=None, 
                 self._check_host()
                 path = self._path()
                 if path == "/api/health":
-                    return self.reply(200, {"status": "ok", "version": "0.7.0",
+                    return self.reply(200, {"status": "ok", "version": "0.8.0",
                                             "mode": "paper_only", "live_odds": False})
                 if path == "/api/live/providers":
                     return self.reply(200, provider_hub.catalog())
@@ -171,6 +178,33 @@ def make_handler(store, live_scores=None, provider_hub=None, research_hub=None, 
                 if path == "/api/model/status":
                     return self.reply(200, public_status(baseline) if baseline is not None
                         else {"available": False, "reason": model_error or "Model nog niet getraind"})
+                if path == "/api/trained/status":
+                    if trained is None:
+                        return self.reply(200, {
+                            "available": False,
+                            "message": "Tweede getraind model ontbreekt; start train_model.bat",
+                            "source": "openfootball/football.json (CC0)",
+                        })
+                    return self.reply(200, {
+                        "available": True,
+                        "version": trained["version"],
+                        "training_matches": trained["training_matches"],
+                        "source": trained["source"],
+                        "parameters": trained["parameters"],
+                        "evaluation": trained["evaluation"],
+                        "leagues": {
+                            league: {
+                                "teams": len(item["teams"]),
+                                "trained_through": item["last_result_date"],
+                                "training_matches": item["training_matches"]
+                            }
+                            for league, item in trained["leagues"].items()
+                        },
+                        "caution": (
+                            "Eigen model uit historische scores; geen shot-xG, "
+                            "geen actuele bookmakerprijzen en geen bewezen betvoordeel."
+                        ),
+                    })
                 if path == "/api/research/status":
                     return self.reply(200, research_hub.status())
                 if path == "/api/research/opportunities":
@@ -183,6 +217,7 @@ def make_handler(store, live_scores=None, provider_hub=None, research_hub=None, 
                     "/live.js": ("live.js", "text/javascript; charset=utf-8"),
                     "/research.js": ("research.js", "text/javascript; charset=utf-8"),
                     "/model.js": ("model.js", "text/javascript; charset=utf-8"),
+                    "/trained.js": ("trained.js", "text/javascript; charset=utf-8"),
                 }
                 if path in assets:
                     name, mimetype = assets[path]
@@ -190,7 +225,7 @@ def make_handler(store, live_scores=None, provider_hub=None, research_hub=None, 
                     self._headers(200, mimetype, len(data))
                     return self.wfile.write(data)
                 return self.reply(404, {"error": "Niet gevonden"})
-            except (ValidationError, InvalidLiveRequest, BridgeError) as exc:
+            except (ValidationError, InvalidLiveRequest, BridgeError, TrainingError) as exc:
                 return self.reply(400, {"error": str(exc)})
             except LiveDataUnavailable as exc:
                 return self.reply(502, {"error": str(exc)})
@@ -224,6 +259,22 @@ def make_handler(store, live_scores=None, provider_hub=None, research_hub=None, 
                     if len(home) > 100 or len(away) > 100 or len(league) > 30:
                         raise BaselineError("Wedstrijdgegevens zijn te lang")
                     return self.reply(200, baseline_predict(baseline, home, away, league))
+                if path == "/api/trained/predict":
+                    if trained is None:
+                        return self.reply(503, {
+                            "error": "Historisch doelpuntenmodel ontbreekt; start train_model.bat"
+                        })
+                    provider = payload.get("provider")
+                    league = payload.get("league")
+                    if provider is not None:
+                        if not isinstance(provider,str) or provider not in PROVIDER_LEAGUES:
+                            raise TrainingError("Onbekende model-databron")
+                        league = PROVIDER_LEAGUES[provider].get(league)
+                    if not isinstance(league,str):
+                        raise TrainingError("Geen getrainde competitie beschikbaar")
+                    return self.reply(200, predict_trained(
+                        trained,league,payload.get("home_team"),payload.get("away_team")
+                    ))
                 if path == "/api/research/imports/scan":
                     return self.reply(200, research_hub.scan_inbox())
                 match = re.fullmatch(r"/api/matches/([1-9][0-9]*)/settle", path)
@@ -233,7 +284,7 @@ def make_handler(store, live_scores=None, provider_hub=None, research_hub=None, 
                     )
                     return self.reply(200, {"match": result})
                 return self.reply(404, {"error": "Niet gevonden"})
-            except (ValidationError, BridgeError, BaselineError) as exc:
+            except (ValidationError, BridgeError, BaselineError, TrainingError) as exc:
                 return self.reply(400, {"error": str(exc)})
             except (TypeError, ValueError) as exc:
                 return self.reply(400, {"error": "Ongeldige aanvraag"})
@@ -293,7 +344,7 @@ def main():
         )
     )
     server.daemon_threads = True
-    print(f"SupahBetting v0.7: http://127.0.0.1:{args.port}", flush=True)
+    print(f"SupahBetting v0.8: http://127.0.0.1:{args.port}", flush=True)
     print("Alleen lokaal, fictieve inzetten. Druk Ctrl+C om te stoppen.", flush=True)
     try:
         server.serve_forever(poll_interval=0.2)
