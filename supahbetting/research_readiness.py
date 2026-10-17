@@ -71,7 +71,7 @@ def audit_startup(*, folder=LOCAL, now=None, model=None):
             diagnostic=model.get("evaluation",{}).get("by_league",{}).get(league,{})
             counts=diagnostic.get("season_matches",{})
             known=[season for season,num in counts.items() if num]
-            first=min(known)+"-01-01" if known else None
+            first=min(known) if known else None
             last=model.get("leagues",{}).get(league,{}).get("last_result_date")
             observed_seasons=len(known)
             games=model.get("leagues",{}).get(league,{}).get("training_matches",0)
