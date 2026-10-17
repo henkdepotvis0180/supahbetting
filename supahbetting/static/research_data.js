@@ -96,7 +96,8 @@
       ["Officiële spelersbeschikbaarheid","Alleen publiek geverifieerde status","Nee"],
       ["Transfers en trainerswissels","Alleen officiële bekendmaking","Nee"],
       ["Weer en gras / veldkwaliteit","Alleen broninformatie van vóór aftrap","Nee"],
-      ["Vermoeidheid en reisafstand","Schema en locatie nog te koppelen","Nee"],
+      ["Rustdagen / wedstrijdendruk","Afgeleid uit gecontroleerde vorige eindstanden","Alleen inzicht, nog niet in model"],
+      ["Reisafstand","Stadioncoördinaten en reisroute nog niet gekoppeld","Nee"],
       ["Omkoping, voeding of privégeruchten","Bewust uitgesloten","Nee"]
     ];
     facts.replaceChildren(tableOfRows(
@@ -114,6 +115,20 @@
         date(m.date), m.league, m.home+" – "+m.away, m.hg+" – "+m.ag
       ])
     ));
+    const form = (report.derived_team_form_preview || []).slice(0,8);
+    if(form.length) {
+      games.append(titleBlock("Vorm en rust voor komende wedstrijden",
+        "Resultaten uit de laatste vijf gespeelde duels; nooit gegevens van dezelfde of toekomstige speeldag. Dit beïnvloedt het model nog niet."));
+      games.append(tableOfRows(
+        ["Wedstrijd","Laatste 5: goals voor/tegen","Rustdagen thuis / uit"],
+        form.map(m=>[
+          m.home+" – "+m.away,
+          ((m.home_form?.goals_for_last_5_mean ?? "—")+"/"+(m.home_form?.goals_against_last_5_mean ?? "—"))+
+          " · "+((m.away_form?.goals_for_last_5_mean ?? "—")+"/"+(m.away_form?.goals_against_last_5_mean ?? "—")),
+          (m.home_form?.rest_days ?? "—")+" / "+(m.away_form?.rest_days ?? "—")
+        ])
+      ));
+    }
     const missing = report.missing_sources || [];
     if (missing.length) {
       games.append(titleBlock("Ontbrekende bestanden",
