@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.8.1 — 2026-10-17
+- Poisson-model uitgebreid met **295 extra daadwerkelijk afgeronde wedstrijden** uit 2026/27 (bron: OpenFootball, CC0).
+- Trainingsomvang 13.172 → **13.467** resultaten, in zeven competities. Voor België ontbreken actuele 2026/27-scores.
+- Controleerbare bronbestands-SHA's in data/historical/provenance_2026_27.json; bron loopt slechts tot 20 september 2026, niet tot de huidige datum.
+- Chronologische voorspellingscontrole op 295 wedstrijden uit 2026/27: model Brier 0,57990 vs eenvoudige referentie 0,64430; log loss 0,97842 vs 1,06398.
+- Geen hyperparameters geselecteerd op 2026/27; validatie uitsluitend 2024/25, eerdere 2025/26-test ongewijzigd.
+- GitHub Actions-workflow voor unattended trainen, regressietests en veilig committen van JSON-modelparameters naar experimentele branch.
+- Modelversie 0.9.0 van het scoremodel; SupahBetting appversie 0.8.1. Oud Elo-/vormmodel behouden.
+- Extra informatie over recente brondekking en beperkte steekproef in dashboard en README.
+- Geen actuele bookmakerprijzen, blessures, line-ups, automatische inzet of aangetoonde winstgevendheid.
+
+
 ## v0.8.0 — 2026-10-17
 - Tweede onafhankelijke pretrained voetbaluitslagenmodel toegevoegd, zonder het Elo-/vormmodel uit v0.7 te overschrijven.
 - Zeven competities waaronder Eredivisie en Belgische Pro League; 13.172 echte afgeronde wedstrijdresultaten uit OpenFootball (CC0).
