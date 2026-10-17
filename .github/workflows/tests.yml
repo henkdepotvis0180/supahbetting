@@ -24,3 +24,4 @@ jobs:
         run: |
           node --check supahbetting/static/app.js
           node --check supahbetting/static/live.js
+          node --check supahbetting/static/research.js
