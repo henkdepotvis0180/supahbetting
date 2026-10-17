@@ -26,10 +26,16 @@ def audit_startup(*, folder=LOCAL, now=None, model=None):
         inventory = None
     if model is None:
         try:
-            model = load_pretrained(local_model if local_model.is_file() else PUBLISHED_MODEL)
+            augmented = folder / "augmented_model_local.json"
+            chosen = augmented if augmented.exists() else (
+                local_model if local_model.is_file() else PUBLISHED_MODEL
+            )
+            model = load_pretrained(chosen)
         except (TrainingError, ValueError, OSError):
             model = None
-    if model and model.get("version") != "0.12.0-research-experimental":
+    if model and model.get("version") not in (
+        "0.12.0-research-experimental", "0.13.0-local-augmented"
+    ):
         model = None
     rows = inventory.get("matches", []) if isinstance(inventory, dict) else []
     earliest = min((m.get("date", "") for m in rows if isinstance(m, dict)), default=None)
@@ -52,14 +58,28 @@ def audit_startup(*, folder=LOCAL, now=None, model=None):
     source_drift = None
     if inventory and model and rows and model.get("research_provenance"):
         # A historical inventory and locally trained model must match exactly.
+        if model.get("version") == "0.13.0-local-augmented":
+            try:
+                from .research_daily_results import merge_verified_locally
+                merged, _ = merge_verified_locally(
+                    inventory, finals_path=folder / "provider_finals_local.json")
+                expected_digest = _history_digest(merged["matches"])
+            except (OSError, ValueError, KeyError):
+                expected_digest = None
+        else:
+            expected_digest = _history_digest(rows)
         source_drift = (
-            model["research_provenance"].get("dataset_sha256")
-            != _history_digest(rows)
+            expected_digest is None or
+            model["research_provenance"].get("dataset_sha256") != expected_digest
         )
     available = model is not None
+    holdout = (model or {}).get("evaluation", {}).get("test", {})
+    validation = isinstance(holdout.get("model_logloss"), (float, int)) and holdout.get("matches",0) >= 1000
     warning = (
         "Model ontbreekt; lokale training of ingebouwd onderzoeksmodel nodig"
         if not available else
+        "Geen voldoende grote chronologische modeltoets beschikbaar"
+        if not validation else
         "Minder dan tien seizoenen bronhistorie beschikbaar"
         if not enough_years else
         "Historische data veranderd: onderzoeksmodel moet opnieuw worden getraind"
@@ -73,9 +93,12 @@ def audit_startup(*, folder=LOCAL, now=None, model=None):
     return {
         "available": available,
         "level": "missing" if not available else
-                 "degraded" if not enough_years or source_drift or age_days is None or age_days >= 14 else
+                 "degraded" if not validation or not enough_years or source_drift or age_days is None or age_days >= 14 else
                  "caution" if age_days >= 2 else "ready",
         "ten_year_history": enough_years,
+        "historical_test_available": validation,
+        "historical_test_match_count": holdout.get("matches"),
+        "historical_test_logloss": holdout.get("model_logloss"),
         "observed_seasons": len(active_seasons),
         "local_scores": len(rows),
         "model_matches": model.get("training_matches") if model else None,
