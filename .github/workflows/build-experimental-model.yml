@@ -1,0 +1,73 @@
+name: Build v0.11 experimental trained model
+
+on:
+  push:
+    branches: [feature/model-v0.11.0]
+    paths:
+      - training_reports/local_runs/latest_complete.json
+      - supahbetting/experimental_model.py
+      - supahbetting/trained_model.py
+      - tests/test_experimental_model.py
+      - .github/workflows/build-experimental-model.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-v011-experimental-model
+  cancel-in-progress: false
+
+jobs:
+  rebuild:
+    if: github.repository == 'henkdepotvis0180/supahbetting'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Record production baseline hash
+        run: sha256sum supahbetting/models/baseline.json > /tmp/prod-model.sha256
+      - name: Verify model and report provenance with chronological replay
+        run: python -m unittest tests.test_experimental_model -v
+      - name: Regenerate actual league/team ratings with selected parameters
+        run: python -m supahbetting.experimental_model
+      - name: Verify production unchanged and runtime compatible
+        run: |
+          sha256sum -c /tmp/prod-model.sha256
+          python - <<'PY'
+          from supahbetting.experimental_model import EXPERIMENTAL_FILE
+          from supahbetting.trained_model import load_pretrained, predict_trained
+          model = load_pretrained(EXPERIMENTAL_FILE)
+          assert model['version'] == '0.11.0-experimental'
+          assert model['training_matches'] == 19884
+          p = predict_trained(model, 'nl.1', 'Ajax', 'PSV')
+          assert abs(sum(p['probabilities'].values()) - 1.0) < 1e-5
+          print('Experimental model readable and baseline unchanged')
+          PY
+      - name: Run Python regression suite
+        run: python -m unittest discover -s tests -v
+      - name: Archive rebuilt experimental model
+        uses: actions/upload-artifact@v4
+        with:
+          name: supahbetting-v011-experimental-model
+          path: supahbetting/models/baseline_v0.11.0_experimental.json
+          retention-days: 30
+      - name: Commit only experimental model to experimental branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- supahbetting/models/baseline_v0.11.0_experimental.json
+          if git diff --cached --quiet; then
+            echo "Experimental model unchanged."
+          else
+            git commit -m "model: rebuild v0.11 experimental baseline from published training [skip ci]"
+            git fetch origin "refs/heads/${GITHUB_REF_NAME}"
+            git rebase FETCH_HEAD
+            git push origin "HEAD:refs/heads/${GITHUB_REF_NAME}"
+          fi
