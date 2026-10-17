@@ -1,4 +1,1144 @@
 league,season,date,home,away,home_goals,away_goals
+it.1,2017-18,2017-08-19,"Hellas Verona","SSC Napoli",1,3
+it.1,2017-18,2017-08-19,"Juventus","Cagliari Calcio",3,0
+it.1,2017-18,2017-08-20,"Atalanta","AS Roma",0,1
+it.1,2017-18,2017-08-20,"Bologna FC","Torino FC",1,1
+it.1,2017-18,2017-08-20,"FC Crotone","AC Milan",0,3
+it.1,2017-18,2017-08-20,"Inter","ACF Fiorentina",3,0
+it.1,2017-18,2017-08-20,"Lazio Roma","SPAL 2013 Ferrara",0,0
+it.1,2017-18,2017-08-20,"Sampdoria","Benevento Calcio",2,1
+it.1,2017-18,2017-08-20,"Sassuolo Calcio","Genoa CFC",0,0
+it.1,2017-18,2017-08-20,"Udinese Calcio","Chievo Verona",1,2
+it.1,2017-18,2017-08-26,"AS Roma","Inter",1,3
+it.1,2017-18,2017-08-26,"Benevento Calcio","Bologna FC",0,1
+it.1,2017-18,2017-08-26,"Genoa CFC","Juventus",2,4
+it.1,2017-18,2017-08-27,"AC Milan","Cagliari Calcio",2,1
+it.1,2017-18,2017-08-27,"ACF Fiorentina","Sampdoria",1,2
+it.1,2017-18,2017-08-27,"Chievo Verona","Lazio Roma",1,2
+it.1,2017-18,2017-08-27,"FC Crotone","Hellas Verona",0,0
+it.1,2017-18,2017-08-27,"SPAL 2013 Ferrara","Udinese Calcio",3,2
+it.1,2017-18,2017-08-27,"SSC Napoli","Atalanta",3,1
+it.1,2017-18,2017-08-27,"Torino FC","Sassuolo Calcio",3,0
+it.1,2017-18,2017-09-09,"Juventus","Chievo Verona",3,0
+it.1,2017-18,2017-09-10,"Atalanta","Sassuolo Calcio",2,1
+it.1,2017-18,2017-09-10,"Benevento Calcio","Torino FC",0,1
+it.1,2017-18,2017-09-10,"Bologna FC","SSC Napoli",0,3
+it.1,2017-18,2017-09-10,"Cagliari Calcio","FC Crotone",1,0
+it.1,2017-18,2017-09-10,"Hellas Verona","ACF Fiorentina",0,5
+it.1,2017-18,2017-09-10,"Inter","SPAL 2013 Ferrara",2,0
+it.1,2017-18,2017-09-10,"Lazio Roma","AC Milan",4,1
+it.1,2017-18,2017-09-10,"Udinese Calcio","Genoa CFC",1,0
+it.1,2017-18,2017-09-16,"ACF Fiorentina","Bologna FC",2,1
+it.1,2017-18,2017-09-16,"AS Roma","Hellas Verona",3,0
+it.1,2017-18,2017-09-16,"FC Crotone","Inter",0,2
+it.1,2017-18,2017-09-17,"AC Milan","Udinese Calcio",2,1
+it.1,2017-18,2017-09-17,"Chievo Verona","Atalanta",1,1
+it.1,2017-18,2017-09-17,"Genoa CFC","Lazio Roma",2,3
+it.1,2017-18,2017-09-17,"SPAL 2013 Ferrara","Cagliari Calcio",0,2
+it.1,2017-18,2017-09-17,"SSC Napoli","Benevento Calcio",6,0
+it.1,2017-18,2017-09-17,"Sassuolo Calcio","Juventus",1,3
+it.1,2017-18,2017-09-17,"Torino FC","Sampdoria",2,2
+it.1,2017-18,2017-09-19,"Bologna FC","Inter",1,1
+it.1,2017-18,2017-09-20,"AC Milan","SPAL 2013 Ferrara",2,0
+it.1,2017-18,2017-09-20,"Atalanta","FC Crotone",5,1
+it.1,2017-18,2017-09-20,"Benevento Calcio","AS Roma",0,4
+it.1,2017-18,2017-09-20,"Cagliari Calcio","Sassuolo Calcio",0,1
+it.1,2017-18,2017-09-20,"Genoa CFC","Chievo Verona",1,1
+it.1,2017-18,2017-09-20,"Hellas Verona","Sampdoria",0,0
+it.1,2017-18,2017-09-20,"Juventus","ACF Fiorentina",1,0
+it.1,2017-18,2017-09-20,"Lazio Roma","SSC Napoli",1,4
+it.1,2017-18,2017-09-20,"Udinese Calcio","Torino FC",2,3
+it.1,2017-18,2017-09-23,"AS Roma","Udinese Calcio",3,1
+it.1,2017-18,2017-09-23,"Juventus","Torino FC",4,0
+it.1,2017-18,2017-09-23,"SPAL 2013 Ferrara","SSC Napoli",2,3
+it.1,2017-18,2017-09-24,"ACF Fiorentina","Atalanta",1,1
+it.1,2017-18,2017-09-24,"Cagliari Calcio","Chievo Verona",0,2
+it.1,2017-18,2017-09-24,"FC Crotone","Benevento Calcio",2,0
+it.1,2017-18,2017-09-24,"Hellas Verona","Lazio Roma",0,3
+it.1,2017-18,2017-09-24,"Inter","Genoa CFC",1,0
+it.1,2017-18,2017-09-24,"Sampdoria","AC Milan",2,0
+it.1,2017-18,2017-09-24,"Sassuolo Calcio","Bologna FC",0,1
+it.1,2017-18,2017-09-30,"Genoa CFC","Bologna FC",0,1
+it.1,2017-18,2017-09-30,"Udinese Calcio","Sampdoria",4,0
+it.1,2017-18,2017-10-01,"AC Milan","AS Roma",0,2
+it.1,2017-18,2017-10-01,"Atalanta","Juventus",2,2
+it.1,2017-18,2017-10-01,"Benevento Calcio","Inter",1,2
+it.1,2017-18,2017-10-01,"Chievo Verona","ACF Fiorentina",2,1
+it.1,2017-18,2017-10-01,"Lazio Roma","Sassuolo Calcio",6,1
+it.1,2017-18,2017-10-01,"SPAL 2013 Ferrara","FC Crotone",1,1
+it.1,2017-18,2017-10-01,"SSC Napoli","Cagliari Calcio",3,0
+it.1,2017-18,2017-10-01,"Torino FC","Hellas Verona",2,2
+it.1,2017-18,2017-10-14,"AS Roma","SSC Napoli",0,1
+it.1,2017-18,2017-10-14,"Juventus","Lazio Roma",1,2
+it.1,2017-18,2017-10-15,"ACF Fiorentina","Udinese Calcio",2,1
+it.1,2017-18,2017-10-15,"Bologna FC","SPAL 2013 Ferrara",2,1
+it.1,2017-18,2017-10-15,"Cagliari Calcio","Genoa CFC",2,3
+it.1,2017-18,2017-10-15,"FC Crotone","Torino FC",2,2
+it.1,2017-18,2017-10-15,"Inter","AC Milan",3,2
+it.1,2017-18,2017-10-15,"Sampdoria","Atalanta",3,1
+it.1,2017-18,2017-10-15,"Sassuolo Calcio","Chievo Verona",0,0
+it.1,2017-18,2017-10-16,"Hellas Verona","Benevento Calcio",1,0
+it.1,2017-18,2017-10-21,"SSC Napoli","Inter",0,0
+it.1,2017-18,2017-10-21,"Sampdoria","FC Crotone",5,0
+it.1,2017-18,2017-10-22,"AC Milan","Genoa CFC",0,0
+it.1,2017-18,2017-10-22,"Atalanta","Bologna FC",1,0
+it.1,2017-18,2017-10-22,"Benevento Calcio","ACF Fiorentina",0,3
+it.1,2017-18,2017-10-22,"Chievo Verona","Hellas Verona",3,2
+it.1,2017-18,2017-10-22,"Lazio Roma","Cagliari Calcio",3,0
+it.1,2017-18,2017-10-22,"SPAL 2013 Ferrara","Sassuolo Calcio",0,1
+it.1,2017-18,2017-10-22,"Torino FC","AS Roma",0,1
+it.1,2017-18,2017-10-22,"Udinese Calcio","Juventus",2,6
+it.1,2017-18,2017-10-24,"Inter","Sampdoria",3,2
+it.1,2017-18,2017-10-25,"ACF Fiorentina","Torino FC",3,0
+it.1,2017-18,2017-10-25,"AS Roma","FC Crotone",1,0
+it.1,2017-18,2017-10-25,"Atalanta","Hellas Verona",3,0
+it.1,2017-18,2017-10-25,"Bologna FC","Lazio Roma",1,2
+it.1,2017-18,2017-10-25,"Cagliari Calcio","Benevento Calcio",2,1
+it.1,2017-18,2017-10-25,"Chievo Verona","AC Milan",1,4
+it.1,2017-18,2017-10-25,"Genoa CFC","SSC Napoli",2,3
+it.1,2017-18,2017-10-25,"Juventus","SPAL 2013 Ferrara",4,1
+it.1,2017-18,2017-10-25,"Sassuolo Calcio","Udinese Calcio",0,1
+it.1,2017-18,2017-10-28,"AC Milan","Juventus",0,2
+it.1,2017-18,2017-10-28,"AS Roma","Bologna FC",1,0
+it.1,2017-18,2017-10-29,"Benevento Calcio","Lazio Roma",1,5
+it.1,2017-18,2017-10-29,"FC Crotone","ACF Fiorentina",2,1
+it.1,2017-18,2017-10-29,"SPAL 2013 Ferrara","Genoa CFC",1,0
+it.1,2017-18,2017-10-29,"SSC Napoli","Sassuolo Calcio",3,1
+it.1,2017-18,2017-10-29,"Sampdoria","Chievo Verona",4,1
+it.1,2017-18,2017-10-29,"Torino FC","Cagliari Calcio",2,1
+it.1,2017-18,2017-10-29,"Udinese Calcio","Atalanta",2,1
+it.1,2017-18,2017-10-30,"Hellas Verona","Inter",1,2
+it.1,2017-18,2017-11-04,"Bologna FC","FC Crotone",2,3
+it.1,2017-18,2017-11-04,"Genoa CFC","Sampdoria",0,2
+it.1,2017-18,2017-11-05,"ACF Fiorentina","AS Roma",2,4
+it.1,2017-18,2017-11-05,"Atalanta","SPAL 2013 Ferrara",1,1
+it.1,2017-18,2017-11-05,"Cagliari Calcio","Hellas Verona",2,1
+it.1,2017-18,2017-11-05,"Chievo Verona","SSC Napoli",0,0
+it.1,2017-18,2017-11-05,"Inter","Torino FC",1,1
+it.1,2017-18,2017-11-05,"Juventus","Benevento Calcio",2,1
+it.1,2017-18,2017-11-05,"Sassuolo Calcio","AC Milan",0,2
+it.1,2017-18,2017-11-18,"AS Roma","Lazio Roma",2,1
+it.1,2017-18,2017-11-18,"SSC Napoli","AC Milan",2,1
+it.1,2017-18,2017-11-19,"Benevento Calcio","Sassuolo Calcio",1,2
+it.1,2017-18,2017-11-19,"FC Crotone","Genoa CFC",0,1
+it.1,2017-18,2017-11-19,"Inter","Atalanta",2,0
+it.1,2017-18,2017-11-19,"SPAL 2013 Ferrara","ACF Fiorentina",1,1
+it.1,2017-18,2017-11-19,"Sampdoria","Juventus",3,2
+it.1,2017-18,2017-11-19,"Torino FC","Chievo Verona",1,1
+it.1,2017-18,2017-11-19,"Udinese Calcio","Cagliari Calcio",0,1
+it.1,2017-18,2017-11-20,"Hellas Verona","Bologna FC",2,3
+it.1,2017-18,2017-11-25,"Bologna FC","Sampdoria",3,0
+it.1,2017-18,2017-11-25,"Cagliari Calcio","Inter",1,3
+it.1,2017-18,2017-11-25,"Chievo Verona","SPAL 2013 Ferrara",2,1
+it.1,2017-18,2017-11-25,"Sassuolo Calcio","Hellas Verona",0,2
+it.1,2017-18,2017-11-26,"AC Milan","Torino FC",0,0
+it.1,2017-18,2017-11-26,"Genoa CFC","AS Roma",1,1
+it.1,2017-18,2017-11-26,"Juventus","FC Crotone",3,0
+it.1,2017-18,2017-11-26,"Lazio Roma","ACF Fiorentina",1,1
+it.1,2017-18,2017-11-26,"Udinese Calcio","SSC Napoli",0,1
+it.1,2017-18,2017-11-27,"Atalanta","Benevento Calcio",1,0
+it.1,2017-18,2017-12-01,"AS Roma","SPAL 2013 Ferrara",3,1
+it.1,2017-18,2017-12-01,"SSC Napoli","Juventus",0,1
+it.1,2017-18,2017-12-02,"Torino FC","Atalanta",1,1
+it.1,2017-18,2017-12-03,"ACF Fiorentina","Sassuolo Calcio",3,0
+it.1,2017-18,2017-12-03,"Benevento Calcio","AC Milan",2,2
+it.1,2017-18,2017-12-03,"Bologna FC","Cagliari Calcio",1,1
+it.1,2017-18,2017-12-03,"Inter","Chievo Verona",5,0
+it.1,2017-18,2017-12-03,"Sampdoria","Lazio Roma",1,2
+it.1,2017-18,2017-12-04,"FC Crotone","Udinese Calcio",0,3
+it.1,2017-18,2017-12-04,"Hellas Verona","Genoa CFC",0,1
+it.1,2017-18,2017-12-09,"Cagliari Calcio","Sampdoria",2,2
+it.1,2017-18,2017-12-09,"Juventus","Inter",0,0
+it.1,2017-18,2017-12-10,"AC Milan","Bologna FC",2,1
+it.1,2017-18,2017-12-10,"Chievo Verona","AS Roma",0,0
+it.1,2017-18,2017-12-10,"SPAL 2013 Ferrara","Hellas Verona",2,2
+it.1,2017-18,2017-12-10,"SSC Napoli","ACF Fiorentina",0,0
+it.1,2017-18,2017-12-10,"Sassuolo Calcio","FC Crotone",2,1
+it.1,2017-18,2017-12-10,"Udinese Calcio","Benevento Calcio",2,0
+it.1,2017-18,2017-12-11,"Lazio Roma","Torino FC",1,3
+it.1,2017-18,2017-12-12,"Genoa CFC","Atalanta",1,2
+it.1,2017-18,2017-12-16,"AS Roma","Cagliari Calcio",1,0
+it.1,2017-18,2017-12-16,"Inter","Udinese Calcio",1,3
+it.1,2017-18,2017-12-16,"Torino FC","SSC Napoli",1,3
+it.1,2017-18,2017-12-17,"ACF Fiorentina","Genoa CFC",0,0
+it.1,2017-18,2017-12-17,"Atalanta","Lazio Roma",3,3
+it.1,2017-18,2017-12-17,"Benevento Calcio","SPAL 2013 Ferrara",1,2
+it.1,2017-18,2017-12-17,"Bologna FC","Juventus",0,3
+it.1,2017-18,2017-12-17,"FC Crotone","Chievo Verona",1,0
+it.1,2017-18,2017-12-17,"Hellas Verona","AC Milan",3,0
+it.1,2017-18,2017-12-17,"Sampdoria","Sassuolo Calcio",0,1
+it.1,2017-18,2017-12-22,"Cagliari Calcio","ACF Fiorentina",0,1
+it.1,2017-18,2017-12-22,"Chievo Verona","Bologna FC",2,3
+it.1,2017-18,2017-12-23,"AC Milan","Atalanta",0,2
+it.1,2017-18,2017-12-23,"Genoa CFC","Benevento Calcio",1,0
+it.1,2017-18,2017-12-23,"Juventus","AS Roma",1,0
+it.1,2017-18,2017-12-23,"Lazio Roma","FC Crotone",4,0
+it.1,2017-18,2017-12-23,"SPAL 2013 Ferrara","Torino FC",2,2
+it.1,2017-18,2017-12-23,"SSC Napoli","Sampdoria",3,2
+it.1,2017-18,2017-12-23,"Sassuolo Calcio","Inter",1,0
+it.1,2017-18,2017-12-23,"Udinese Calcio","Hellas Verona",4,0
+it.1,2017-18,2017-12-29,"FC Crotone","SSC Napoli",0,1
+it.1,2017-18,2017-12-30,"ACF Fiorentina","AC Milan",1,1
+it.1,2017-18,2017-12-30,"AS Roma","Sassuolo Calcio",1,1
+it.1,2017-18,2017-12-30,"Atalanta","Cagliari Calcio",1,2
+it.1,2017-18,2017-12-30,"Benevento Calcio","Chievo Verona",1,0
+it.1,2017-18,2017-12-30,"Bologna FC","Udinese Calcio",1,2
+it.1,2017-18,2017-12-30,"Hellas Verona","Juventus",1,3
+it.1,2017-18,2017-12-30,"Inter","Lazio Roma",0,0
+it.1,2017-18,2017-12-30,"Sampdoria","SPAL 2013 Ferrara",2,0
+it.1,2017-18,2017-12-30,"Torino FC","Genoa CFC",0,0
+it.1,2017-18,2018-01-05,"ACF Fiorentina","Inter",1,1
+it.1,2017-18,2018-01-05,"Chievo Verona","Udinese Calcio",1,1
+it.1,2017-18,2018-01-06,"AC Milan","FC Crotone",1,0
+it.1,2017-18,2018-01-06,"AS Roma","Atalanta",1,2
+it.1,2017-18,2018-01-06,"Benevento Calcio","Sampdoria",3,2
+it.1,2017-18,2018-01-06,"Cagliari Calcio","Juventus",0,1
+it.1,2017-18,2018-01-06,"Genoa CFC","Sassuolo Calcio",1,0
+it.1,2017-18,2018-01-06,"SPAL 2013 Ferrara","Lazio Roma",2,5
+it.1,2017-18,2018-01-06,"SSC Napoli","Hellas Verona",2,0
+it.1,2017-18,2018-01-06,"Torino FC","Bologna FC",3,0
+it.1,2017-18,2018-01-21,"Atalanta","SSC Napoli",0,1
+it.1,2017-18,2018-01-21,"Bologna FC","Benevento Calcio",3,0
+it.1,2017-18,2018-01-21,"Cagliari Calcio","AC Milan",1,2
+it.1,2017-18,2018-01-21,"Hellas Verona","FC Crotone",0,3
+it.1,2017-18,2018-01-21,"Inter","AS Roma",1,1
+it.1,2017-18,2018-01-21,"Lazio Roma","Chievo Verona",5,1
+it.1,2017-18,2018-01-21,"Sampdoria","ACF Fiorentina",3,1
+it.1,2017-18,2018-01-21,"Sassuolo Calcio","Torino FC",1,1
+it.1,2017-18,2018-01-21,"Udinese Calcio","SPAL 2013 Ferrara",1,1
+it.1,2017-18,2018-01-22,"Juventus","Genoa CFC",1,0
+it.1,2017-18,2018-01-24,"Lazio Roma","Udinese Calcio",3,0
+it.1,2017-18,2018-01-24,"Sampdoria","AS Roma",1,1
+it.1,2017-18,2018-01-27,"Chievo Verona","Juventus",0,2
+it.1,2017-18,2018-01-27,"Sassuolo Calcio","Atalanta",0,3
+it.1,2017-18,2018-01-28,"AC Milan","Lazio Roma",2,1
+it.1,2017-18,2018-01-28,"ACF Fiorentina","Hellas Verona",1,4
+it.1,2017-18,2018-01-28,"AS Roma","Sampdoria",0,1
+it.1,2017-18,2018-01-28,"FC Crotone","Cagliari Calcio",1,1
+it.1,2017-18,2018-01-28,"Genoa CFC","Udinese Calcio",0,1
+it.1,2017-18,2018-01-28,"SPAL 2013 Ferrara","Inter",1,1
+it.1,2017-18,2018-01-28,"SSC Napoli","Bologna FC",3,1
+it.1,2017-18,2018-01-28,"Torino FC","Benevento Calcio",3,0
+it.1,2017-18,2018-02-03,"Inter","FC Crotone",1,1
+it.1,2017-18,2018-02-03,"Sampdoria","Torino FC",1,1
+it.1,2017-18,2018-02-04,"Atalanta","Chievo Verona",1,0
+it.1,2017-18,2018-02-04,"Benevento Calcio","SSC Napoli",0,2
+it.1,2017-18,2018-02-04,"Bologna FC","ACF Fiorentina",1,2
+it.1,2017-18,2018-02-04,"Cagliari Calcio","SPAL 2013 Ferrara",2,0
+it.1,2017-18,2018-02-04,"Hellas Verona","AS Roma",0,1
+it.1,2017-18,2018-02-04,"Juventus","Sassuolo Calcio",7,0
+it.1,2017-18,2018-02-04,"Udinese Calcio","AC Milan",1,1
+it.1,2017-18,2018-02-05,"Lazio Roma","Genoa CFC",1,2
+it.1,2017-18,2018-02-09,"ACF Fiorentina","Juventus",0,2
+it.1,2017-18,2018-02-10,"FC Crotone","Atalanta",1,1
+it.1,2017-18,2018-02-10,"SPAL 2013 Ferrara","AC Milan",0,4
+it.1,2017-18,2018-02-10,"SSC Napoli","Lazio Roma",4,1
+it.1,2017-18,2018-02-11,"AS Roma","Benevento Calcio",5,2
+it.1,2017-18,2018-02-11,"Chievo Verona","Genoa CFC",0,1
+it.1,2017-18,2018-02-11,"Inter","Bologna FC",2,1
+it.1,2017-18,2018-02-11,"Sampdoria","Hellas Verona",2,0
+it.1,2017-18,2018-02-11,"Sassuolo Calcio","Cagliari Calcio",0,0
+it.1,2017-18,2018-02-11,"Torino FC","Udinese Calcio",2,0
+it.1,2017-18,2018-02-17,"Chievo Verona","Cagliari Calcio",2,1
+it.1,2017-18,2018-02-17,"Genoa CFC","Inter",2,0
+it.1,2017-18,2018-02-17,"Udinese Calcio","AS Roma",0,2
+it.1,2017-18,2018-02-18,"AC Milan","Sampdoria",1,0
+it.1,2017-18,2018-02-18,"Atalanta","ACF Fiorentina",1,1
+it.1,2017-18,2018-02-18,"Benevento Calcio","FC Crotone",3,2
+it.1,2017-18,2018-02-18,"Bologna FC","Sassuolo Calcio",2,1
+it.1,2017-18,2018-02-18,"SSC Napoli","SPAL 2013 Ferrara",1,0
+it.1,2017-18,2018-02-18,"Torino FC","Juventus",0,1
+it.1,2017-18,2018-02-19,"Lazio Roma","Hellas Verona",2,0
+it.1,2017-18,2018-02-24,"Bologna FC","Genoa CFC",2,0
+it.1,2017-18,2018-02-24,"Inter","Benevento Calcio",2,0
+it.1,2017-18,2018-02-25,"ACF Fiorentina","Chievo Verona",1,0
+it.1,2017-18,2018-02-25,"AS Roma","AC Milan",0,2
+it.1,2017-18,2018-02-25,"FC Crotone","SPAL 2013 Ferrara",2,3
+it.1,2017-18,2018-02-25,"Hellas Verona","Torino FC",2,1
+it.1,2017-18,2018-02-25,"Sampdoria","Udinese Calcio",2,1
+it.1,2017-18,2018-02-25,"Sassuolo Calcio","Lazio Roma",0,3
+it.1,2017-18,2018-02-26,"Cagliari Calcio","SSC Napoli",0,5
+it.1,2017-18,2018-03-03,"Lazio Roma","Juventus",0,1
+it.1,2017-18,2018-03-03,"SPAL 2013 Ferrara","Bologna FC",1,0
+it.1,2017-18,2018-03-03,"SSC Napoli","AS Roma",2,4
+it.1,2017-18,2018-03-09,"AS Roma","Torino FC",3,0
+it.1,2017-18,2018-03-10,"Hellas Verona","Chievo Verona",1,0
+it.1,2017-18,2018-03-11,"ACF Fiorentina","Benevento Calcio",1,0
+it.1,2017-18,2018-03-11,"Bologna FC","Atalanta",0,1
+it.1,2017-18,2018-03-11,"Cagliari Calcio","Lazio Roma",2,2
+it.1,2017-18,2018-03-11,"FC Crotone","Sampdoria",4,1
+it.1,2017-18,2018-03-11,"Genoa CFC","AC Milan",0,1
+it.1,2017-18,2018-03-11,"Inter","SSC Napoli",0,0
+it.1,2017-18,2018-03-11,"Juventus","Udinese Calcio",2,0
+it.1,2017-18,2018-03-11,"Sassuolo Calcio","SPAL 2013 Ferrara",1,1
+it.1,2017-18,2018-03-14,"Juventus","Atalanta",2,0
+it.1,2017-18,2018-03-17,"SPAL 2013 Ferrara","Juventus",0,0
+it.1,2017-18,2018-03-17,"Udinese Calcio","Sassuolo Calcio",1,2
+it.1,2017-18,2018-03-18,"AC Milan","Chievo Verona",3,2
+it.1,2017-18,2018-03-18,"Benevento Calcio","Cagliari Calcio",1,2
+it.1,2017-18,2018-03-18,"FC Crotone","AS Roma",0,2
+it.1,2017-18,2018-03-18,"Hellas Verona","Atalanta",0,5
+it.1,2017-18,2018-03-18,"Lazio Roma","Bologna FC",1,1
+it.1,2017-18,2018-03-18,"SSC Napoli","Genoa CFC",1,0
+it.1,2017-18,2018-03-18,"Sampdoria","Inter",0,5
+it.1,2017-18,2018-03-18,"Torino FC","ACF Fiorentina",1,2
+it.1,2017-18,2018-03-31,"ACF Fiorentina","FC Crotone",2,0
+it.1,2017-18,2018-03-31,"Atalanta","Udinese Calcio",2,0
+it.1,2017-18,2018-03-31,"Bologna FC","AS Roma",1,1
+it.1,2017-18,2018-03-31,"Cagliari Calcio","Torino FC",0,4
+it.1,2017-18,2018-03-31,"Chievo Verona","Sampdoria",2,1
+it.1,2017-18,2018-03-31,"Genoa CFC","SPAL 2013 Ferrara",1,1
+it.1,2017-18,2018-03-31,"Inter","Hellas Verona",3,0
+it.1,2017-18,2018-03-31,"Juventus","AC Milan",3,1
+it.1,2017-18,2018-03-31,"Lazio Roma","Benevento Calcio",6,2
+it.1,2017-18,2018-03-31,"Sassuolo Calcio","SSC Napoli",1,1
+it.1,2017-18,2018-04-03,"Atalanta","Sampdoria",1,2
+it.1,2017-18,2018-04-03,"Genoa CFC","Cagliari Calcio",2,1
+it.1,2017-18,2018-04-03,"Udinese Calcio","ACF Fiorentina",0,2
+it.1,2017-18,2018-04-04,"AC Milan","Inter",0,0
+it.1,2017-18,2018-04-04,"Benevento Calcio","Hellas Verona",3,0
+it.1,2017-18,2018-04-04,"Chievo Verona","Sassuolo Calcio",1,1
+it.1,2017-18,2018-04-04,"Torino FC","FC Crotone",4,1
+it.1,2017-18,2018-04-07,"AS Roma","ACF Fiorentina",0,2
+it.1,2017-18,2018-04-07,"Benevento Calcio","Juventus",2,4
+it.1,2017-18,2018-04-07,"SPAL 2013 Ferrara","Atalanta",1,1
+it.1,2017-18,2018-04-07,"Sampdoria","Genoa CFC",0,0
+it.1,2017-18,2018-04-08,"AC Milan","Sassuolo Calcio",1,1
+it.1,2017-18,2018-04-08,"FC Crotone","Bologna FC",1,0
+it.1,2017-18,2018-04-08,"Hellas Verona","Cagliari Calcio",1,0
+it.1,2017-18,2018-04-08,"SSC Napoli","Chievo Verona",2,1
+it.1,2017-18,2018-04-08,"Torino FC","Inter",1,0
+it.1,2017-18,2018-04-08,"Udinese Calcio","Lazio Roma",1,2
+it.1,2017-18,2018-04-14,"Atalanta","Inter",0,0
+it.1,2017-18,2018-04-14,"Cagliari Calcio","Udinese Calcio",2,1
+it.1,2017-18,2018-04-14,"Chievo Verona","Torino FC",0,0
+it.1,2017-18,2018-04-14,"Genoa CFC","FC Crotone",1,0
+it.1,2017-18,2018-04-15,"AC Milan","SSC Napoli",0,0
+it.1,2017-18,2018-04-15,"ACF Fiorentina","SPAL 2013 Ferrara",0,0
+it.1,2017-18,2018-04-15,"Bologna FC","Hellas Verona",2,0
+it.1,2017-18,2018-04-15,"Juventus","Sampdoria",3,0
+it.1,2017-18,2018-04-15,"Lazio Roma","AS Roma",0,0
+it.1,2017-18,2018-04-15,"Sassuolo Calcio","Benevento Calcio",2,2
+it.1,2017-18,2018-04-17,"Inter","Cagliari Calcio",4,0
+it.1,2017-18,2018-04-18,"ACF Fiorentina","Lazio Roma",3,4
+it.1,2017-18,2018-04-18,"AS Roma","Genoa CFC",2,1
+it.1,2017-18,2018-04-18,"Benevento Calcio","Atalanta",0,3
+it.1,2017-18,2018-04-18,"FC Crotone","Juventus",1,1
+it.1,2017-18,2018-04-18,"Hellas Verona","Sassuolo Calcio",0,1
+it.1,2017-18,2018-04-18,"SPAL 2013 Ferrara","Chievo Verona",0,0
+it.1,2017-18,2018-04-18,"SSC Napoli","Udinese Calcio",4,2
+it.1,2017-18,2018-04-18,"Sampdoria","Bologna FC",1,0
+it.1,2017-18,2018-04-18,"Torino FC","AC Milan",1,1
+it.1,2017-18,2018-04-21,"AC Milan","Benevento Calcio",0,1
+it.1,2017-18,2018-04-21,"SPAL 2013 Ferrara","AS Roma",0,3
+it.1,2017-18,2018-04-21,"Sassuolo Calcio","ACF Fiorentina",1,0
+it.1,2017-18,2018-04-22,"Atalanta","Torino FC",2,1
+it.1,2017-18,2018-04-22,"Cagliari Calcio","Bologna FC",0,0
+it.1,2017-18,2018-04-22,"Chievo Verona","Inter",1,2
+it.1,2017-18,2018-04-22,"Juventus","SSC Napoli",0,1
+it.1,2017-18,2018-04-22,"Lazio Roma","Sampdoria",4,0
+it.1,2017-18,2018-04-22,"Udinese Calcio","FC Crotone",1,2
+it.1,2017-18,2018-04-23,"Genoa CFC","Hellas Verona",3,1
+it.1,2017-18,2018-04-28,"AS Roma","Chievo Verona",4,1
+it.1,2017-18,2018-04-28,"Inter","Juventus",2,3
+it.1,2017-18,2018-04-29,"ACF Fiorentina","SSC Napoli",3,0
+it.1,2017-18,2018-04-29,"Atalanta","Genoa CFC",3,1
+it.1,2017-18,2018-04-29,"Benevento Calcio","Udinese Calcio",3,3
+it.1,2017-18,2018-04-29,"Bologna FC","AC Milan",1,2
+it.1,2017-18,2018-04-29,"FC Crotone","Sassuolo Calcio",4,1
+it.1,2017-18,2018-04-29,"Hellas Verona","SPAL 2013 Ferrara",1,3
+it.1,2017-18,2018-04-29,"Sampdoria","Cagliari Calcio",4,1
+it.1,2017-18,2018-04-29,"Torino FC","Lazio Roma",0,1
+it.1,2017-18,2018-05-05,"AC Milan","Hellas Verona",4,1
+it.1,2017-18,2018-05-05,"Juventus","Bologna FC",3,1
+it.1,2017-18,2018-05-06,"Cagliari Calcio","AS Roma",0,1
+it.1,2017-18,2018-05-06,"Chievo Verona","FC Crotone",2,1
+it.1,2017-18,2018-05-06,"Genoa CFC","ACF Fiorentina",2,3
+it.1,2017-18,2018-05-06,"Lazio Roma","Atalanta",1,1
+it.1,2017-18,2018-05-06,"SPAL 2013 Ferrara","Benevento Calcio",2,0
+it.1,2017-18,2018-05-06,"SSC Napoli","Torino FC",2,2
+it.1,2017-18,2018-05-06,"Sassuolo Calcio","Sampdoria",1,0
+it.1,2017-18,2018-05-06,"Udinese Calcio","Inter",0,4
+it.1,2017-18,2018-05-12,"Benevento Calcio","Genoa CFC",1,0
+it.1,2017-18,2018-05-12,"Inter","Sassuolo Calcio",1,2
+it.1,2017-18,2018-05-13,"ACF Fiorentina","Cagliari Calcio",0,1
+it.1,2017-18,2018-05-13,"AS Roma","Juventus",0,0
+it.1,2017-18,2018-05-13,"Atalanta","AC Milan",1,1
+it.1,2017-18,2018-05-13,"Bologna FC","Chievo Verona",1,2
+it.1,2017-18,2018-05-13,"FC Crotone","Lazio Roma",2,2
+it.1,2017-18,2018-05-13,"Hellas Verona","Udinese Calcio",0,1
+it.1,2017-18,2018-05-13,"Sampdoria","SSC Napoli",0,2
+it.1,2017-18,2018-05-13,"Torino FC","SPAL 2013 Ferrara",2,1
+it.1,2017-18,2018-05-19,"Juventus","Hellas Verona",2,1
+it.1,2017-18,2018-05-20,"AC Milan","ACF Fiorentina",5,1
+it.1,2017-18,2018-05-20,"Cagliari Calcio","Atalanta",1,0
+it.1,2017-18,2018-05-20,"Chievo Verona","Benevento Calcio",1,0
+it.1,2017-18,2018-05-20,"Genoa CFC","Torino FC",1,2
+it.1,2017-18,2018-05-20,"Lazio Roma","Inter",2,3
+it.1,2017-18,2018-05-20,"SPAL 2013 Ferrara","Sampdoria",3,1
+it.1,2017-18,2018-05-20,"SSC Napoli","FC Crotone",2,1
+it.1,2017-18,2018-05-20,"Sassuolo Calcio","AS Roma",0,1
+it.1,2017-18,2018-05-20,"Udinese Calcio","Bologna FC",1,0
+it.1,2018-19,2018-08-18,"Chievo Verona","Juventus",2,3
+it.1,2018-19,2018-08-18,"Lazio Roma","SSC Napoli",1,2
+it.1,2018-19,2018-08-19,"Bologna FC","SPAL 2013 Ferrara",0,1
+it.1,2018-19,2018-08-19,"Empoli FC","Cagliari Calcio",2,0
+it.1,2018-19,2018-08-19,"Parma Calcio 1913","Udinese Calcio",2,2
+it.1,2018-19,2018-08-19,"Sassuolo Calcio","Inter",1,0
+it.1,2018-19,2018-08-19,"Torino FC","AS Roma",0,1
+it.1,2018-19,2018-08-20,"Atalanta","Frosinone Calcio",4,0
+it.1,2018-19,2018-08-25,"Juventus","Lazio Roma",2,0
+it.1,2018-19,2018-08-25,"SSC Napoli","AC Milan",3,2
+it.1,2018-19,2018-08-26,"ACF Fiorentina","Chievo Verona",6,1
+it.1,2018-19,2018-08-26,"Cagliari Calcio","Sassuolo Calcio",2,2
+it.1,2018-19,2018-08-26,"Frosinone Calcio","Bologna FC",0,0
+it.1,2018-19,2018-08-26,"Genoa CFC","Empoli FC",2,1
+it.1,2018-19,2018-08-26,"Inter","Torino FC",2,2
+it.1,2018-19,2018-08-26,"SPAL 2013 Ferrara","Parma Calcio 1913",1,0
+it.1,2018-19,2018-08-26,"Udinese Calcio","Sampdoria",1,0
+it.1,2018-19,2018-08-27,"AS Roma","Atalanta",3,3
+it.1,2018-19,2018-08-31,"AC Milan","AS Roma",2,1
+it.1,2018-19,2018-09-01,"Bologna FC","Inter",0,3
+it.1,2018-19,2018-09-01,"Parma Calcio 1913","Juventus",1,2
+it.1,2018-19,2018-09-02,"ACF Fiorentina","Udinese Calcio",1,0
+it.1,2018-19,2018-09-02,"Atalanta","Cagliari Calcio",0,1
+it.1,2018-19,2018-09-02,"Chievo Verona","Empoli FC",0,0
+it.1,2018-19,2018-09-02,"Lazio Roma","Frosinone Calcio",1,0
+it.1,2018-19,2018-09-02,"Sampdoria","SSC Napoli",3,0
+it.1,2018-19,2018-09-02,"Sassuolo Calcio","Genoa CFC",5,3
+it.1,2018-19,2018-09-02,"Torino FC","SPAL 2013 Ferrara",1,0
+it.1,2018-19,2018-09-15,"Frosinone Calcio","Sampdoria",0,5
+it.1,2018-19,2018-09-15,"Inter","Parma Calcio 1913",0,1
+it.1,2018-19,2018-09-15,"SSC Napoli","ACF Fiorentina",1,0
+it.1,2018-19,2018-09-16,"AS Roma","Chievo Verona",2,2
+it.1,2018-19,2018-09-16,"Cagliari Calcio","AC Milan",1,1
+it.1,2018-19,2018-09-16,"Empoli FC","Lazio Roma",0,1
+it.1,2018-19,2018-09-16,"Genoa CFC","Bologna FC",1,0
+it.1,2018-19,2018-09-16,"Juventus","Sassuolo Calcio",2,1
+it.1,2018-19,2018-09-16,"Udinese Calcio","Torino FC",1,1
+it.1,2018-19,2018-09-17,"SPAL 2013 Ferrara","Atalanta",2,0
+it.1,2018-19,2018-09-19,"Sampdoria","ACF Fiorentina",1,1
+it.1,2018-19,2018-09-21,"Sassuolo Calcio","Empoli FC",3,1
+it.1,2018-19,2018-09-22,"ACF Fiorentina","SPAL 2013 Ferrara",3,0
+it.1,2018-19,2018-09-22,"Parma Calcio 1913","Cagliari Calcio",2,0
+it.1,2018-19,2018-09-22,"Sampdoria","Inter",0,1
+it.1,2018-19,2018-09-23,"AC Milan","Atalanta",2,2
+it.1,2018-19,2018-09-23,"Bologna FC","AS Roma",2,0
+it.1,2018-19,2018-09-23,"Chievo Verona","Udinese Calcio",0,2
+it.1,2018-19,2018-09-23,"Frosinone Calcio","Juventus",0,2
+it.1,2018-19,2018-09-23,"Lazio Roma","Genoa CFC",4,1
+it.1,2018-19,2018-09-23,"Torino FC","SSC Napoli",1,3
+it.1,2018-19,2018-09-25,"Inter","ACF Fiorentina",2,1
+it.1,2018-19,2018-09-26,"AS Roma","Frosinone Calcio",4,0
+it.1,2018-19,2018-09-26,"Atalanta","Torino FC",0,0
+it.1,2018-19,2018-09-26,"Cagliari Calcio","Sampdoria",0,0
+it.1,2018-19,2018-09-26,"Genoa CFC","Chievo Verona",2,0
+it.1,2018-19,2018-09-26,"Juventus","Bologna FC",2,0
+it.1,2018-19,2018-09-26,"SSC Napoli","Parma Calcio 1913",3,0
+it.1,2018-19,2018-09-26,"Udinese Calcio","Lazio Roma",1,2
+it.1,2018-19,2018-09-27,"Empoli FC","AC Milan",1,1
+it.1,2018-19,2018-09-27,"SPAL 2013 Ferrara","Sassuolo Calcio",0,2
+it.1,2018-19,2018-09-29,"AS Roma","Lazio Roma",3,1
+it.1,2018-19,2018-09-29,"Inter","Cagliari Calcio",2,0
+it.1,2018-19,2018-09-29,"Juventus","SSC Napoli",3,1
+it.1,2018-19,2018-09-30,"ACF Fiorentina","Atalanta",2,0
+it.1,2018-19,2018-09-30,"Bologna FC","Udinese Calcio",2,1
+it.1,2018-19,2018-09-30,"Chievo Verona","Torino FC",0,1
+it.1,2018-19,2018-09-30,"Frosinone Calcio","Genoa CFC",1,2
+it.1,2018-19,2018-09-30,"Parma Calcio 1913","Empoli FC",1,0
+it.1,2018-19,2018-09-30,"Sassuolo Calcio","AC Milan",1,4
+it.1,2018-19,2018-10-01,"Sampdoria","SPAL 2013 Ferrara",2,1
+it.1,2018-19,2018-10-05,"Torino FC","Frosinone Calcio",3,2
+it.1,2018-19,2018-10-06,"Cagliari Calcio","Bologna FC",2,0
+it.1,2018-19,2018-10-06,"Empoli FC","AS Roma",0,2
+it.1,2018-19,2018-10-06,"Udinese Calcio","Juventus",0,2
+it.1,2018-19,2018-10-07,"AC Milan","Chievo Verona",3,1
+it.1,2018-19,2018-10-07,"Atalanta","Sampdoria",0,1
+it.1,2018-19,2018-10-07,"Genoa CFC","Parma Calcio 1913",1,3
+it.1,2018-19,2018-10-07,"Lazio Roma","ACF Fiorentina",1,0
+it.1,2018-19,2018-10-07,"SPAL 2013 Ferrara","Inter",1,2
+it.1,2018-19,2018-10-07,"SSC Napoli","Sassuolo Calcio",2,0
+it.1,2018-19,2018-10-20,"AS Roma","SPAL 2013 Ferrara",0,2
+it.1,2018-19,2018-10-20,"Juventus","Genoa CFC",1,1
+it.1,2018-19,2018-10-20,"Udinese Calcio","SSC Napoli",0,3
+it.1,2018-19,2018-10-21,"ACF Fiorentina","Cagliari Calcio",1,1
+it.1,2018-19,2018-10-21,"Bologna FC","Torino FC",2,2
+it.1,2018-19,2018-10-21,"Chievo Verona","Atalanta",1,5
+it.1,2018-19,2018-10-21,"Frosinone Calcio","Empoli FC",3,3
+it.1,2018-19,2018-10-21,"Inter","AC Milan",1,0
+it.1,2018-19,2018-10-21,"Parma Calcio 1913","Lazio Roma",0,2
+it.1,2018-19,2018-10-22,"Sampdoria","Sassuolo Calcio",0,0
+it.1,2018-19,2018-10-27,"Atalanta","Parma Calcio 1913",3,0
+it.1,2018-19,2018-10-27,"Empoli FC","Juventus",1,2
+it.1,2018-19,2018-10-27,"Torino FC","ACF Fiorentina",1,1
+it.1,2018-19,2018-10-28,"AC Milan","Sampdoria",3,2
+it.1,2018-19,2018-10-28,"Cagliari Calcio","Chievo Verona",2,1
+it.1,2018-19,2018-10-28,"Genoa CFC","Udinese Calcio",2,2
+it.1,2018-19,2018-10-28,"SPAL 2013 Ferrara","Frosinone Calcio",0,3
+it.1,2018-19,2018-10-28,"SSC Napoli","AS Roma",1,1
+it.1,2018-19,2018-10-28,"Sassuolo Calcio","Bologna FC",2,2
+it.1,2018-19,2018-10-29,"Lazio Roma","Inter",0,3
+it.1,2018-19,2018-10-31,"AC Milan","Genoa CFC",2,1
+it.1,2018-19,2018-11-02,"SSC Napoli","Empoli FC",5,1
+it.1,2018-19,2018-11-03,"ACF Fiorentina","AS Roma",1,1
+it.1,2018-19,2018-11-03,"Inter","Genoa CFC",5,0
+it.1,2018-19,2018-11-03,"Juventus","Cagliari Calcio",3,1
+it.1,2018-19,2018-11-04,"Bologna FC","Atalanta",1,2
+it.1,2018-19,2018-11-04,"Chievo Verona","Sassuolo Calcio",0,2
+it.1,2018-19,2018-11-04,"Lazio Roma","SPAL 2013 Ferrara",4,1
+it.1,2018-19,2018-11-04,"Parma Calcio 1913","Frosinone Calcio",0,0
+it.1,2018-19,2018-11-04,"Sampdoria","Torino FC",1,4
+it.1,2018-19,2018-11-04,"Udinese Calcio","AC Milan",0,1
+it.1,2018-19,2018-11-09,"Frosinone Calcio","ACF Fiorentina",1,1
+it.1,2018-19,2018-11-10,"Genoa CFC","SSC Napoli",1,2
+it.1,2018-19,2018-11-10,"SPAL 2013 Ferrara","Cagliari Calcio",2,2
+it.1,2018-19,2018-11-10,"Torino FC","Parma Calcio 1913",1,2
+it.1,2018-19,2018-11-11,"AC Milan","Juventus",0,2
+it.1,2018-19,2018-11-11,"AS Roma","Sampdoria",4,1
+it.1,2018-19,2018-11-11,"Atalanta","Inter",4,1
+it.1,2018-19,2018-11-11,"Chievo Verona","Bologna FC",2,2
+it.1,2018-19,2018-11-11,"Empoli FC","Udinese Calcio",2,1
+it.1,2018-19,2018-11-11,"Sassuolo Calcio","Lazio Roma",1,1
+it.1,2018-19,2018-11-24,"Inter","Frosinone Calcio",3,0
+it.1,2018-19,2018-11-24,"Juventus","SPAL 2013 Ferrara",2,0
+it.1,2018-19,2018-11-24,"Udinese Calcio","AS Roma",1,0
+it.1,2018-19,2018-11-25,"Bologna FC","ACF Fiorentina",0,0
+it.1,2018-19,2018-11-25,"Empoli FC","Atalanta",3,2
+it.1,2018-19,2018-11-25,"Genoa CFC","Sampdoria",1,1
+it.1,2018-19,2018-11-25,"Lazio Roma","AC Milan",1,1
+it.1,2018-19,2018-11-25,"Parma Calcio 1913","Sassuolo Calcio",2,1
+it.1,2018-19,2018-11-25,"SSC Napoli","Chievo Verona",0,0
+it.1,2018-19,2018-11-26,"Cagliari Calcio","Torino FC",0,0
+it.1,2018-19,2018-12-01,"ACF Fiorentina","Juventus",0,3
+it.1,2018-19,2018-12-01,"SPAL 2013 Ferrara","Empoli FC",2,2
+it.1,2018-19,2018-12-01,"Sampdoria","Bologna FC",4,1
+it.1,2018-19,2018-12-02,"AC Milan","Parma Calcio 1913",2,1
+it.1,2018-19,2018-12-02,"AS Roma","Inter",2,2
+it.1,2018-19,2018-12-02,"Chievo Verona","Lazio Roma",1,1
+it.1,2018-19,2018-12-02,"Frosinone Calcio","Cagliari Calcio",1,1
+it.1,2018-19,2018-12-02,"Sassuolo Calcio","Udinese Calcio",0,0
+it.1,2018-19,2018-12-02,"Torino FC","Genoa CFC",2,1
+it.1,2018-19,2018-12-03,"Atalanta","SSC Napoli",1,2
+it.1,2018-19,2018-12-07,"Juventus","Inter",1,0
+it.1,2018-19,2018-12-08,"Cagliari Calcio","AS Roma",2,2
+it.1,2018-19,2018-12-08,"Lazio Roma","Sampdoria",2,2
+it.1,2018-19,2018-12-08,"SSC Napoli","Frosinone Calcio",4,0
+it.1,2018-19,2018-12-09,"AC Milan","Torino FC",0,0
+it.1,2018-19,2018-12-09,"Empoli FC","Bologna FC",2,1
+it.1,2018-19,2018-12-09,"Genoa CFC","SPAL 2013 Ferrara",1,1
+it.1,2018-19,2018-12-09,"Parma Calcio 1913","Chievo Verona",1,1
+it.1,2018-19,2018-12-09,"Sassuolo Calcio","ACF Fiorentina",3,3
+it.1,2018-19,2018-12-09,"Udinese Calcio","Atalanta",1,3
+it.1,2018-19,2018-12-15,"Inter","Udinese Calcio",1,0
+it.1,2018-19,2018-12-15,"Torino FC","Juventus",0,1
+it.1,2018-19,2018-12-16,"ACF Fiorentina","Empoli FC",3,1
+it.1,2018-19,2018-12-16,"AS Roma","Genoa CFC",3,2
+it.1,2018-19,2018-12-16,"Cagliari Calcio","SSC Napoli",0,1
+it.1,2018-19,2018-12-16,"Frosinone Calcio","Sassuolo Calcio",0,2
+it.1,2018-19,2018-12-16,"SPAL 2013 Ferrara","Chievo Verona",0,0
+it.1,2018-19,2018-12-16,"Sampdoria","Parma Calcio 1913",2,0
+it.1,2018-19,2018-12-17,"Atalanta","Lazio Roma",1,0
+it.1,2018-19,2018-12-18,"Bologna FC","AC Milan",0,0
+it.1,2018-19,2018-12-22,"AC Milan","ACF Fiorentina",0,1
+it.1,2018-19,2018-12-22,"Chievo Verona","Inter",1,1
+it.1,2018-19,2018-12-22,"Empoli FC","Sampdoria",2,4
+it.1,2018-19,2018-12-22,"Genoa CFC","Atalanta",3,1
+it.1,2018-19,2018-12-22,"Juventus","AS Roma",1,0
+it.1,2018-19,2018-12-22,"Lazio Roma","Cagliari Calcio",3,1
+it.1,2018-19,2018-12-22,"Parma Calcio 1913","Bologna FC",0,0
+it.1,2018-19,2018-12-22,"SSC Napoli","SPAL 2013 Ferrara",1,0
+it.1,2018-19,2018-12-22,"Sassuolo Calcio","Torino FC",1,1
+it.1,2018-19,2018-12-22,"Udinese Calcio","Frosinone Calcio",1,1
+it.1,2018-19,2018-12-26,"ACF Fiorentina","Parma Calcio 1913",0,1
+it.1,2018-19,2018-12-26,"AS Roma","Sassuolo Calcio",3,1
+it.1,2018-19,2018-12-26,"Atalanta","Juventus",2,2
+it.1,2018-19,2018-12-26,"Bologna FC","Lazio Roma",0,2
+it.1,2018-19,2018-12-26,"Cagliari Calcio","Genoa CFC",1,0
+it.1,2018-19,2018-12-26,"Frosinone Calcio","AC Milan",0,0
+it.1,2018-19,2018-12-26,"Inter","SSC Napoli",1,0
+it.1,2018-19,2018-12-26,"SPAL 2013 Ferrara","Udinese Calcio",0,0
+it.1,2018-19,2018-12-26,"Sampdoria","Chievo Verona",2,0
+it.1,2018-19,2018-12-26,"Torino FC","Empoli FC",3,0
+it.1,2018-19,2018-12-29,"AC Milan","SPAL 2013 Ferrara",2,1
+it.1,2018-19,2018-12-29,"Chievo Verona","Frosinone Calcio",1,0
+it.1,2018-19,2018-12-29,"Empoli FC","Inter",0,1
+it.1,2018-19,2018-12-29,"Genoa CFC","ACF Fiorentina",0,0
+it.1,2018-19,2018-12-29,"Juventus","Sampdoria",2,1
+it.1,2018-19,2018-12-29,"Lazio Roma","Torino FC",1,1
+it.1,2018-19,2018-12-29,"Parma Calcio 1913","AS Roma",0,2
+it.1,2018-19,2018-12-29,"SSC Napoli","Bologna FC",3,2
+it.1,2018-19,2018-12-29,"Sassuolo Calcio","Atalanta",2,6
+it.1,2018-19,2018-12-29,"Udinese Calcio","Cagliari Calcio",2,0
+it.1,2018-19,2019-01-19,"AS Roma","Torino FC",3,2
+it.1,2018-19,2019-01-19,"Inter","Sassuolo Calcio",0,0
+it.1,2018-19,2019-01-19,"Udinese Calcio","Parma Calcio 1913",1,2
+it.1,2018-19,2019-01-20,"ACF Fiorentina","Sampdoria",3,3
+it.1,2018-19,2019-01-20,"Cagliari Calcio","Empoli FC",2,2
+it.1,2018-19,2019-01-20,"Frosinone Calcio","Atalanta",0,5
+it.1,2018-19,2019-01-20,"SPAL 2013 Ferrara","Bologna FC",1,1
+it.1,2018-19,2019-01-20,"SSC Napoli","Lazio Roma",2,1
+it.1,2018-19,2019-01-21,"Genoa CFC","AC Milan",0,2
+it.1,2018-19,2019-01-21,"Juventus","Chievo Verona",3,0
+it.1,2018-19,2019-01-26,"AC Milan","SSC Napoli",0,0
+it.1,2018-19,2019-01-26,"Sampdoria","Udinese Calcio",4,0
+it.1,2018-19,2019-01-26,"Sassuolo Calcio","Cagliari Calcio",3,0
+it.1,2018-19,2019-01-27,"Atalanta","AS Roma",3,3
+it.1,2018-19,2019-01-27,"Bologna FC","Frosinone Calcio",0,4
+it.1,2018-19,2019-01-27,"Chievo Verona","ACF Fiorentina",3,4
+it.1,2018-19,2019-01-27,"Lazio Roma","Juventus",1,2
+it.1,2018-19,2019-01-27,"Parma Calcio 1913","SPAL 2013 Ferrara",2,3
+it.1,2018-19,2019-01-27,"Torino FC","Inter",1,0
+it.1,2018-19,2019-01-28,"Empoli FC","Genoa CFC",1,3
+it.1,2018-19,2019-02-02,"Empoli FC","Chievo Verona",2,2
+it.1,2018-19,2019-02-02,"Juventus","Parma Calcio 1913",3,3
+it.1,2018-19,2019-02-02,"SSC Napoli","Sampdoria",3,0
+it.1,2018-19,2019-02-03,"AS Roma","AC Milan",1,1
+it.1,2018-19,2019-02-03,"Genoa CFC","Sassuolo Calcio",1,1
+it.1,2018-19,2019-02-03,"Inter","Bologna FC",0,1
+it.1,2018-19,2019-02-03,"SPAL 2013 Ferrara","Torino FC",0,0
+it.1,2018-19,2019-02-03,"Udinese Calcio","ACF Fiorentina",1,1
+it.1,2018-19,2019-02-04,"Cagliari Calcio","Atalanta",0,1
+it.1,2018-19,2019-02-04,"Frosinone Calcio","Lazio Roma",0,1
+it.1,2018-19,2019-02-07,"Lazio Roma","Empoli FC",1,0
+it.1,2018-19,2019-02-08,"Chievo Verona","AS Roma",0,3
+it.1,2018-19,2019-02-09,"ACF Fiorentina","SSC Napoli",0,0
+it.1,2018-19,2019-02-09,"Parma Calcio 1913","Inter",0,1
+it.1,2018-19,2019-02-10,"AC Milan","Cagliari Calcio",3,0
+it.1,2018-19,2019-02-10,"Atalanta","SPAL 2013 Ferrara",2,1
+it.1,2018-19,2019-02-10,"Bologna FC","Genoa CFC",1,1
+it.1,2018-19,2019-02-10,"Sampdoria","Frosinone Calcio",0,1
+it.1,2018-19,2019-02-10,"Sassuolo Calcio","Juventus",0,3
+it.1,2018-19,2019-02-10,"Torino FC","Udinese Calcio",1,0
+it.1,2018-19,2019-02-15,"Juventus","Frosinone Calcio",3,0
+it.1,2018-19,2019-02-16,"Atalanta","AC Milan",1,3
+it.1,2018-19,2019-02-16,"Cagliari Calcio","Parma Calcio 1913",2,1
+it.1,2018-19,2019-02-17,"Empoli FC","Sassuolo Calcio",3,0
+it.1,2018-19,2019-02-17,"Genoa CFC","Lazio Roma",2,1
+it.1,2018-19,2019-02-17,"Inter","Sampdoria",2,1
+it.1,2018-19,2019-02-17,"SPAL 2013 Ferrara","ACF Fiorentina",1,4
+it.1,2018-19,2019-02-17,"SSC Napoli","Torino FC",0,0
+it.1,2018-19,2019-02-17,"Udinese Calcio","Chievo Verona",1,0
+it.1,2018-19,2019-02-18,"AS Roma","Bologna FC",2,1
+it.1,2018-19,2019-02-22,"AC Milan","Empoli FC",3,0
+it.1,2018-19,2019-02-23,"Frosinone Calcio","AS Roma",2,3
+it.1,2018-19,2019-02-23,"Torino FC","Atalanta",2,0
+it.1,2018-19,2019-02-24,"ACF Fiorentina","Inter",3,3
+it.1,2018-19,2019-02-24,"Bologna FC","Juventus",0,1
+it.1,2018-19,2019-02-24,"Chievo Verona","Genoa CFC",0,0
+it.1,2018-19,2019-02-24,"Parma Calcio 1913","SSC Napoli",0,4
+it.1,2018-19,2019-02-24,"Sampdoria","Cagliari Calcio",1,0
+it.1,2018-19,2019-02-24,"Sassuolo Calcio","SPAL 2013 Ferrara",1,1
+it.1,2018-19,2019-03-01,"Cagliari Calcio","Inter",2,1
+it.1,2018-19,2019-03-02,"AC Milan","Sassuolo Calcio",1,0
+it.1,2018-19,2019-03-02,"Empoli FC","Parma Calcio 1913",3,3
+it.1,2018-19,2019-03-02,"Lazio Roma","AS Roma",3,0
+it.1,2018-19,2019-03-03,"Atalanta","ACF Fiorentina",3,1
+it.1,2018-19,2019-03-03,"Genoa CFC","Frosinone Calcio",0,0
+it.1,2018-19,2019-03-03,"SPAL 2013 Ferrara","Sampdoria",1,2
+it.1,2018-19,2019-03-03,"SSC Napoli","Juventus",1,2
+it.1,2018-19,2019-03-03,"Torino FC","Chievo Verona",3,0
+it.1,2018-19,2019-03-03,"Udinese Calcio","Bologna FC",2,1
+it.1,2018-19,2019-03-08,"Juventus","Udinese Calcio",4,1
+it.1,2018-19,2019-03-09,"Chievo Verona","AC Milan",1,2
+it.1,2018-19,2019-03-09,"Parma Calcio 1913","Genoa CFC",1,0
+it.1,2018-19,2019-03-10,"ACF Fiorentina","Lazio Roma",1,1
+it.1,2018-19,2019-03-10,"Bologna FC","Cagliari Calcio",2,0
+it.1,2018-19,2019-03-10,"Frosinone Calcio","Torino FC",1,2
+it.1,2018-19,2019-03-10,"Inter","SPAL 2013 Ferrara",2,0
+it.1,2018-19,2019-03-10,"Sampdoria","Atalanta",1,2
+it.1,2018-19,2019-03-10,"Sassuolo Calcio","SSC Napoli",1,1
+it.1,2018-19,2019-03-11,"AS Roma","Empoli FC",2,1
+it.1,2018-19,2019-03-15,"Cagliari Calcio","ACF Fiorentina",2,1
+it.1,2018-19,2019-03-16,"SPAL 2013 Ferrara","AS Roma",2,1
+it.1,2018-19,2019-03-16,"Sassuolo Calcio","Sampdoria",3,5
+it.1,2018-19,2019-03-16,"Torino FC","Bologna FC",2,3
+it.1,2018-19,2019-03-17,"AC Milan","Inter",2,3
+it.1,2018-19,2019-03-17,"Atalanta","Chievo Verona",1,1
+it.1,2018-19,2019-03-17,"Empoli FC","Frosinone Calcio",2,1
+it.1,2018-19,2019-03-17,"Genoa CFC","Juventus",2,0
+it.1,2018-19,2019-03-17,"Lazio Roma","Parma Calcio 1913",4,1
+it.1,2018-19,2019-03-17,"SSC Napoli","Udinese Calcio",4,2
+it.1,2018-19,2019-03-29,"Chievo Verona","Cagliari Calcio",0,3
+it.1,2018-19,2019-03-30,"Juventus","Empoli FC",1,0
+it.1,2018-19,2019-03-30,"Sampdoria","AC Milan",1,0
+it.1,2018-19,2019-03-30,"Udinese Calcio","Genoa CFC",2,0
+it.1,2018-19,2019-03-31,"ACF Fiorentina","Torino FC",1,1
+it.1,2018-19,2019-03-31,"AS Roma","SSC Napoli",1,4
+it.1,2018-19,2019-03-31,"Bologna FC","Sassuolo Calcio",2,1
+it.1,2018-19,2019-03-31,"Frosinone Calcio","SPAL 2013 Ferrara",0,1
+it.1,2018-19,2019-03-31,"Inter","Lazio Roma",0,1
+it.1,2018-19,2019-03-31,"Parma Calcio 1913","Atalanta",1,3
+it.1,2018-19,2019-04-02,"AC Milan","Udinese Calcio",1,1
+it.1,2018-19,2019-04-02,"Cagliari Calcio","Juventus",0,2
+it.1,2018-19,2019-04-03,"AS Roma","ACF Fiorentina",2,2
+it.1,2018-19,2019-04-03,"Empoli FC","SSC Napoli",2,1
+it.1,2018-19,2019-04-03,"Frosinone Calcio","Parma Calcio 1913",3,2
+it.1,2018-19,2019-04-03,"Genoa CFC","Inter",0,4
+it.1,2018-19,2019-04-03,"SPAL 2013 Ferrara","Lazio Roma",1,0
+it.1,2018-19,2019-04-03,"Torino FC","Sampdoria",2,1
+it.1,2018-19,2019-04-04,"Atalanta","Bologna FC",4,1
+it.1,2018-19,2019-04-04,"Sassuolo Calcio","Chievo Verona",4,0
+it.1,2018-19,2019-04-06,"Juventus","AC Milan",2,1
+it.1,2018-19,2019-04-06,"Parma Calcio 1913","Torino FC",0,0
+it.1,2018-19,2019-04-06,"Sampdoria","AS Roma",0,1
+it.1,2018-19,2019-04-07,"ACF Fiorentina","Frosinone Calcio",0,1
+it.1,2018-19,2019-04-07,"Cagliari Calcio","SPAL 2013 Ferrara",2,1
+it.1,2018-19,2019-04-07,"Inter","Atalanta",0,0
+it.1,2018-19,2019-04-07,"Lazio Roma","Sassuolo Calcio",2,2
+it.1,2018-19,2019-04-07,"SSC Napoli","Genoa CFC",1,1
+it.1,2018-19,2019-04-07,"Udinese Calcio","Empoli FC",3,2
+it.1,2018-19,2019-04-08,"Bologna FC","Chievo Verona",3,0
+it.1,2018-19,2019-04-13,"AC Milan","Lazio Roma",1,0
+it.1,2018-19,2019-04-13,"AS Roma","Udinese Calcio",1,0
+it.1,2018-19,2019-04-13,"SPAL 2013 Ferrara","Juventus",2,1
+it.1,2018-19,2019-04-14,"ACF Fiorentina","Bologna FC",0,0
+it.1,2018-19,2019-04-14,"Chievo Verona","SSC Napoli",1,3
+it.1,2018-19,2019-04-14,"Frosinone Calcio","Inter",1,3
+it.1,2018-19,2019-04-14,"Sampdoria","Genoa CFC",2,0
+it.1,2018-19,2019-04-14,"Sassuolo Calcio","Parma Calcio 1913",0,0
+it.1,2018-19,2019-04-14,"Torino FC","Cagliari Calcio",1,1
+it.1,2018-19,2019-04-15,"Atalanta","Empoli FC",0,0
+it.1,2018-19,2019-04-17,"Lazio Roma","Udinese Calcio",2,0
+it.1,2018-19,2019-04-20,"Bologna FC","Sampdoria",3,0
+it.1,2018-19,2019-04-20,"Cagliari Calcio","Frosinone Calcio",1,0
+it.1,2018-19,2019-04-20,"Empoli FC","SPAL 2013 Ferrara",2,4
+it.1,2018-19,2019-04-20,"Genoa CFC","Torino FC",0,1
+it.1,2018-19,2019-04-20,"Inter","AS Roma",1,1
+it.1,2018-19,2019-04-20,"Juventus","ACF Fiorentina",2,1
+it.1,2018-19,2019-04-20,"Lazio Roma","Chievo Verona",1,2
+it.1,2018-19,2019-04-20,"Parma Calcio 1913","AC Milan",1,1
+it.1,2018-19,2019-04-20,"Udinese Calcio","Sassuolo Calcio",1,1
+it.1,2018-19,2019-04-22,"SSC Napoli","Atalanta",1,2
+it.1,2018-19,2019-04-27,"AS Roma","Cagliari Calcio",3,0
+it.1,2018-19,2019-04-27,"Bologna FC","Empoli FC",3,1
+it.1,2018-19,2019-04-27,"Inter","Juventus",1,1
+it.1,2018-19,2019-04-28,"Chievo Verona","Parma Calcio 1913",1,1
+it.1,2018-19,2019-04-28,"Frosinone Calcio","SSC Napoli",0,2
+it.1,2018-19,2019-04-28,"SPAL 2013 Ferrara","Genoa CFC",1,1
+it.1,2018-19,2019-04-28,"Sampdoria","Lazio Roma",1,2
+it.1,2018-19,2019-04-28,"Torino FC","AC Milan",2,0
+it.1,2018-19,2019-04-29,"ACF Fiorentina","Sassuolo Calcio",0,1
+it.1,2018-19,2019-04-29,"Atalanta","Udinese Calcio",2,0
+it.1,2018-19,2019-05-03,"Juventus","Torino FC",1,1
+it.1,2018-19,2019-05-04,"Chievo Verona","SPAL 2013 Ferrara",0,4
+it.1,2018-19,2019-05-04,"Udinese Calcio","Inter",0,0
+it.1,2018-19,2019-05-05,"Empoli FC","ACF Fiorentina",1,0
+it.1,2018-19,2019-05-05,"Genoa CFC","AS Roma",1,1
+it.1,2018-19,2019-05-05,"Lazio Roma","Atalanta",1,3
+it.1,2018-19,2019-05-05,"Parma Calcio 1913","Sampdoria",3,3
+it.1,2018-19,2019-05-05,"SSC Napoli","Cagliari Calcio",2,1
+it.1,2018-19,2019-05-05,"Sassuolo Calcio","Frosinone Calcio",2,2
+it.1,2018-19,2019-05-06,"AC Milan","Bologna FC",2,1
+it.1,2018-19,2019-05-11,"ACF Fiorentina","AC Milan",0,1
+it.1,2018-19,2019-05-11,"Atalanta","Genoa CFC",2,1
+it.1,2018-19,2019-05-11,"Cagliari Calcio","Lazio Roma",1,2
+it.1,2018-19,2019-05-12,"AS Roma","Juventus",2,0
+it.1,2018-19,2019-05-12,"Frosinone Calcio","Udinese Calcio",1,3
+it.1,2018-19,2019-05-12,"SPAL 2013 Ferrara","SSC Napoli",1,2
+it.1,2018-19,2019-05-12,"Sampdoria","Empoli FC",1,2
+it.1,2018-19,2019-05-12,"Torino FC","Sassuolo Calcio",3,2
+it.1,2018-19,2019-05-13,"Bologna FC","Parma Calcio 1913",4,1
+it.1,2018-19,2019-05-13,"Inter","Chievo Verona",2,0
+it.1,2018-19,2019-05-18,"Genoa CFC","Cagliari Calcio",1,1
+it.1,2018-19,2019-05-18,"Sassuolo Calcio","AS Roma",0,0
+it.1,2018-19,2019-05-18,"Udinese Calcio","SPAL 2013 Ferrara",3,2
+it.1,2018-19,2019-05-19,"AC Milan","Frosinone Calcio",2,0
+it.1,2018-19,2019-05-19,"Chievo Verona","Sampdoria",0,0
+it.1,2018-19,2019-05-19,"Empoli FC","Torino FC",4,1
+it.1,2018-19,2019-05-19,"Juventus","Atalanta",1,1
+it.1,2018-19,2019-05-19,"Parma Calcio 1913","ACF Fiorentina",1,0
+it.1,2018-19,2019-05-19,"SSC Napoli","Inter",4,1
+it.1,2018-19,2019-05-20,"Lazio Roma","Bologna FC",3,3
+it.1,2018-19,2019-05-25,"Bologna FC","SSC Napoli",3,2
+it.1,2018-19,2019-05-25,"Frosinone Calcio","Chievo Verona",0,0
+it.1,2018-19,2019-05-26,"ACF Fiorentina","Genoa CFC",0,0
+it.1,2018-19,2019-05-26,"AS Roma","Parma Calcio 1913",2,1
+it.1,2018-19,2019-05-26,"Atalanta","Sassuolo Calcio",3,1
+it.1,2018-19,2019-05-26,"Cagliari Calcio","Udinese Calcio",1,2
+it.1,2018-19,2019-05-26,"Inter","Empoli FC",2,1
+it.1,2018-19,2019-05-26,"SPAL 2013 Ferrara","AC Milan",2,3
+it.1,2018-19,2019-05-26,"Sampdoria","Juventus",2,0
+it.1,2018-19,2019-05-26,"Torino FC","Lazio Roma",3,1
+it.1,2019-20,2019-08-24,"ACF Fiorentina","SSC Napoli",3,4
+it.1,2019-20,2019-08-24,"Parma Calcio 1913","Juventus",0,1
+it.1,2019-20,2019-08-25,"AS Roma","Genoa CFC",3,3
+it.1,2019-20,2019-08-25,"Cagliari Calcio","Brescia Calcio",0,1
+it.1,2019-20,2019-08-25,"Hellas Verona","Bologna FC",1,1
+it.1,2019-20,2019-08-25,"SPAL 2013 Ferrara","Atalanta",2,3
+it.1,2019-20,2019-08-25,"Sampdoria","Lazio Roma",0,3
+it.1,2019-20,2019-08-25,"Torino FC","Sassuolo Calcio",2,1
+it.1,2019-20,2019-08-25,"Udinese Calcio","AC Milan",1,0
+it.1,2019-20,2019-08-26,"Inter","US Lecce",4,0
+it.1,2019-20,2019-08-30,"Bologna FC","SPAL 2013 Ferrara",1,0
+it.1,2019-20,2019-08-31,"AC Milan","Brescia Calcio",1,0
+it.1,2019-20,2019-08-31,"Juventus","SSC Napoli",4,3
+it.1,2019-20,2019-09-01,"Atalanta","Torino FC",2,3
+it.1,2019-20,2019-09-01,"Cagliari Calcio","Inter",1,2
+it.1,2019-20,2019-09-01,"Genoa CFC","ACF Fiorentina",2,1
+it.1,2019-20,2019-09-01,"Lazio Roma","AS Roma",1,1
+it.1,2019-20,2019-09-01,"Sassuolo Calcio","Sampdoria",4,1
+it.1,2019-20,2019-09-01,"US Lecce","Hellas Verona",0,1
+it.1,2019-20,2019-09-01,"Udinese Calcio","Parma Calcio 1913",1,3
+it.1,2019-20,2019-09-14,"ACF Fiorentina","Juventus",0,0
+it.1,2019-20,2019-09-14,"Inter","Udinese Calcio",1,0
+it.1,2019-20,2019-09-14,"SSC Napoli","Sampdoria",2,0
+it.1,2019-20,2019-09-15,"AS Roma","Sassuolo Calcio",4,2
+it.1,2019-20,2019-09-15,"Brescia Calcio","Bologna FC",3,4
+it.1,2019-20,2019-09-15,"Genoa CFC","Atalanta",1,2
+it.1,2019-20,2019-09-15,"Hellas Verona","AC Milan",0,1
+it.1,2019-20,2019-09-15,"Parma Calcio 1913","Cagliari Calcio",1,3
+it.1,2019-20,2019-09-15,"SPAL 2013 Ferrara","Lazio Roma",2,1
+it.1,2019-20,2019-09-16,"Torino FC","US Lecce",1,2
+it.1,2019-20,2019-09-20,"Cagliari Calcio","Genoa CFC",3,1
+it.1,2019-20,2019-09-21,"AC Milan","Inter",0,2
+it.1,2019-20,2019-09-21,"Juventus","Hellas Verona",2,1
+it.1,2019-20,2019-09-21,"Udinese Calcio","Brescia Calcio",0,1
+it.1,2019-20,2019-09-22,"Atalanta","ACF Fiorentina",2,2
+it.1,2019-20,2019-09-22,"Bologna FC","AS Roma",1,2
+it.1,2019-20,2019-09-22,"Lazio Roma","Parma Calcio 1913",2,0
+it.1,2019-20,2019-09-22,"Sampdoria","Torino FC",1,0
+it.1,2019-20,2019-09-22,"Sassuolo Calcio","SPAL 2013 Ferrara",3,0
+it.1,2019-20,2019-09-22,"US Lecce","SSC Napoli",1,4
+it.1,2019-20,2019-09-24,"Brescia Calcio","Juventus",1,2
+it.1,2019-20,2019-09-24,"Hellas Verona","Udinese Calcio",0,0
+it.1,2019-20,2019-09-25,"ACF Fiorentina","Sampdoria",2,1
+it.1,2019-20,2019-09-25,"AS Roma","Atalanta",0,2
+it.1,2019-20,2019-09-25,"Genoa CFC","Bologna FC",0,0
+it.1,2019-20,2019-09-25,"Inter","Lazio Roma",1,0
+it.1,2019-20,2019-09-25,"Parma Calcio 1913","Sassuolo Calcio",1,0
+it.1,2019-20,2019-09-25,"SPAL 2013 Ferrara","US Lecce",1,3
+it.1,2019-20,2019-09-25,"SSC Napoli","Cagliari Calcio",0,1
+it.1,2019-20,2019-09-26,"Torino FC","AC Milan",2,1
+it.1,2019-20,2019-09-28,"Juventus","SPAL 2013 Ferrara",2,0
+it.1,2019-20,2019-09-28,"Sampdoria","Inter",1,3
+it.1,2019-20,2019-09-28,"Sassuolo Calcio","Atalanta",1,4
+it.1,2019-20,2019-09-29,"AC Milan","ACF Fiorentina",1,3
+it.1,2019-20,2019-09-29,"Cagliari Calcio","Hellas Verona",1,1
+it.1,2019-20,2019-09-29,"Lazio Roma","Genoa CFC",4,0
+it.1,2019-20,2019-09-29,"SSC Napoli","Brescia Calcio",2,1
+it.1,2019-20,2019-09-29,"US Lecce","AS Roma",0,1
+it.1,2019-20,2019-09-29,"Udinese Calcio","Bologna FC",1,0
+it.1,2019-20,2019-09-30,"Parma Calcio 1913","Torino FC",3,2
+it.1,2019-20,2019-10-05,"Genoa CFC","AC Milan",1,2
+it.1,2019-20,2019-10-05,"Hellas Verona","Sampdoria",2,0
+it.1,2019-20,2019-10-05,"SPAL 2013 Ferrara","Parma Calcio 1913",1,0
+it.1,2019-20,2019-10-06,"ACF Fiorentina","Udinese Calcio",1,0
+it.1,2019-20,2019-10-06,"AS Roma","Cagliari Calcio",1,1
+it.1,2019-20,2019-10-06,"Atalanta","US Lecce",3,1
+it.1,2019-20,2019-10-06,"Bologna FC","Lazio Roma",2,2
+it.1,2019-20,2019-10-06,"Inter","Juventus",1,2
+it.1,2019-20,2019-10-06,"Torino FC","SSC Napoli",0,0
+it.1,2019-20,2019-10-19,"Juventus","Bologna FC",2,1
+it.1,2019-20,2019-10-19,"Lazio Roma","Atalanta",3,3
+it.1,2019-20,2019-10-19,"SSC Napoli","Hellas Verona",2,0
+it.1,2019-20,2019-10-20,"AC Milan","US Lecce",2,2
+it.1,2019-20,2019-10-20,"Cagliari Calcio","SPAL 2013 Ferrara",2,0
+it.1,2019-20,2019-10-20,"Parma Calcio 1913","Genoa CFC",5,1
+it.1,2019-20,2019-10-20,"Sampdoria","AS Roma",0,0
+it.1,2019-20,2019-10-20,"Sassuolo Calcio","Inter",3,4
+it.1,2019-20,2019-10-20,"Udinese Calcio","Torino FC",1,0
+it.1,2019-20,2019-10-21,"Brescia Calcio","ACF Fiorentina",0,0
+it.1,2019-20,2019-10-25,"Hellas Verona","Sassuolo Calcio",0,1
+it.1,2019-20,2019-10-26,"Genoa CFC","Brescia Calcio",3,1
+it.1,2019-20,2019-10-26,"Inter","Parma Calcio 1913",2,2
+it.1,2019-20,2019-10-26,"US Lecce","Juventus",1,1
+it.1,2019-20,2019-10-27,"ACF Fiorentina","Lazio Roma",1,2
+it.1,2019-20,2019-10-27,"AS Roma","AC Milan",2,1
+it.1,2019-20,2019-10-27,"Atalanta","Udinese Calcio",7,1
+it.1,2019-20,2019-10-27,"Bologna FC","Sampdoria",2,1
+it.1,2019-20,2019-10-27,"SPAL 2013 Ferrara","SSC Napoli",1,1
+it.1,2019-20,2019-10-27,"Torino FC","Cagliari Calcio",1,1
+it.1,2019-20,2019-10-29,"Brescia Calcio","Inter",1,2
+it.1,2019-20,2019-10-29,"Parma Calcio 1913","Hellas Verona",0,1
+it.1,2019-20,2019-10-30,"Cagliari Calcio","Bologna FC",3,2
+it.1,2019-20,2019-10-30,"Juventus","Genoa CFC",2,1
+it.1,2019-20,2019-10-30,"Lazio Roma","Torino FC",4,0
+it.1,2019-20,2019-10-30,"SSC Napoli","Atalanta",2,2
+it.1,2019-20,2019-10-30,"Sampdoria","US Lecce",1,1
+it.1,2019-20,2019-10-30,"Sassuolo Calcio","ACF Fiorentina",1,2
+it.1,2019-20,2019-10-30,"Udinese Calcio","AS Roma",0,4
+it.1,2019-20,2019-10-31,"AC Milan","SPAL 2013 Ferrara",1,0
+it.1,2019-20,2019-11-02,"AS Roma","SSC Napoli",2,1
+it.1,2019-20,2019-11-02,"Bologna FC","Inter",1,2
+it.1,2019-20,2019-11-02,"Torino FC","Juventus",0,1
+it.1,2019-20,2019-11-03,"AC Milan","Lazio Roma",1,2
+it.1,2019-20,2019-11-03,"ACF Fiorentina","Parma Calcio 1913",1,1
+it.1,2019-20,2019-11-03,"Atalanta","Cagliari Calcio",0,2
+it.1,2019-20,2019-11-03,"Genoa CFC","Udinese Calcio",1,3
+it.1,2019-20,2019-11-03,"Hellas Verona","Brescia Calcio",2,1
+it.1,2019-20,2019-11-03,"US Lecce","Sassuolo Calcio",2,2
+it.1,2019-20,2019-11-04,"SPAL 2013 Ferrara","Sampdoria",0,1
+it.1,2019-20,2019-11-08,"Sassuolo Calcio","Bologna FC",3,1
+it.1,2019-20,2019-11-09,"Brescia Calcio","Torino FC",0,4
+it.1,2019-20,2019-11-09,"Inter","Hellas Verona",2,1
+it.1,2019-20,2019-11-09,"SSC Napoli","Genoa CFC",0,0
+it.1,2019-20,2019-11-10,"Cagliari Calcio","ACF Fiorentina",5,2
+it.1,2019-20,2019-11-10,"Juventus","AC Milan",1,0
+it.1,2019-20,2019-11-10,"Lazio Roma","US Lecce",4,2
+it.1,2019-20,2019-11-10,"Parma Calcio 1913","AS Roma",2,0
+it.1,2019-20,2019-11-10,"Sampdoria","Atalanta",0,0
+it.1,2019-20,2019-11-10,"Udinese Calcio","SPAL 2013 Ferrara",0,0
+it.1,2019-20,2019-11-23,"AC Milan","SSC Napoli",1,1
+it.1,2019-20,2019-11-23,"Atalanta","Juventus",1,3
+it.1,2019-20,2019-11-23,"Torino FC","Inter",0,3
+it.1,2019-20,2019-11-24,"AS Roma","Brescia Calcio",3,0
+it.1,2019-20,2019-11-24,"Bologna FC","Parma Calcio 1913",2,2
+it.1,2019-20,2019-11-24,"Hellas Verona","ACF Fiorentina",1,0
+it.1,2019-20,2019-11-24,"Sampdoria","Udinese Calcio",2,1
+it.1,2019-20,2019-11-24,"Sassuolo Calcio","Lazio Roma",1,2
+it.1,2019-20,2019-11-25,"SPAL 2013 Ferrara","Genoa CFC",1,1
+it.1,2019-20,2019-11-25,"US Lecce","Cagliari Calcio",2,2
+it.1,2019-20,2019-11-30,"ACF Fiorentina","US Lecce",0,1
+it.1,2019-20,2019-11-30,"Brescia Calcio","Atalanta",0,3
+it.1,2019-20,2019-11-30,"Genoa CFC","Torino FC",0,1
+it.1,2019-20,2019-12-01,"Hellas Verona","AS Roma",1,3
+it.1,2019-20,2019-12-01,"Inter","SPAL 2013 Ferrara",2,1
+it.1,2019-20,2019-12-01,"Juventus","Sassuolo Calcio",2,2
+it.1,2019-20,2019-12-01,"Lazio Roma","Udinese Calcio",3,0
+it.1,2019-20,2019-12-01,"Parma Calcio 1913","AC Milan",0,1
+it.1,2019-20,2019-12-01,"SSC Napoli","Bologna FC",1,2
+it.1,2019-20,2019-12-02,"Cagliari Calcio","Sampdoria",4,3
+it.1,2019-20,2019-12-06,"Inter","AS Roma",0,0
+it.1,2019-20,2019-12-07,"Atalanta","Hellas Verona",3,2
+it.1,2019-20,2019-12-07,"Lazio Roma","Juventus",3,1
+it.1,2019-20,2019-12-07,"Udinese Calcio","SSC Napoli",1,1
+it.1,2019-20,2019-12-08,"Bologna FC","AC Milan",2,3
+it.1,2019-20,2019-12-08,"SPAL 2013 Ferrara","Brescia Calcio",0,1
+it.1,2019-20,2019-12-08,"Sampdoria","Parma Calcio 1913",0,1
+it.1,2019-20,2019-12-08,"Sassuolo Calcio","Cagliari Calcio",2,2
+it.1,2019-20,2019-12-08,"Torino FC","ACF Fiorentina",2,1
+it.1,2019-20,2019-12-08,"US Lecce","Genoa CFC",2,2
+it.1,2019-20,2019-12-14,"Brescia Calcio","US Lecce",3,0
+it.1,2019-20,2019-12-14,"Genoa CFC","Sampdoria",0,1
+it.1,2019-20,2019-12-14,"SSC Napoli","Parma Calcio 1913",1,2
+it.1,2019-20,2019-12-15,"AC Milan","Sassuolo Calcio",0,0
+it.1,2019-20,2019-12-15,"ACF Fiorentina","Inter",1,1
+it.1,2019-20,2019-12-15,"AS Roma","SPAL 2013 Ferrara",3,1
+it.1,2019-20,2019-12-15,"Bologna FC","Atalanta",2,1
+it.1,2019-20,2019-12-15,"Hellas Verona","Torino FC",3,3
+it.1,2019-20,2019-12-15,"Juventus","Udinese Calcio",3,1
+it.1,2019-20,2019-12-16,"Cagliari Calcio","Lazio Roma",1,2
+it.1,2019-20,2019-12-18,"Brescia Calcio","Sassuolo Calcio",0,2
+it.1,2019-20,2019-12-18,"Sampdoria","Juventus",1,2
+it.1,2019-20,2019-12-20,"ACF Fiorentina","AS Roma",1,4
+it.1,2019-20,2019-12-21,"Inter","Genoa CFC",4,0
+it.1,2019-20,2019-12-21,"Torino FC","SPAL 2013 Ferrara",1,2
+it.1,2019-20,2019-12-21,"Udinese Calcio","Cagliari Calcio",2,1
+it.1,2019-20,2019-12-22,"Atalanta","AC Milan",5,0
+it.1,2019-20,2019-12-22,"Parma Calcio 1913","Brescia Calcio",1,1
+it.1,2019-20,2019-12-22,"Sassuolo Calcio","SSC Napoli",1,2
+it.1,2019-20,2019-12-22,"US Lecce","Bologna FC",2,3
+it.1,2019-20,2020-01-05,"AS Roma","Torino FC",0,2
+it.1,2019-20,2020-01-05,"Brescia Calcio","Lazio Roma",1,2
+it.1,2019-20,2020-01-05,"Genoa CFC","Sassuolo Calcio",2,1
+it.1,2019-20,2020-01-05,"SPAL 2013 Ferrara","Hellas Verona",0,2
+it.1,2019-20,2020-01-06,"AC Milan","Sampdoria",0,0
+it.1,2019-20,2020-01-06,"Atalanta","Parma Calcio 1913",5,0
+it.1,2019-20,2020-01-06,"Bologna FC","ACF Fiorentina",1,1
+it.1,2019-20,2020-01-06,"Juventus","Cagliari Calcio",4,0
+it.1,2019-20,2020-01-06,"SSC Napoli","Inter",1,3
+it.1,2019-20,2020-01-06,"US Lecce","Udinese Calcio",0,1
+it.1,2019-20,2020-01-11,"Cagliari Calcio","AC Milan",0,2
+it.1,2019-20,2020-01-11,"Inter","Atalanta",1,1
+it.1,2019-20,2020-01-11,"Lazio Roma","SSC Napoli",1,0
+it.1,2019-20,2020-01-12,"ACF Fiorentina","SPAL 2013 Ferrara",1,0
+it.1,2019-20,2020-01-12,"AS Roma","Juventus",1,2
+it.1,2019-20,2020-01-12,"Hellas Verona","Genoa CFC",2,1
+it.1,2019-20,2020-01-12,"Sampdoria","Brescia Calcio",5,1
+it.1,2019-20,2020-01-12,"Torino FC","Bologna FC",1,0
+it.1,2019-20,2020-01-12,"Udinese Calcio","Sassuolo Calcio",3,0
+it.1,2019-20,2020-01-13,"Parma Calcio 1913","US Lecce",2,0
+it.1,2019-20,2020-01-18,"Lazio Roma","Sampdoria",5,1
+it.1,2019-20,2020-01-18,"SSC Napoli","ACF Fiorentina",0,2
+it.1,2019-20,2020-01-18,"Sassuolo Calcio","Torino FC",2,1
+it.1,2019-20,2020-01-19,"AC Milan","Udinese Calcio",3,2
+it.1,2019-20,2020-01-19,"Bologna FC","Hellas Verona",1,1
+it.1,2019-20,2020-01-19,"Brescia Calcio","Cagliari Calcio",2,2
+it.1,2019-20,2020-01-19,"Genoa CFC","AS Roma",1,3
+it.1,2019-20,2020-01-19,"Juventus","Parma Calcio 1913",2,1
+it.1,2019-20,2020-01-19,"US Lecce","Inter",1,1
+it.1,2019-20,2020-01-20,"Atalanta","SPAL 2013 Ferrara",1,2
+it.1,2019-20,2020-01-24,"Brescia Calcio","AC Milan",0,1
+it.1,2019-20,2020-01-25,"ACF Fiorentina","Genoa CFC",0,0
+it.1,2019-20,2020-01-25,"SPAL 2013 Ferrara","Bologna FC",1,3
+it.1,2019-20,2020-01-25,"Torino FC","Atalanta",0,7
+it.1,2019-20,2020-01-26,"AS Roma","Lazio Roma",1,1
+it.1,2019-20,2020-01-26,"Hellas Verona","US Lecce",3,0
+it.1,2019-20,2020-01-26,"Inter","Cagliari Calcio",1,1
+it.1,2019-20,2020-01-26,"Parma Calcio 1913","Udinese Calcio",2,0
+it.1,2019-20,2020-01-26,"SSC Napoli","Juventus",2,1
+it.1,2019-20,2020-01-26,"Sampdoria","Sassuolo Calcio",0,0
+it.1,2019-20,2020-02-01,"Bologna FC","Brescia Calcio",2,1
+it.1,2019-20,2020-02-01,"Cagliari Calcio","Parma Calcio 1913",2,2
+it.1,2019-20,2020-02-01,"Sassuolo Calcio","AS Roma",4,2
+it.1,2019-20,2020-02-02,"AC Milan","Hellas Verona",1,1
+it.1,2019-20,2020-02-02,"Atalanta","Genoa CFC",2,2
+it.1,2019-20,2020-02-02,"Juventus","ACF Fiorentina",3,0
+it.1,2019-20,2020-02-02,"Lazio Roma","SPAL 2013 Ferrara",5,1
+it.1,2019-20,2020-02-02,"US Lecce","Torino FC",4,0
+it.1,2019-20,2020-02-02,"Udinese Calcio","Inter",0,2
+it.1,2019-20,2020-02-03,"Sampdoria","SSC Napoli",2,4
+it.1,2019-20,2020-02-05,"Lazio Roma","Hellas Verona",0,0
+it.1,2019-20,2020-02-07,"AS Roma","Bologna FC",2,3
+it.1,2019-20,2020-02-08,"ACF Fiorentina","Atalanta",1,2
+it.1,2019-20,2020-02-08,"Hellas Verona","Juventus",2,1
+it.1,2019-20,2020-02-08,"Torino FC","Sampdoria",1,3
+it.1,2019-20,2020-02-09,"Brescia Calcio","Udinese Calcio",1,1
+it.1,2019-20,2020-02-09,"Genoa CFC","Cagliari Calcio",1,0
+it.1,2019-20,2020-02-09,"Inter","AC Milan",4,2
+it.1,2019-20,2020-02-09,"Parma Calcio 1913","Lazio Roma",0,1
+it.1,2019-20,2020-02-09,"SPAL 2013 Ferrara","Sassuolo Calcio",1,2
+it.1,2019-20,2020-02-09,"SSC Napoli","US Lecce",2,3
+it.1,2019-20,2020-02-15,"Atalanta","AS Roma",2,1
+it.1,2019-20,2020-02-15,"Bologna FC","Genoa CFC",0,3
+it.1,2019-20,2020-02-15,"US Lecce","SPAL 2013 Ferrara",2,1
+it.1,2019-20,2020-02-16,"Cagliari Calcio","SSC Napoli",0,1
+it.1,2019-20,2020-02-16,"Juventus","Brescia Calcio",2,0
+it.1,2019-20,2020-02-16,"Lazio Roma","Inter",2,1
+it.1,2019-20,2020-02-16,"Sampdoria","ACF Fiorentina",1,5
+it.1,2019-20,2020-02-16,"Sassuolo Calcio","Parma Calcio 1913",0,1
+it.1,2019-20,2020-02-16,"Udinese Calcio","Hellas Verona",0,0
+it.1,2019-20,2020-02-17,"AC Milan","Torino FC",1,0
+it.1,2019-20,2020-02-21,"Brescia Calcio","SSC Napoli",1,2
+it.1,2019-20,2020-02-22,"ACF Fiorentina","AC Milan",1,1
+it.1,2019-20,2020-02-22,"Bologna FC","Udinese Calcio",1,1
+it.1,2019-20,2020-02-22,"SPAL 2013 Ferrara","Juventus",1,2
+it.1,2019-20,2020-02-23,"AS Roma","US Lecce",4,0
+it.1,2019-20,2020-02-23,"Genoa CFC","Lazio Roma",2,3
+it.1,2019-20,2020-02-29,"Lazio Roma","Bologna FC",2,0
+it.1,2019-20,2020-02-29,"SSC Napoli","Torino FC",2,1
+it.1,2019-20,2020-03-01,"Cagliari Calcio","AS Roma",3,4
+it.1,2019-20,2020-03-01,"US Lecce","Atalanta",2,7
+it.1,2019-20,2020-03-08,"AC Milan","Genoa CFC",1,2
+it.1,2019-20,2020-03-08,"Juventus","Inter",2,0
+it.1,2019-20,2020-03-08,"Parma Calcio 1913","SPAL 2013 Ferrara",0,1
+it.1,2019-20,2020-03-08,"Sampdoria","Hellas Verona",2,1
+it.1,2019-20,2020-03-08,"Udinese Calcio","ACF Fiorentina",0,0
+it.1,2019-20,2020-03-09,"Sassuolo Calcio","Brescia Calcio",3,0
+it.1,2019-20,2020-06-20,"Hellas Verona","Cagliari Calcio",2,1
+it.1,2019-20,2020-06-20,"Torino FC","Parma Calcio 1913",1,1
+it.1,2019-20,2020-06-21,"Atalanta","Sassuolo Calcio",4,1
+it.1,2019-20,2020-06-21,"Inter","Sampdoria",2,1
+it.1,2019-20,2020-06-22,"ACF Fiorentina","Brescia Calcio",1,1
+it.1,2019-20,2020-06-22,"Bologna FC","Juventus",0,2
+it.1,2019-20,2020-06-22,"US Lecce","AC Milan",1,4
+it.1,2019-20,2020-06-23,"Genoa CFC","Parma Calcio 1913",1,4
+it.1,2019-20,2020-06-23,"Hellas Verona","SSC Napoli",0,2
+it.1,2019-20,2020-06-23,"SPAL 2013 Ferrara","Cagliari Calcio",0,1
+it.1,2019-20,2020-06-23,"Torino FC","Udinese Calcio",1,0
+it.1,2019-20,2020-06-24,"AS Roma","Sampdoria",2,1
+it.1,2019-20,2020-06-24,"Atalanta","Lazio Roma",3,2
+it.1,2019-20,2020-06-24,"Inter","Sassuolo Calcio",3,3
+it.1,2019-20,2020-06-26,"Juventus","US Lecce",4,0
+it.1,2019-20,2020-06-27,"Brescia Calcio","Genoa CFC",2,2
+it.1,2019-20,2020-06-27,"Cagliari Calcio","Torino FC",4,2
+it.1,2019-20,2020-06-27,"Lazio Roma","ACF Fiorentina",2,1
+it.1,2019-20,2020-06-28,"AC Milan","AS Roma",2,0
+it.1,2019-20,2020-06-28,"Parma Calcio 1913","Inter",1,2
+it.1,2019-20,2020-06-28,"SSC Napoli","SPAL 2013 Ferrara",3,1
+it.1,2019-20,2020-06-28,"Sampdoria","Bologna FC",1,2
+it.1,2019-20,2020-06-28,"Sassuolo Calcio","Hellas Verona",3,3
+it.1,2019-20,2020-06-28,"Udinese Calcio","Atalanta",2,3
+it.1,2019-20,2020-06-30,"Genoa CFC","Juventus",1,3
+it.1,2019-20,2020-06-30,"Torino FC","Lazio Roma",1,2
+it.1,2019-20,2020-07-01,"ACF Fiorentina","Sassuolo Calcio",1,3
+it.1,2019-20,2020-07-01,"Bologna FC","Cagliari Calcio",1,1
+it.1,2019-20,2020-07-01,"Hellas Verona","Parma Calcio 1913",3,2
+it.1,2019-20,2020-07-01,"Inter","Brescia Calcio",6,0
+it.1,2019-20,2020-07-01,"SPAL 2013 Ferrara","AC Milan",2,2
+it.1,2019-20,2020-07-01,"US Lecce","Sampdoria",1,2
+it.1,2019-20,2020-07-02,"AS Roma","Udinese Calcio",0,2
+it.1,2019-20,2020-07-02,"Atalanta","SSC Napoli",2,0
+it.1,2019-20,2020-07-04,"Juventus","Torino FC",4,1
+it.1,2019-20,2020-07-04,"Lazio Roma","AC Milan",0,3
+it.1,2019-20,2020-07-04,"Sassuolo Calcio","US Lecce",4,2
+it.1,2019-20,2020-07-05,"Brescia Calcio","Hellas Verona",2,0
+it.1,2019-20,2020-07-05,"Cagliari Calcio","Atalanta",0,1
+it.1,2019-20,2020-07-05,"Inter","Bologna FC",1,2
+it.1,2019-20,2020-07-05,"Parma Calcio 1913","ACF Fiorentina",1,2
+it.1,2019-20,2020-07-05,"SSC Napoli","AS Roma",2,1
+it.1,2019-20,2020-07-05,"Sampdoria","SPAL 2013 Ferrara",3,0
+it.1,2019-20,2020-07-05,"Udinese Calcio","Genoa CFC",2,2
+it.1,2019-20,2020-07-07,"AC Milan","Juventus",4,2
+it.1,2019-20,2020-07-07,"US Lecce","Lazio Roma",2,1
+it.1,2019-20,2020-07-08,"ACF Fiorentina","Cagliari Calcio",0,0
+it.1,2019-20,2020-07-08,"AS Roma","Parma Calcio 1913",2,1
+it.1,2019-20,2020-07-08,"Atalanta","Sampdoria",2,0
+it.1,2019-20,2020-07-08,"Bologna FC","Sassuolo Calcio",1,2
+it.1,2019-20,2020-07-08,"Genoa CFC","SSC Napoli",1,2
+it.1,2019-20,2020-07-08,"Torino FC","Brescia Calcio",3,1
+it.1,2019-20,2020-07-09,"Hellas Verona","Inter",2,2
+it.1,2019-20,2020-07-09,"SPAL 2013 Ferrara","Udinese Calcio",0,3
+it.1,2019-20,2020-07-11,"Brescia Calcio","AS Roma",0,3
+it.1,2019-20,2020-07-11,"Juventus","Atalanta",2,2
+it.1,2019-20,2020-07-11,"Lazio Roma","Sassuolo Calcio",1,2
+it.1,2019-20,2020-07-12,"ACF Fiorentina","Hellas Verona",1,1
+it.1,2019-20,2020-07-12,"Cagliari Calcio","US Lecce",0,0
+it.1,2019-20,2020-07-12,"Genoa CFC","SPAL 2013 Ferrara",2,0
+it.1,2019-20,2020-07-12,"Parma Calcio 1913","Bologna FC",2,2
+it.1,2019-20,2020-07-12,"SSC Napoli","AC Milan",2,2
+it.1,2019-20,2020-07-12,"Udinese Calcio","Sampdoria",1,3
+it.1,2019-20,2020-07-13,"Inter","Torino FC",3,1
+it.1,2019-20,2020-07-14,"Atalanta","Brescia Calcio",6,2
+it.1,2019-20,2020-07-15,"AC Milan","Parma Calcio 1913",3,1
+it.1,2019-20,2020-07-15,"AS Roma","Hellas Verona",2,1
+it.1,2019-20,2020-07-15,"Bologna FC","SSC Napoli",1,1
+it.1,2019-20,2020-07-15,"Sampdoria","Cagliari Calcio",3,0
+it.1,2019-20,2020-07-15,"Sassuolo Calcio","Juventus",3,3
+it.1,2019-20,2020-07-15,"US Lecce","ACF Fiorentina",1,3
+it.1,2019-20,2020-07-15,"Udinese Calcio","Lazio Roma",0,0
+it.1,2019-20,2020-07-16,"SPAL 2013 Ferrara","Inter",0,4
+it.1,2019-20,2020-07-16,"Torino FC","Genoa CFC",3,0
+it.1,2019-20,2020-07-18,"AC Milan","Bologna FC",5,1
+it.1,2019-20,2020-07-18,"Cagliari Calcio","Sassuolo Calcio",1,1
+it.1,2019-20,2020-07-18,"Hellas Verona","Atalanta",1,1
+it.1,2019-20,2020-07-19,"ACF Fiorentina","Torino FC",2,0
+it.1,2019-20,2020-07-19,"AS Roma","Inter",2,2
+it.1,2019-20,2020-07-19,"Brescia Calcio","SPAL 2013 Ferrara",2,1
+it.1,2019-20,2020-07-19,"Genoa CFC","US Lecce",2,1
+it.1,2019-20,2020-07-19,"Parma Calcio 1913","Sampdoria",2,3
+it.1,2019-20,2020-07-19,"SSC Napoli","Udinese Calcio",2,1
+it.1,2019-20,2020-07-20,"Juventus","Lazio Roma",2,1
+it.1,2019-20,2020-07-21,"Atalanta","Bologna FC",1,0
+it.1,2019-20,2020-07-21,"Sassuolo Calcio","AC Milan",1,2
+it.1,2019-20,2020-07-22,"Inter","ACF Fiorentina",0,0
+it.1,2019-20,2020-07-22,"Parma Calcio 1913","SSC Napoli",2,1
+it.1,2019-20,2020-07-22,"SPAL 2013 Ferrara","AS Roma",1,6
+it.1,2019-20,2020-07-22,"Sampdoria","Genoa CFC",1,2
+it.1,2019-20,2020-07-22,"Torino FC","Hellas Verona",1,1
+it.1,2019-20,2020-07-22,"US Lecce","Brescia Calcio",3,1
+it.1,2019-20,2020-07-23,"Lazio Roma","Cagliari Calcio",2,1
+it.1,2019-20,2020-07-23,"Udinese Calcio","Juventus",2,1
+it.1,2019-20,2020-07-24,"AC Milan","Atalanta",1,1
+it.1,2019-20,2020-07-25,"Brescia Calcio","Parma Calcio 1913",1,2
+it.1,2019-20,2020-07-25,"Genoa CFC","Inter",0,3
+it.1,2019-20,2020-07-25,"SSC Napoli","Sassuolo Calcio",2,0
+it.1,2019-20,2020-07-26,"AS Roma","ACF Fiorentina",2,1
+it.1,2019-20,2020-07-26,"Bologna FC","US Lecce",3,2
+it.1,2019-20,2020-07-26,"Cagliari Calcio","Udinese Calcio",0,1
+it.1,2019-20,2020-07-26,"Hellas Verona","Lazio Roma",1,5
+it.1,2019-20,2020-07-26,"Juventus","Sampdoria",2,0
+it.1,2019-20,2020-07-26,"SPAL 2013 Ferrara","Torino FC",1,1
+it.1,2019-20,2020-07-28,"Inter","SSC Napoli",2,0
+it.1,2019-20,2020-07-28,"Parma Calcio 1913","Atalanta",1,2
+it.1,2019-20,2020-07-29,"ACF Fiorentina","Bologna FC",4,0
+it.1,2019-20,2020-07-29,"Cagliari Calcio","Juventus",2,0
+it.1,2019-20,2020-07-29,"Hellas Verona","SPAL 2013 Ferrara",3,0
+it.1,2019-20,2020-07-29,"Lazio Roma","Brescia Calcio",2,0
+it.1,2019-20,2020-07-29,"Sampdoria","AC Milan",1,4
+it.1,2019-20,2020-07-29,"Sassuolo Calcio","Genoa CFC",5,0
+it.1,2019-20,2020-07-29,"Torino FC","AS Roma",2,3
+it.1,2019-20,2020-07-29,"Udinese Calcio","US Lecce",1,2
+it.1,2019-20,2020-08-01,"AC Milan","Cagliari Calcio",3,0
+it.1,2019-20,2020-08-01,"Atalanta","Inter",0,2
+it.1,2019-20,2020-08-01,"Brescia Calcio","Sampdoria",1,1
+it.1,2019-20,2020-08-01,"Juventus","AS Roma",1,3
+it.1,2019-20,2020-08-01,"SSC Napoli","Lazio Roma",3,1
+it.1,2019-20,2020-08-02,"Bologna FC","Torino FC",1,1
+it.1,2019-20,2020-08-02,"Genoa CFC","Hellas Verona",3,0
+it.1,2019-20,2020-08-02,"SPAL 2013 Ferrara","ACF Fiorentina",1,3
+it.1,2019-20,2020-08-02,"Sassuolo Calcio","Udinese Calcio",0,1
+it.1,2019-20,2020-08-02,"US Lecce","Parma Calcio 1913",3,4
 it.1,2020-21,2020-09-19,"ACF Fiorentina","Torino FC",1,0
 it.1,2020-21,2020-09-19,"Hellas Verona FC","AS Roma",3,0
 it.1,2020-21,2020-09-20,"Parma Calcio 1913","SSC Napoli",0,2
