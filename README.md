@@ -67,7 +67,7 @@ Gebruik boven in het **Live wedstrijdcentrum** de twee dropdowns voor databron e
 | Databron | Competerende dekking | Gratis gegevens | Sleutel |
 |---|---|---|---|
 | OpenLigaDB | Bundesliga 1/2/3, UCL, DFB-Pokal, vrouwen-Bundesliga, La Liga, Premier League (community) | Community-scores en doelpuntentijdlijn, mogelijk vertraagd | Niet nodig |
-| TheSportsDB v1 | Eredivisie, Eerste Divisie, Belgische Pro League, Premier League, Championship, Scottish Premiership, Bundesliga, Serie A, Ligue 1, La Liga, MLS, Brazilië, Oostenrijk | **Beperkte selectie**: maximaal één volgende, één vorige en tot drie wedstrijden op de huidige dag. **Geen echte livescores of doelpuntenfeed** in gratis v1 | Ingebouwde openbare gedeelde sleutel 123 |
+| TheSportsDB v1 | Eredivisie, Eerste Divisie, Belgische Pro League, Premier League, Championship, Scottish Premiership, Bundesliga, Serie A, Ligue 1, La Liga, MLS, Brazilië, Oostenrijk | **Beperkte selectie**: maximaal één volgende, één vorige en tot drie wedstrijden per dag (gisteren, vandaag en morgen). **Geen echte livescores of doelpuntenfeed** in gratis v1 | Ingebouwde openbare gedeelde sleutel 123 |
 | football-data.org v4 | Eredivisie, Premier League, La Liga, Bundesliga, Serie A, Ligue 1, Portugal, Champions League, Championship, Brazilië, WK, EK (afhankelijk van abonnement) | Gratis basisgegevens en **vertraagde** standen. Eventtijdlijnen kunnen ontbreken | Persoonlijke API-sleutel |
 
 Beschikbare wedstrijden en abonnementsrechten worden bepaald door de aanbieders. De app verzint geen ontbrekende scores, doelpunten of livestreams. Bronstatus en vertragingsmeldingen staan zichtbaar in de interface.
@@ -82,7 +82,7 @@ TheSportsDB werkt direct zonder persoonlijke sleutel. Voor de grotere wedstrijdl
 4. Sluit het bestaande SupahBetting-venster en start opnieuw met **start_dashboard.bat**.
 5. Kies de bron **football-data.org**, daarna bijvoorbeeld **Eredivisie**.
 
-De API-sleutel wordt uitsluitend door de lokale Python-server als HTTP-header gebruikt, niet naar de browser gestuurd en niet opgeslagen in GitHub. **Deel hem niet in chats of je repository.** Zonder sleutel werken OpenLigaDB en TheSportsDB gewoon door.
+De API-sleutel wordt uitsluitend door de lokale Python-server als HTTP-header gebruikt, niet naar de browser gestuurd en niet opgeslagen in GitHub. Bij deze bron staat in de interface zichtbaar: **Football data provided by the Football-Data.org API**. **Deel hem niet in chats of je repository.** Zonder sleutel werken OpenLigaDB en TheSportsDB gewoon door.
 
 De gratis [football-data.org](https://www.football-data.org/pricing) API omvat volgens de aanbieder 12 competities, **vertraagde scores** en 10 API-calls per minuut. SupahBetting cachet per competitie 10 minuten en vraagt nooit alle competities tegelijk op bij deze provider.
 
@@ -93,6 +93,8 @@ Alle bronnen gebruiken dezelfde popup met teamnamen, score, status, bronupdate e
 - **OpenLigaDB:** doelpuntenfeed wanneer de bron doelpunten registreert.
 - **TheSportsDB gratis:** beperkt speelschema en recente uitslagen, geen volledige feed.
 - **football-data.org gratis:** vertraagde resultaten. Gedetailleerde doelpuntengebeurtenissen zijn afhankelijk van een uitgebreider abonnement.
+
+Volgens de [voorwaarden van TheSportsDB](https://www.thesportsdb.com/docs_terms_of_use.php) is de gratis API voor ontwikkelprojecten bedoeld en vereist het publiceren van een mobiele app in een appstore een betaald abonnement. De andere providers hebben eigen voorwaarden, waaronder verplichte bronvermelding.
 
 De videospeler is optioneel: alleen een handmatig geverifieerde, officiële YouTube-nocookie-embed mag worden toegevoegd in het lokaal genegeerde bestand **.supahbetting/official_broadcasts.json**. De sleutels worden per provider verschillend opgebouwd:
 
