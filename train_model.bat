@@ -7,7 +7,7 @@ echo   SupahBetting - voetbal basismodel opnieuw trainen
 echo ====================================================
 echo.
 echo Training met echte afgeronde historische wedstrijden.
-echo Training: historie vanaf 2020, validatie 2024/25,
+echo Training: historie vanaf 2017 waar beschikbaar, validatie 2024/25,
 echo test 2025/26 en aanvullende beoordeling 2026/27.
 echo De opgeslagen modellen worden bijgewerkt. Er worden
 echo geen API-sleutels of bookmakeraccounts gebruikt.
