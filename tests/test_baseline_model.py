@@ -76,7 +76,7 @@ class HistoricalDataTests(unittest.TestCase):
 
     def test_chronological_split_does_not_share_dates(self):
         days=[date(2024,1,1)+__import__("datetime").timedelta(days=i//4)
-              for i in range(120)]
+              for i in range(480)]
         train,val,test=_split_dates(days)
         self.assertTrue(max(days[i] for i in train)<min(days[i] for i in val))
         self.assertTrue(max(days[i] for i in val)<min(days[i] for i in test))
