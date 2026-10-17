@@ -122,8 +122,10 @@ def read_rows(path):
         else:
             payload = json.loads(data)
             # Both the normal list export and a root list under a records key.
-            rows = (payload.get("matches") or payload.get("data") or payload.get("results"))
-            if isinstance(payload, dict) else payload
+            if isinstance(payload, dict):
+                rows = payload.get("matches") or payload.get("data") or payload.get("results")
+            else:
+                rows = payload
     except (ValueError, csv.Error, TypeError):
         raise BridgeError("Ongeldige CSV/JSON-indeling; controleer het bronbestand") from None
     if not isinstance(rows, list) or len(rows) > MAX_RECORDS:
