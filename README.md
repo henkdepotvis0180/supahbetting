@@ -1,4 +1,4 @@
-# SupahBetting v0.6.0
+# SupahBetting v0.7.0
 
 **Lokaal Nederlandstalig voetbalanalyseplatform met een betrouwbare basis voor enkelvoudige én combinatie-betslips.**
 
@@ -7,7 +7,8 @@ SupahBetting is software voor onderzoek en **fictieve weddenschappen**. Nieuw in
 ## Wat is werkend?
 
 - **Nieuw v0.5:** kies een databron en competitie in één dashboard. TheSportsDB gratis toont beperkt de Eredivisie/Eerste Divisie, België en internationale competities; football-data.org voegt vertraagde scores toe met een optionele persoonlijke API-sleutel.
-- **Nieuw v0.6:** native fork-exportadapters, onderzoeksranglijst voor modelkansen en bookmakerprijzen, deduplicatie en bron-/versheidscontrole.
+- **Nieuw v0.7:** bijgeleverde, werkelijk getrainde voorspellingsmodellen voor zeven competities (historische scoredata, 2025/26-chronologische test) en directe voorspellingen in het dashboard.
+- **v0.6:** native fork-exportadapters, onderzoeksranglijst, deduplicatie en versheidscontrole.
 - **v0.5.1:** lokaal centraal configuratiebestand voor API-sleutels.
 - Backend-cache per vaste API-route, duidelijke foutafhandeling, bron- en vertragingslabels, geen live bookmakerodds.
 
@@ -183,6 +184,99 @@ De server accepteert uitsluitend de vaste HTTPS-YouTube-nocookie-embedvorm. De i
 - Een wedstrijd uit de feed kan als uitgangspunt voor een **nieuwe analyse** worden gekozen; het formulier vereist daarna eigen xG/odds.
 - De ODbL-datalicentie kan extra eisen stellen bij herpublicatie of het opbouwen en verspreiden van afgeleide databases; raadpleeg de licentietekst.
 - Alleen lokaal beschikbaar op 127.0.0.1, geen accountbeveiliging of publieke hosting.
+
+## Voorgetraind basismodel — zonder zelf te trainen (v0.7.0)
+
+SupahBetting wordt **geleverd met een daadwerkelijk getraind modelbestand**:
+\`supahbetting/models/baseline.json\`. Je hoeft de originele drie Python-forks
+niet op je eigen computer te trainen om meteen de modelkansen te zien.
+
+**Wat is getraind?** We hebben een eigen, reproduceerbaar en lichtgewicht
+**historisch doelpuntenmodel** ontwikkeld: per competitie worden de
+aanvals- en verdedigingskracht van de clubs en het thuisvoordeel geleerd op
+basis van echte afgelopen wedstrijden. Een onafhankelijk Poisson-model zet
+verwachte goals om in kansen op 1/X/2. Dit zijn **geschatte doelpunten op basis
+van historische scores, geen echte schotgebaseerde xG-cijfers**.
+
+De modelschattingen worden niet overgenomen uit de originele ProphitBet- of
+Prediict-netwerken. Hun modellen blijven afzonderlijk bruikbaar via de
+native exportadapters uit v0.6. Het eigen basismodel is eenvoudig uit te breiden,
+zonder TensorFlow, Playwright of joblib nodig te hebben.
+
+**Trainingsdata:** 13.172 echte volledige uitslagen uit de [publieke
+OpenFootball-dataset](https://github.com/openfootball/football.json),
+beschikbaar onder CC0 1.0. De data zijn lokaal meegeleverd in
+\`data/historical/{nl.1,be.1,en.1,de.1,es.1,it.1,fr.1}.csv\`.
+Zie \`data/historical/README.md\` voor de herkomst en onvolledige seizoenen.
+
+### Wat is er precies getest?
+
+- **Training:** uitslagen uit 2020/21–2023/24 (niet alle competities hebben
+  ieder jaar een volledig bronbestand).
+- **Parameterkeuze:** alleen wedstrijden uit **2024/25**, op laagste
+  multiclass log loss.
+- **Onafhankelijke periode voor parameterkeuze:** 2025/26
+  (2.037 geregistreerde eindstanden), chronologisch voorspeld zonder
+  toekomstige uitslagen te gebruiken. Na elke kalenderdag worden de echt
+  geregistreerde scores gebruikt voor de volgende dag.
+- **Brier-score 2025/26:** getraind model **0,58474** tegen **0,63649**
+  voor de eenvoudige referentie met historisch berekende thuis/gelijk/uit-frequenties.
+- **Log loss 2025/26:** model **0,98432** tegenover eenvoudige referentie
+  **1,05357**. Lager betekent een nauwkeurigere kansinschatting.
+
+**Beperkingen:** de referentie is geen bookmakersbenchmark.
+Verschillende 2025/26-datasets zijn onvolledig; de Belgische bron mist
+2021/22–2023/24 en heeft slechts 104 testwedstrijden. Het model heeft
+geen toegang tot tactieken, opstellingen, blessures, speelstijl, bookmakerodds
+of live clubnieuws. En een goede Brier-score **bewijst niet dat weddenschappen
+winstgevend zijn**. Zie de exacte aantallen per competitie in het meegeleverde
+modelbestand (sectie \`evaluation.by_league\`).
+
+### Direct gebruiken in je dashboard
+
+1. Start **start_dashboard.bat** zoals gebruikelijk. Het model wordt
+   bij het openen van de server **automatisch geladen** uit de ZIP.
+2. Onder **Voorspellingen van ons basismodel** kies je een competitie en
+   typ je de twee clubs. Bijvoorbeeld **Eredivisie**, **Ajax** en **PSV**.
+3. Het dashboard toont verwachte goals en de modelkansen voor **1/X/2**,
+   inclusief de datumbereik- en onzekerheidsinformatie.
+4. Klik **Gebruik modeldoelpunten in handmatige analyse** om het bestaande
+   bettinganalyseformulier te vullen. De **bookmakerodds worden bewust
+   niet verzonnen** en moet je zelf invoeren.
+5. Bij een geplande wedstrijd uit een ondersteunde competitie kun je ook
+   de knop **Gebruik wedstrijd + getraind model** in het livecentrum kiezen.
+   Alleen wanneer de clubnamen aan een echt getrainde club kunnen worden
+   gekoppeld, worden de verwachte goals ingevuld. Anders blijft handmatige
+   invoer vereist.
+
+### Zelf later uitbreiden of opnieuw trainen
+
+Dubbelklik op **train_model.bat** in je uitgepakte map, of voer uit:
+
+\`\`\`powershell
+python -m supahbetting.trained_model
+\`\`\`
+
+De lokale Python-standaardbibliotheek is genoeg. Training wijzigt
+\`supahbetting/models/baseline.json\` en laat de vergelijking met de
+referentie zien. Start SupahBetting opnieuw om het bijgewerkte model te laden.
+Dit is **optioneel**: de release bevat al getrainde parameters.
+
+De zeven CSV's zijn een **reproduceerbare basis**. Voeg later uitsluitend
+echte, gedateerde eindstanden van rechtmatig bruikbare bronnen toe en houd
+dezelfde kolomnamen en seizoenssplits aan. Het trainingsscript is
+gedocumenteerd in \`supahbetting/trained_model.py\` en wordt via GitHub
+Actions op de featurebranch opnieuw uitgevoerd. Het gebruikt geen API-token.
+
+### Wat dit nog NIET doet
+
+- Geen automatische training van de originele TensorFlow-/XGBoost-/
+  LightGBM-netwerken uit de drie forks.
+- Geen geautomatiseerde wedstrijd-/opstellingsfeatures of actuele bookmakerprijzen.
+- Geen onafhankelijk bewezen rendement, geen inschatting van gegarandeerde
+  betresultaten en geen echte inzetten.
+- Geen betrouwbare voorspellingen voor totaal nieuwe of onherkenbare clubs;
+  het model weigert onbevestigde teammatches in plaats van iets te gokken.
 
 ## Native integratie van de drie GitHub-forks (v0.6.0)
 
