@@ -12,6 +12,7 @@ import json
 from pathlib import Path
 
 from .research_data import LOCAL, atomic_json
+from .research_signals import fixture_signals
 from .trained_model import (
     LEAGUES, CURRENT_SEASON, TEST_SEASON, VALIDATION_SEASON, MODEL_FILE,
     LeagueRatings, run_sequential, score, summarize,
@@ -198,6 +199,7 @@ def build_research_report(inventory, candidate, shadow):
         "retrieval_failures": inventory.get("failed_sources", []),
         "source_coverage": inventory["coverage"],
         "upcoming_fixtures": inventory["fixtures"][:60],
+        "derived_team_form_preview": fixture_signals(matches, inventory["fixtures"])[:30],
         "new_finished_matches": [
             {k: m[k] for k in ("id", "league", "date", "home", "away", "hg", "ag")}
             for m in matches if m["id"] in set(inventory["new_final_match_ids"])
