@@ -213,7 +213,8 @@ def get_eredivisie(*,now=None,fetch_html=None,network=True):
     now=now or datetime.now(timezone.utc)
     if now.tzinfo is None:
         raise ValueError("Eis tijdzone bij monitorcheck")
-    results,warnings=_load_snapshot(now=now)
+    results,snapshot_date,snapshot_fresh=_load_snapshot(now=now)
+    warnings=[]
     if not network:
         if not results:
             warnings.append("KNVB: geen actuele officiële agendagegevens beschikbaar")
