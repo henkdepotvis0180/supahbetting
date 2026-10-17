@@ -32,7 +32,10 @@ def _utc(iso):
 
 def _approved_final(row, model, now):
     """A real finished match, at least 90 mins after claimed kickoff."""
-    if not isinstance(row, dict) or row.get("status") != "finished":
+    if (not isinstance(row, dict) or row.get("status") != "finished"
+            or row.get("source_confirmed") is not True):
+        # A stale cached source may contain plausible looking final scores.
+        # Do not train from it until an active provider re-confirms the record.
         return None
     league = row.get("league")
     if league not in LEAGUES or league == "be.1":
@@ -111,7 +114,10 @@ def merge_verified_locally(inventory, *, finals_path=LOCAL_FINALS):
     if not isinstance(original, list) or len(original) < 1000:
         raise ValueError("Full real historical training archive not yet available")
     def key(r):
-        return (r["league"],r["date"],norm(r["home"]),norm(r["away"]))
+        from .research_upcoming import _team_name
+        league=r["league"]
+        return (league,r["date"],norm(_team_name(league,r["home"])),
+                norm(_team_name(league,r["away"])))
     by_key = {key(r):r for r in original}
     extras, ambiguous = [], 0
     for row in sources:
