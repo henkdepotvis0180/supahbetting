@@ -368,3 +368,37 @@ color:#dce8f5}
   .research-insight{padding:12px}
   .research-insight-number{font-size:1.17rem}
 }
+
+/* v0.12 research future fixture forecast list. */
+.research-fixture-filters{display:flex;flex-wrap:wrap;gap:14px;margin:15px 0}
+.research-fixture-filters label{display:flex;flex:1;min-width:175px;flex-direction:column;gap:5px;
+  color:var(--muted);font-size:.78rem}
+.research-fixture-filters select{width:100%;padding:10px 12px;border:1px solid var(--edge);
+  border-radius:9px;background:var(--panel2);color:var(--text)}
+.research-fixture-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.fixture-card{padding:16px;min-width:0;border-radius:13px}
+.fixture-card-top{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  color:var(--muted);font-size:.78rem}
+.fixture-card h3{margin:12px 0 8px;overflow-wrap:anywhere;font-size:1.08rem}
+.fixture-provider,.fixture-details,.fixture-warning{font-size:.77rem;margin:8px 0;
+  color:var(--muted);overflow-wrap:anywhere}
+.fixture-warning{color:#f8d087}
+.fixture-provider a{color:var(--blue)}
+.fixture-chances{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;margin:14px 0}
+.fixture-metric{display:flex;flex-direction:column;gap:5px;padding:10px 8px;border:1px solid var(--edge);
+  border-radius:9px;background:rgba(17,37,57,.4);min-width:0}
+.fixture-metric span{font-size:.72rem;color:var(--muted)}
+.fixture-metric strong{font-size:1.1rem;color:var(--mint)}
+.fixture-empty{padding:15px;color:var(--muted)}
+@media(max-width:880px){
+  .research-fixture-list{grid-template-columns:1fr}
+}
+@media(max-width:590px){
+  .research-fixture-filters{gap:8px}
+  .research-fixture-filters label{min-width:125px}
+  .fixture-card{padding:13px}
+  .fixture-chances{gap:5px}
+  .fixture-metric{padding:8px 5px}
+  .fixture-metric strong{font-size:.96rem}
+}
