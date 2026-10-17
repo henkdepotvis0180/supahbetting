@@ -51,7 +51,7 @@ jobs:
           from datetime import datetime, timezone
           from supahbetting.research_data import retrieve,parse_source
           now=datetime.now(timezone.utc).date()
-          for league,season in (('en.1','2016-17'),('en.1','2026-27')):
+          for league,season in (('en.1','2015-16'),('en.1','2026-27')):
               data,status,url=retrieve(league,season)
               print(season,status,url)
               if data is not None:
