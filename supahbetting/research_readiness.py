@@ -55,6 +55,39 @@ def audit_startup(*, folder=LOCAL, now=None, model=None):
         bool(model and model.get("training_start_date", "9999") <= "2016-12-31"
              and model.get("training_matches", 0) >= 15000)
     )
+    # Overall ten-year coverage must NOT be confused with coverage for each
+    # league: OpenFootball's Dutch results currently begin only in 2018/19.
+    league_coverage={}
+    for league in LEAGUES:
+        if league=="be.1":
+            continue
+        league_rows=[row for row in rows if row.get("league")==league]
+        if league_rows:
+            first=min(row["date"] for row in league_rows)
+            last=max(row["date"] for row in league_rows)
+            observed_seasons=len({row["season"] for row in league_rows})
+            games=len(league_rows)
+        elif model is not None:
+            diagnostic=model.get("evaluation",{}).get("by_league",{}).get(league,{})
+            counts=diagnostic.get("season_matches",{})
+            known=[season for season,num in counts.items() if num]
+            first=min(known)+"-01-01" if known else None
+            last=model.get("leagues",{}).get(league,{}).get("last_result_date")
+            observed_seasons=len(known)
+            games=model.get("leagues",{}).get(league,{}).get("training_matches",0)
+        else:
+            first=last=None
+            observed_seasons=games=0
+        league_coverage[league]={
+            "league":league,
+            "season_count":observed_seasons,
+            "at_least_10_seasons":observed_seasons>=10,
+            "earliest":first,
+            "latest":last,
+            "match_count":games,
+        }
+    ten_year_leagues=sum(cov["at_least_10_seasons"]
+                        for cov in league_coverage.values())
     source_drift = None
     if inventory and model and rows and model.get("research_provenance"):
         # A historical inventory and locally trained model must match exactly.
@@ -100,6 +133,9 @@ def audit_startup(*, folder=LOCAL, now=None, model=None):
         "historical_test_match_count": holdout.get("matches"),
         "historical_test_logloss": holdout.get("model_logloss"),
         "observed_seasons": len(active_seasons),
+        "leagues_with_10_seasons": ten_year_leagues,
+        "active_league_count":len(league_coverage),
+        "league_history":league_coverage,
         "local_scores": len(rows),
         "model_matches": model.get("training_matches") if model else None,
         "earliest_local_date": earliest,
