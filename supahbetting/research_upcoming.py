@@ -545,6 +545,21 @@ def refresh_upcoming(*, inventory=None, data_dir=LOCAL, now=None,
         else:
             fetched, errors = provider_fetcher(now=now)
         base_model = model if model is not None else _load_model()
+        # v0.14: a separately authorized DED full-season results API can
+        # repair weeks of missing scores, not just the last 3 matchdays.
+        # Test-injected provider data must NEVER trigger real remote requests.
+        nl_status = {"status":"not_checked","league":"nl.1"}
+        if provider_fetcher is None:
+            from .research_nl_api import refresh_nl_api
+            nl_status = refresh_nl_api(
+                now=now,data_dir=data_dir,model=base_model,inventory=inventory
+            )
+            if nl_status.get("status") in ("subscription_required","rate_limited",
+                                          "api_http_error","stale_api_cache","error"):
+                errors.append("Eredivisie uitslagen: "+nl_status["status"]+
+                              " (bestaande gegevens blijven behouden)")
+            if nl_status.get("model_retrained"):
+                base_model = _load_model()
         refresh_state = {"updated": False, "added": 0,
                          "conflicts": 0, "local_retrained": False}
         if isinstance(inventory, dict) and len(inventory.get("matches", [])) >= 1000 and base_model:
@@ -576,7 +591,12 @@ def refresh_upcoming(*, inventory=None, data_dir=LOCAL, now=None,
             forecast_log=data_dir / "provider_forecast_log.json",
             output=data_dir / "upcoming_predictions.json",
         )
-        result["local_data_update"] = refresh_state
+        result["nl_result_source"] = nl_status
+        result["local_data_update"] = {
+            **refresh_state,
+            "nl_api_added": nl_status.get("new_confirmed",0),
+            "nl_api_retrained": nl_status.get("model_retrained",False),
+        }
         result["provider_warnings"] = errors
         atomic_json(data_dir / "upcoming_predictions.json", result)
         return result
