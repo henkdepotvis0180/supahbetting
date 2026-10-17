@@ -142,7 +142,7 @@ class UpcomingTests(unittest.TestCase):
             return {"events":[]}
         items,warnings=fetch_provider_schedules(
             now=NOW,football_data=DisabledFootball(),
-            sports_fetcher=source,openliga=EmptyOpenliga(),pause=0)
+            sports_fetcher=source,openliga=EmptyOpenliga(),pause=0,knvb_fetcher=lambda **kw:([],[]))
         self.assertEqual(items,[])
         self.assertEqual(len(requests),30)
         self.assertTrue(any("API-token" in warning for warning in warnings))
@@ -163,7 +163,7 @@ class UpcomingTests(unittest.TestCase):
             raise ProviderHTTPFailure("sportsdb", 403)
         items,warnings=fetch_provider_schedules(
             now=NOW, football_data=DisabledFootball(),sports_fetcher=block,
-            openliga=independent,pause=0
+            openliga=independent,pause=0,knvb_fetcher=lambda **kw:([],[])
         )
         self.assertEqual(items,[])
         self.assertEqual(len(called),1,"No 30-request storm after HTTP denial")
@@ -184,7 +184,7 @@ class UpcomingTests(unittest.TestCase):
             raise ProviderHTTPFailure("sportsdb",429)
         _, warnings=fetch_provider_schedules(
             now=NOW, football_data=DisabledFootball(),
-            sports_fetcher=throttle,openliga=StubOpenliga(),pause=0
+            sports_fetcher=throttle,openliga=StubOpenliga(),pause=0,knvb_fetcher=lambda **kw:([],[])
         )
         self.assertEqual(len(called),1)
         self.assertTrue(any("HTTP 429" in value for value in warnings))
@@ -202,7 +202,7 @@ class UpcomingTests(unittest.TestCase):
             raise OSError("network unavailable")
         _,warnings=fetch_provider_schedules(
             now=NOW,football_data=DisabledFootball(),
-            sports_fetcher=offline,openliga=StubOpenliga(),pause=0
+            sports_fetcher=offline,openliga=StubOpenliga(),pause=0,knvb_fetcher=lambda **kw:([],[])
         )
         self.assertEqual(len(called),1)
         self.assertTrue(any("TheSportsDB" in value for value in warnings))
