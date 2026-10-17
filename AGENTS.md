@@ -108,3 +108,14 @@ De tools zijn sinds v0.6 gekoppeld via hun native CSV/JSON-exportbestanden. De e
 - Iedere update moet de training, holdoutdata (Brier/log loss), brondekking, Python tests en JavaScript-syntaxchecks publiceren.
 - Voor updates: gebruik .github/workflows/rolling-season-training.yml; PR naar main pas wanneer artifacts en CI slagen.
 - Behoud veiligheid: geen geheime tokens in modellen/logs en geen echte gokacties of onbewezen ROI-claims.
+
+
+## Extra historische training v0.8.2
+- Aantal Poisson-trainingsuitslagen is nu **19.884**, waarvan **6.417** uit oudere seizoenen (2017/18 t/m 2019/20). Gecontroleerde bron: OpenFootball CC0.
+- Zie `data/historical/provenance_pre2020.json` met bron-SHA's; sommige ligajaren zijn onvolledig of ontbreken.
+- Modelversie 0.10.0 staat in `supahbetting/models/baseline.json`; bewaar v0.9.0 in `supahbetting/models/baseline_v0.9.0.json`. Het Elo-model `models/baseline_v1.json` mag niet worden overschreven.
+- Training en controles: `.github/workflows/historical-depth-training.yml`. Broncode gebruikt **uitsluitend 2024/25 voor hyperparameters**, beoordeelt 2025/26 en 2026/27 voor updating van het scoremodel zonder toekomst-lekkage.
+- Vergelijkingsrapport `training_reports/historical_depth_2026-10-17.json`. Scores zijn gemengd: klein beter in 2025/26, klein slechter in 2026/27. Doe nooit alsof méér matches bewezen betere bettingvoorspellingen zijn.
+- Beschouw modelselectie op reeds bekeken holdouts als testlek op besluitniveau. Nieuwe onafhankelijke toekomstige wedstrijden zijn noodzakelijk voor echt bewijs.
+- Respecteer data-eigendom; geen bulk-automatisch trainen op football-data.co.uk of andere bestanden wanneer de bronvoorwaarden dat beperken.
+- Blijf alleen paperbets ondersteunen; geen garanties, geen automatisch echt-geld inzetten, geen verzonnen live odds.
