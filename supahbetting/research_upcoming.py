@@ -322,6 +322,7 @@ def build_upcoming(*, model=None, inventory=None, fetched=None, now=None,
     confirmed = sum(row["source_confirmed"] for row in rows)
     # Yesterday and today (plus a short rolling recovery window) are shown as
     # verified provider results, never as demo or 2016 archive placeholders.
+    local_day = now.astimezone().date()
     recent_results = sorted([
         {k: final.get(k) for k in (
             "provider", "source_id", "league", "league_name", "home", "away",
@@ -329,8 +330,8 @@ def build_upcoming(*, model=None, inventory=None, fetched=None, now=None,
         )}
         for final in recent_finals
         if final.get("league") != "be.1"
-        and final.get("date", "") >= (now.date()-timedelta(days=2)).isoformat()
-        and final.get("date", "") <= now.date().isoformat()
+        and final.get("date", "") >= (local_day-timedelta(days=2)).isoformat()
+        and final.get("date", "") <= local_day.isoformat()
     ], key=lambda row:(row["date"],row["league"],row["home"]),reverse=True)
     completed_seen=set()
     unique_results=[]
@@ -400,7 +401,8 @@ def fetch_provider_schedules(*, now=None, football_data=None,
     else:
         warnings.append("football-data.org API-token ontbreekt: beperkt gratis TheSportsDB-schema")
     sports_days = [
-        (now + timedelta(days=offset)).date().isoformat() for offset in (-1, 0, 1)
+        (now.astimezone() + timedelta(days=offset)).date().isoformat()
+        for offset in (-1, 0, 1)
     ]
     for provider_code, league in PROVIDER_LEAGUES["sportsdb"].items():
         paths = [
