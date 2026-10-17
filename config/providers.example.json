@@ -1,0 +1,8 @@
+{
+  "_uitleg": "Voorbeeldbestand zonder echte sleutels. SupahBetting maakt zelf .supahbetting/providers.json aan. Voeg nieuwe provider-items toe zodra er een adapter voor bestaat. Nooit uploaden met ingevulde sleutel.",
+  "providers": {
+    "football-data": {
+      "api_key": ""
+    }
+  }
+}
