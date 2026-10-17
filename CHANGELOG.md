@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.7.0 — 2026-10-17
+- **Echt getraind 1X2-basismodel** met Elo-sterkte, recente vorm en logistieke regressie, modelparameters opgeslagen als veilig JSON zonder pickle/joblib.
+- GitHub Actions traint op 18.085 historische wedstrijden uit jouw Prediict-fork; vijf grote Europese competities.
+- Chronologische train/validatie/holdout-toetsing, 3.143 testwedstrijden: 53,33% nauwkeurigheid, 0,98164 log loss tegenover 44,61% en 1,06924 voor een eenvoudig constant referentiemodel.
+- Definitieve JSON-parameters zijn ná die holdout opnieuw op de gehele bronhistorie getraind. De gerapporteerde testcijfers horen bij het eerdere pretest-model, niet bij een onafhankelijk geteste definitieve fit.
+- Brongegevens lopen slechts tot **2024-06-02**; expliciete ouderdomswaarschuwing in de applicatie.
+- Live wedstrijdpopup krijgt knop **Bereken modelkansen** met geschatte 1/X/2 en waarschuwing bij onbekende teams of oude historische informatie.
+- Modellen worden los van de oddsvergelijking en paperbets gehouden; geen automatische koppeling met bookmakerprijzen.
+- Apart lokaal Windows-script train_baseline.bat om met volledige, bijgewerkte historie opnieuw te trainen in eigen Python-venv.
+- Extra API-endpoints voor status en modelanalyse, directe chronologische lekpreventietests, dataset-hash voor reproduceerbaarheid en Nederlandstalig trainingslogboek.
+- Geen bewezen waarde boven bookmakerkansen, geen live odds en geen geldtransacties.
+
+
 ## v0.6.0 — 2026-10-17
 - Drie echte native exportadapters toegevoegd voor ProphitBet-v2 (CSV), OddsHarvester (CSV/JSON/NDJSON) en Prediict (CSV/JSON).
 - Alleen geverifieerde velden en 1X2-uitkomsten gekoppeld; geen code of modelbestanden van Prediict gekopieerd wegens ontbrekende licentie.
