@@ -177,6 +177,7 @@
     if(eredivisie.status && eredivisie.status!=="not_checked"){
       const labels={
         loaded:"Eredivisie API gecontroleerd",
+        loaded_but_lagging:"Eredivisie API bereikbaar, maar scores lopen achter",
         no_api_key:"Eredivisie: API-sleutel ontbreekt",
         subscription_required:"Eredivisie: jouw API-abonnement geeft geen DED-toegang",
         rate_limited:"Eredivisie: API-verzoeklimiet bereikt",
@@ -189,7 +190,9 @@
       const label=labels[eredivisie.status]||"Eredivisie: "+eredivisie.status;
       note.append(el("p",label+
         (eredivisie.model_last_score_date?
-         " · bijgewerkte modeldata t/m "+eredivisie.model_last_score_date:"")+
+         " · model t/m "+eredivisie.model_last_score_date:"")+
+        (eredivisie.latest_api_score_date?
+         " · nieuwste API-eindstand "+eredivisie.latest_api_score_date:"")+
         (eredivisie.new_confirmed?
          " · nieuwe uitslagen "+eredivisie.new_confirmed:"")+
         (eredivisie.http_status?" · HTTP "+eredivisie.http_status:""),
