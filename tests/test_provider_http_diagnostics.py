@@ -9,6 +9,18 @@ from supahbetting.external_feeds import (
 
 
 class ProviderHTTPDiagnosticsTests(unittest.TestCase):
+    def setUp(self):
+        # Provider HTTP cooldown is intentionally process-wide in production,
+        # but each independent mock HTTP response needs a fresh test scope.
+        from supahbetting import external_feeds
+        with external_feeds._PROVIDER_COOLDOWN_LOCK:
+            external_feeds._PROVIDER_COOLDOWN.clear()
+
+    def tearDown(self):
+        from supahbetting import external_feeds
+        with external_feeds._PROVIDER_COOLDOWN_LOCK:
+            external_feeds._PROVIDER_COOLDOWN.clear()
+
     def _simulate(self, status):
         class Broken:
             def open(self, req, timeout=None):
