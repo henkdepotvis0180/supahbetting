@@ -17,7 +17,7 @@ Projectdoel: één overzichtelijke Nederlandstalige voetbalanalyse-app met afzon
 2. OddsHarvester: `henkdepotvis0180/OddsHarvester`; MIT LICENSE.txt, Python 3.12+, Playwright. Geen ongeoorloofde scraping.
 3. Prediict: `henkdepotvis0180/prediict`; licentie niet vastgesteld. Geen broncode kopiëren totdat toestemming/licentie is bevestigd.
 
-De tools zijn *nog niet* direct aan elkaar gekoppeld. Het importformaat in README is de eerste interoperabele grens.
+De tools zijn sinds v0.6 gekoppeld via hun native CSV/JSON-exportbestanden. De externe model- en scrapingprocessen blijven afzonderlijk; v0.7 traint een eigen, veilig JSON-basismodel en bundelt geen externe ML-uitvoerbare code.
 
 ## Vereisten bij elke ontwikkeling
 1. Paper-only is de standaard. Geen real-money orders of bookmaker-logins.
