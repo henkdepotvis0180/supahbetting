@@ -10,6 +10,7 @@ from contextlib import contextmanager
 from datetime import datetime, timezone
 import json
 from pathlib import Path
+import threading
 import time
 
 from .research_data import LOCAL, atomic_json, refresh
@@ -19,6 +20,7 @@ from .research_model import (
 from .research_sync import publish
 from .research_features import coverage_report
 from .research_upcoming import refresh_upcoming
+from .research_readiness import audit_startup
 
 STATUS = LOCAL / "monitor_status.json"
 STATE = LOCAL / "monitor_state.json"
@@ -110,15 +112,23 @@ def cycle(*, upload=True, full=None, delay=1.0,
     if should_check_fixtures:
         try:
             model = json.loads((data_dir / "candidate_model.json").read_text(encoding="utf-8"))
-            latest = (upcoming_fn or refresh_upcoming)(
-                inventory=inventory, data_dir=data_dir, model=model
-            )
+            # The first start can already have refreshed providers in a worker.
+            # Reuse that local cache for 30 minutes to protect API quotas.
+            cached = data_dir / "upcoming_predictions.json"
+            if (upcoming_fn is None and cached.is_file()
+                    and time.time() - cached.stat().st_mtime < 1800):
+                latest = json.loads(cached.read_text(encoding="utf-8"))
+                future_status = "recent_local_cache"
+            else:
+                latest = (upcoming_fn or refresh_upcoming)(
+                    inventory=inventory, data_dir=data_dir, model=model
+                )
+                future_status = "updated"
             future_stats = {
                 key: latest.get(key, 0)
                 for key in ("confirmed_schedule_count", "predicted_count",
                             "provisional_schedule_count")
             }
-            future_status = "updated"
         except (OSError, ValueError, RuntimeError, KeyError, TypeError) as exc:
             # Don't fail the historical training or GitHub sync because an
             # additional, separately licensed fixture provider is unavailable.
@@ -150,7 +160,23 @@ def main():
     if not (1 <= args.interval_hours <= 168):
         parser.error("Interval moet tussen 1 en 168 uur zijn")
     with single_instance():
-        print("SupahBetting research v0.12 draait op deze pc. Ctrl+C stopt.")
+        health=audit_startup()
+        print("SupahBetting Research v0.13 gestart · model",health["level"])
+        print("Historische data t/m:", health["model_data_through"])
+        print("Modelcheck:",health["warn"])
+        # Refresh today's fixture cache concurrently with the slower 2016+
+        # historical backfill. There is never a second simultaneous fetch.
+        if not args.once:
+            def first_schedule():
+                try:
+                    refresh_upcoming()
+                    print("Speelschema: eerste actuele controle klaar",flush=True)
+                except (OSError, ValueError, RuntimeError, KeyError, TypeError) as exc:
+                    print("Speelschema: startcontrole",type(exc).__name__,
+                          "oude lokale cache blijft behouden",flush=True)
+            threading.Thread(target=first_schedule,daemon=True,
+                             name="research-first-schedule").start()
+        print("Lokaal onderzoek draait; Ctrl+C stopt.")
         while True:
             update_status(state="refreshing", sync_state="pending", last_error=None)
             try:
