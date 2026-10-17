@@ -54,7 +54,13 @@ async function trainedLoadStatus() {
       statTile("Brier-score model",tNum(test.model_brier),
         "Lager is beter · eenvoudige referentie: "+tNum(test.reference_brier)),
       statTile("Validatie 2024/25",tNum(validation.model_logloss),
-        "Log loss model · eenvoudige referentie: "+tNum(validation.reference_logloss))
+        "Log loss model · eenvoudige referentie: "+tNum(validation.reference_logloss)),
+      statTile("Extra toets 2026/27",
+        status.evaluation.prospective_2026_27
+          ? status.evaluation.prospective_2026_27.matches.toLocaleString("nl-NL")+" wedstrijden"
+          : "Niet beschikbaar",
+        "Afgeronde wedstrijden t/m "+(status.last_observed_result_date||"onbekend")+
+        " · kleine steekproef, geen bookmakersvalidatie")
     );
   }catch(e){
     root.replaceChildren(statTile("Model niet beschikbaar","Controleer server",e.message));
