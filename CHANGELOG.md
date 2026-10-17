@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.6.0 — 2026-10-17
+- Drie echte native exportadapters toegevoegd voor ProphitBet-v2 (CSV), OddsHarvester (CSV/JSON/NDJSON) en Prediict (CSV/JSON).
+- Alleen geverifieerde velden en 1X2-uitkomsten gekoppeld; geen code of modelbestanden van Prediict gekopieerd wegens ontbrekende licentie.
+- ProphitBet Prob(1), Prob(X), Prob(2) en eigen ingevoerde odds; OddsHarvester 1x2_market per bookmaker, inclusief blokkadecheck; Prediict model_probability en bookmaker_odds.
+- Aparte SQLite-onderzoekstabellen; SHA-256-importdeduplicatie; geen overschrijven van paperbets.
+- Matches samenvoegen alleen bij dezelfde genormaliseerde teams, datum en markt; undated exports alleen binnen dezelfde bestandsrij.
+- Nieuwe Nederlandstalige onderzoeksranglijst met model-EV, model-/odds-bron, historische/oude/onbekende prijstijd.
+- Eén klik: Bronbestanden inlezen, opstartscan, bronbestanden_inlezen.bat en research_cli.
+- Fictieve, historische voorbeeldbestanden voor alle drie de adapters.
+- Extra veiligheidstests voor verdachte CSV/JSON, verkeerde wedstrijden, oude odds, symlinks en dubbele import.
+- De originele ML/scraperprocessen worden bewust niet automatisch gestart; zware externe dependencies blijven geïsoleerd.
+- Alle drie de oorspronkelijk geforkte projecten kunnen zelfstandig blijven updaten. Geen bewezen winstgevendheid.
+
+
 ## v0.5.1 — 2026-10-17
 - Eén modulair, lokaal JSON-configuratiebestand voor API-sleutels: .supahbetting/providers.json.
 - Automatisch een leeg bestand aanmaken bij eerste dashboardstart, bestaande sleutels nooit overschrijven.
