@@ -49,6 +49,9 @@ async function trainedLoadStatus() {
     root.append(
       statTile("Echte trainingswedstrijden",status.training_matches.toLocaleString("nl-NL"),
         "OpenFootball · CC0 · 7 competities"),
+      statTile("Extra historische training",
+        (status.added_older_results||0).toLocaleString("nl-NL")+" wedstrijden",
+        "2017–2020 · extra historische context, niet per se betere voorspellingen"),
       statTile("Chronologische test",""+test.matches.toLocaleString("nl-NL"),
         "2025/26 · seizoensbestanden deels onvolledig"),
       statTile("Brier-score model",tNum(test.model_brier),
