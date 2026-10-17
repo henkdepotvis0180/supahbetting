@@ -65,11 +65,11 @@ def parse_source(source, league, season, today=None):
         if day.year not in (int(season[:4]), int(season[:4])+1):
             continue
         identifier = hashlib.sha256(
-            json.dumps([league, season, home.strip(), away.strip()],
+            json.dumps([league, season, day.isoformat(), home.strip(), away.strip()],
                        ensure_ascii=False).encode("utf-8")
         ).hexdigest()[:24]
         if identifier in seen:
-            raise ValueError("Dubbele wedstrijd in bron (zelfde thuis/uit)")
+            raise ValueError("Dubbele wedstrijd in bron (zelfde datum/thuis/uit)")
         seen.add(identifier)
         base = {"id": identifier, "league": league, "season": season,
                 "date": day.isoformat(), "home": home.strip(), "away": away.strip()}
@@ -142,6 +142,13 @@ def refresh(*, directory=LOCAL, full=None, delay=1.0, fetcher=None, today=None):
                                      "fixtures": 0, "url": url}
                     continue
                 results, future = parse_source(data, league, season, today)
+                # Never erase complete season scores on a temporarily truncated feed.
+                old_count = sum(
+                    m["league"] == league and m["season"] == season
+                    for m in completed.values()
+                )
+                if old_count >= 10 and len(results) < old_count * 0.7:
+                    raise ValueError("Bron fors ingekort; oude resultaten in quarantaine")
                 completed = {k: v for k, v in completed.items()
                              if (v["season"], v["league"]) != (season, league)}
                 fixtures = {k: v for k, v in fixtures.items()
