@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.7.0 — 2026-10-17
+- Volledig automatisch getraind eigen historisch voetbaluitslagenmodel voor Eredivisie, Belgische Pro League, Premier League, Bundesliga, La Liga, Serie A en Ligue 1.
+- 13.172 echte, afgeronde wedstrijden uit OpenFootball (CC0); datasnapshots en bronvermelding meegeleverd voor offline hertraining.
+- Aanvals- en verdedigingssterkte, ligaspecifiek thuisvoordeel en Poisson-model geleerd zonder externe ML-packages.
+- Hyperparameters op 2024/25 gekozen; 2.037 chronologische 2025/26-testwedstrijden: Brier model 0,58474 versus referentie 0,63649. Dit is GEEN bookmakersbenchmark of gegarandeerd winstbewijs.
+- Trainingsdata van 2025/26 zijn deels onvolledig, vooral België; waarschuwingen per competitie zijn aanwezig.
+- Eigen model automatisch geladen in dashboard. Nieuw overzicht met modelstatus, validatie/testresultaten en handmatige voorspelling van 1/X/2.
+- Getrainde verwachte goals optioneel overnemen in analyse of geplande wedstrijden via het livecentrum. Geen verzonnen bookmakerodds.
+- train_model.bat voor later offline en reproduceerbaar hertrainen; GitHub Actions genereert de getrainde model-JSON.
+- Anti-leakage: alle matches op dezelfde dag worden voorspeld voor de datumscores worden geleerd. Extra training/API/UI-tests.
+- Native data-exportadapters van de drie forks blijven apart bruikbaar; hun originele zware netwerken worden niet gebundeld.
+
+
 ## v0.6.0 — 2026-10-17
 - Drie echte native exportadapters toegevoegd voor ProphitBet-v2 (CSV), OddsHarvester (CSV/JSON/NDJSON) en Prediict (CSV/JSON).
 - Alleen geverifieerde velden en 1X2-uitkomsten gekoppeld; geen code of modelbestanden van Prediict gekopieerd wegens ontbrekende licentie.
