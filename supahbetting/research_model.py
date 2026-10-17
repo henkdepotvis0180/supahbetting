@@ -117,6 +117,7 @@ def update_shadow(inventory, states, shadow_path=SHADOW_PATH, today=None, now=No
     records = previous.get("predictions", {})
     finished = {m["id"]: m for m in inventory["matches"]}
     graded = 0
+    voided = 0
     for identifier, saved in records.items():
         if saved.get("actual") is not None:
             continue
@@ -126,7 +127,9 @@ def update_shadow(inventory, states, shadow_path=SHADOW_PATH, today=None, now=No
         # Strict anti-leakage, including rescheduling; never validate a later prediction.
         if (saved["forecast_created_at"][:10] >= match["date"]
                 or saved["scheduled_date"] != match["date"]):
-            saved["void_reason"] = "fixture_rescheduled_or_no_lead_time"
+            if not saved.get("void_reason"):
+                saved["void_reason"] = "fixture_rescheduled_or_no_lead_time"
+                voided += 1
             continue
         brier, logloss = score(saved["probabilities"], match)
         saved["actual"] = {"outcome": label(match), "date": match["date"],
@@ -149,13 +152,14 @@ def update_shadow(inventory, states, shadow_path=SHADOW_PATH, today=None, now=No
             "probabilities": probs, "actual": None,
         }
         added += 1
-    if added or graded or not shadow_path.exists():
+    if added or graded or voided or not shadow_path.exists():
         atomic_json(shadow_path, {"schema_version": 1, "predictions": records})
     observed = [v["actual"] for v in records.values() if v.get("actual")]
     return {
         "issued_before_match": len(records),
         "new_predictions": added,
         "new_graded": graded,
+        "new_voided": voided,
         "graded_predictions": len(observed),
         "prospective_brier": (
             round(sum(v["brier"] for v in observed) / len(observed), 6)
