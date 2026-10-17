@@ -1,10 +1,13 @@
-# SupahBetting v0.7.0
+# SupahBetting v0.8.0
 
 **Lokaal Nederlandstalig voetbalanalyseplatform met een betrouwbare basis voor enkelvoudige én combinatie-betslips.**
 
-SupahBetting is software voor onderzoek en **fictieve weddenschappen**. Vanaf v0.7 bevat het ook een apart, werkelijk getraind 1X2-basismodel. Nieuw in v0.5: **meerdere voetbalgegevensbronnen**, waaronder Nederlandse en Belgische competities; de bestaande OpenLigaDB-community-doelpuntenfeed blijft aanwezig. Er zijn **geen live bookmakerquoteringen**, geen directe bookmakeraccounts en geen functie voor echt geld. Het aparte getrainde basismodel heeft een chronologische historische toets gehad, maar is niet tegen actuele bookmakers geijkt en gebruikt data tot 2024. Een positieve model-EV is **geen bewijs van winstgevendheid**.
+SupahBetting is software voor onderzoek en **fictieve weddenschappen**. Vanaf v0.8 bevat het **twee daadwerkelijk getrainde, afzonderlijke voetbalmodellen**: een Elo-/vormmodel en een zeven-competities doelpunten-/Poisson-model. Nieuw in v0.5: **meerdere voetbalgegevensbronnen**, waaronder Nederlandse en Belgische competities; de bestaande OpenLigaDB-community-doelpuntenfeed blijft aanwezig. Er zijn **geen live bookmakerquoteringen**, geen directe bookmakeraccounts en geen functie voor echt geld. Het aparte getrainde basismodel heeft een chronologische historische toets gehad, maar is niet tegen actuele bookmakers geijkt Het eerste Elo-/vormmodel gebruikt data tot 2024; het tweede model heeft nieuwe bronuitslagen uit 2025/26, maar per competitie zijn sommige bestanden onvolledig. Een positieve model-EV is **geen bewijs van winstgevendheid**.
 
 ## Wat is werkend?
+
+- **Nieuw v0.8:** twee naast elkaar werkende, voorgetrainde modellen. De bestaande Elo-/vormvoorspellingen blijven, plus een nieuw doelpunten-/Poisson-model met Eredivisie en Belgische competitie uit CC0-bronuitslagen t/m de geregistreerde 2025/26-wedstrijden.
+- Tweede model direct in dashboard te raadplegen, met handmatige voorspelling en optionele invulling van doelpuntverwachting (NOOIT automatische bookmakerprijzen).
 
 - **Nieuw v0.5:** kies een databron en competitie in één dashboard. TheSportsDB gratis toont beperkt de Eredivisie/Eerste Divisie, België en internationale competities; football-data.org voegt vertraagde scores toe met een optionele persoonlijke API-sleutel.
 - **Nieuw v0.6:** native fork-exportadapters, onderzoeksranglijst voor modelkansen en bookmakerprijzen, deduplicatie en bron-/versheidscontrole.
@@ -195,6 +198,95 @@ Voor gebruik heb je geen extra ML-installatie nodig: start het dashboard, open e
 Om later zelf een bijgewerkt basismodel te trainen, plaats je een **volledige, aangevulde historische CSV** in **.supahbetting/training_history.csv** en start je **train_baseline.bat**. Dit gebruikt een aparte Python-omgeving met scikit-learn, valideert chronologisch en vervangt het JSON-model alleen na geslaagde training. Herstart daarna het dashboard.
 
 **Lees alle details:** [Trainingsmethode, resultaten, beperkingen en bijtrainen](docs/PRETRAINED_MODEL.md).
+
+## Tweede voorgetrainde basismodel (v0.8): zeven competities
+
+**Je hoeft niets zelf te trainen om SupahBetting te gebruiken.** In de volledige
+ZIP staan nu **twee afzonderlijke getrainde JSON-modellen**:
+
+| Model | Getrainde wedstrijden | Laatste historische brondata | Methode |
+|---|---:|---|---|
+| Elo-/vormmodel uit v0.7 | 18.085 | Juni 2024 | Elo, vorm, multinomiale logistische regressie |
+| Nieuw doelpunten-/Poisson-model uit v0.8 | **13.172** | Geregistreerde eindstanden t/m 2025/26 (sommige competities incompleet) | Doelpuntenaanval/verdediging, thuisvoordeel, Poisson |
+
+Het nieuwe model is een **onafhankelijk tweede onderzoeksmodel**, geen kopie
+van de oorspronkelijke Prediict-/ProphitBet-netwerken en geen vervanging van
+het oudere Elo-model. De oude koppelingen met live scores, native exports,
+API-tokens, combinatiebets en SQLite blijven aanwezig.
+
+### Test van het nieuwe doelpuntenmodel
+
+De brondata zijn echte, volledig gespeelde voetbalwedstrijden uit
+[OpenFootball](https://github.com/openfootball/football.json) onder
+**CC0 1.0 Universal**. De zeven CSV-bestanden en herkomst staan in
+\`data/historical/\`. Er zijn meer dan 13.000 echte uitslagen over zes seizoenen.
+Het ontbrekende deel van bepaalde seizoenen is **niet aangevuld met verzonnen
+uitslagen**.
+
+De hyperparameters (aanval/verdedigingsfilter en krimp naar gemiddelde)
+zijn gekozen op **2024/25**; de uitkomsten uit **2025/26** zijn
+chronologisch op 2.037 geregistreerde wedstrijden getest. Pas na iedere
+wedstrijddag worden eindstanden geleerd, zodat andere matches op die dag
+geen verborgen voorkennis krijgen.
+
+- **Brier-score 2025/26:** **0,58474** tegenover **0,63649** voor
+  een eenvoudige frequentie-referentie.
+- **Log loss 2025/26:** **0,98432** tegenover **1,05357** voor
+  diezelfde referentie.
+- In de Belgische bron ontbreken meerdere seizoenen en zijn slechts
+  104 wedstrijden in 2025/26 geregistreerd; andere competities missen
+  ook enkele uitslagen. Zie de waarschuwingen in
+  \`supahbetting/models/baseline.json\`.
+
+**Dit is geen bookmakersbenchmark.** Het model is niet onafhankelijk getest
+op betwinst en gebruikt geen actuele opstellingen, blessures, odds of
+schotgebaseerde xG. De modelwaarden zijn *verwachte doelpunten op basis van
+historische scores*, niet officiële xG.
+
+### Meteen voorspellingen bekijken
+
+1. Start zoals gewoonlijk **start_dashboard.bat**. De twee getrainde
+   modelbestanden worden **automatisch geladen**.
+2. Het bestaande **Historische voorspellingen**-onderdeel houdt het
+   Elo-/vormmodel beschikbaar.
+3. Onder **Voorspellingen van ons basismodel** vind je het nieuwe
+   **doelpunten-/Poisson-model**. Kies een van de zeven competities
+   (Eredivisie, Belgische Pro League, Premier League, Bundesliga,
+   La Liga, Serie A of Ligue 1).
+4. Voer twee bekende teams in, bijvoorbeeld **Ajax** en **PSV** in
+   de Eredivisie, en klik op **Bereken modelkansen**.
+5. De drie 1X2-kansen worden getoond, samen met verwachte goals,
+   betrouwbaarheid en de laatste historische uitslag.
+6. Klik optioneel op **Gebruik modeldoelpunten in handmatige analyse**;
+   er worden **geen bookmakerodds ingevuld**. Je kunt bij een geplande
+   wedstrijd ook op **Gebruik wedstrijd + verwachte goals** klikken.
+
+Onbekende teams worden niet automatisch aan een mogelijk verkeerde club
+gekoppeld. Dan moet je handmatig analyseren of de brondata uitbreiden.
+
+### Later modellen hertrainen of uitbreiden
+
+Het **nieuwe Poisson-model** kan zonder installatie van extra Python-pakketten
+op basis van de CSV's worden hertraind:
+
+\`\`\`powershell
+python -m supahbetting.trained_model
+\`\`\`
+
+Of dubbelklik **train_model.bat** en herstart na afloop het dashboard.
+Dit schrijft \`supahbetting/models/baseline.json\` opnieuw. Het verandert
+het oorspronkelijke \`models/baseline_v1.json\` **niet**.
+
+Voor het oudere Elo-/vormmodel blijft de bestaande
+**train_baseline.bat**-procedure beschikbaar. Die gebruikt zijn eigen
+dataset en scikit-learn in een gescheiden omgeving.
+
+In GitHub zijn beide trainingsworkflows apart ingericht. Nieuwe, rechtmatig
+verkregen uitslagen kunnen later worden toegevoegd aan de
+\`data/historical\`-CSV's in exact hetzelfde formaat, ook voor nieuwe seizoenen.
+De testperiode van 2025/26 moet bij toekomstige modelwijzigingen als
+historische test worden behandeld; claim niet dat de vernieuwde finale fit
+op dezelfde periode opnieuw onafhankelijk getest is.
 
 ## Native integratie van de drie GitHub-forks (v0.6.0)
 
