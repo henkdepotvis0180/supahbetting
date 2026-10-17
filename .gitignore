@@ -11,3 +11,7 @@ paper_bets.jsonl
 *.sqlite3-wal
 .pytest_cache/
 .coverage
+
+# Extra afscherming: nooit lokaal ingevulde tokens committen
+providers.json
+providers.local.json
