@@ -13,6 +13,7 @@
   <script src="/model.js" defer></script>
   <script src="/trained.js" defer></script>
   <script src="/research_data.js" defer></script>
+  <script src="/research_fixtures.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#wedstrijden">Naar wedstrijden</a>
@@ -153,6 +154,45 @@
         </div>
       </div>
       <p class="trained-note">Het model kent geen actuele opstellingen, blessures, live wedstrijdverloop of bookmakerprijzen. De geschatte doelpunten zijn **geen schotgebaseerde xG**. Het testresultaat is een nauwkeurigheidsmeting, geen bewijs voor winstgevend wedden.</p>
+    </section>
+
+    <section id="research-upcoming" class="research-data-section" aria-labelledby="research-upcoming-title">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">V0.12 ONDERZOEK · ACTUEEL SPEELSCHEMA · EXPERIMENTELE 1X2-KANSEN</div>
+          <h2 id="research-upcoming-title">Wedstrijden vandaag &amp; binnenkort</h2>
+          <p>De bevestigde wedstrijden uit voetbal-API's worden met het aparte onderzoeksmodel doorgerekend. Niet-geverifieerde archiefschema's en onbekende clubs krijgen geen fictieve voorspelling.</p>
+        </div>
+        <button id="research-fixture-refresh" type="button" class="btn btn-quiet">Dashboard bijwerken</button>
+      </div>
+      <p class="trained-warning">Let op: de getoonde kansen zijn experimenteel, niet gebaseerd op actuele blessures of opstellingen. De huidige historische wedstrijddataset loopt achter; de API's leveren het speelschema afzonderlijk aan.</p>
+      <div class="research-fixture-filters" aria-label="Filter toekomstige wedstrijden">
+        <label>Competitie
+          <select id="research-fixture-league">
+            <option value="all">Alle zeven competities</option>
+          </select>
+        </label>
+        <label>Periode
+          <select id="research-fixture-range">
+            <option value="0">Vandaag</option>
+            <option value="3" selected>Vandaag + 3 dagen</option>
+            <option value="15">Komende 15 dagen</option>
+          </select>
+        </label>
+        <label>Weergave
+          <select id="research-fixture-filter">
+            <option value="all">Alle wedstrijden</option>
+            <option value="confirmed">Recent bevestigd</option>
+            <option value="predicted">Met voorspelling</option>
+          </select>
+        </label>
+      </div>
+      <div id="research-fixture-status" class="research-data-toolbar" aria-live="polite">Speelschema uit lokale monitor laden…</div>
+      <div id="research-fixture-summary" class="research-data-grid" aria-label="Speelschema dekking"></div>
+      <div id="research-fixture-list" class="research-fixture-list" aria-live="polite">
+        <div class="panel fixture-card">Wedstrijden laden…</div>
+      </div>
+      <p class="trained-note">‘Dashboard bijwerken’ leest de laatst verzamelde gegevens van je computer. Voor een nieuwe API-controle kun je <code>ververs_speelschema.bat</code> starten. De gratis speelschemabron kan wedstrijden missen; archiefwedstrijden zijn nadrukkelijk voorlopig.</p>
     </section>
 
     <section id="research-data" class="research-data-section" aria-labelledby="research-data-title">
