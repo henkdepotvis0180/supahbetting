@@ -12,7 +12,8 @@
     "de.1":"Bundesliga","es.1":"La Liga","it.1":"Serie A",
     "fr.1":"Ligue 1"};
   const providerLabel={"football-data":"football-data.org",
-    "sportsdb":"TheSportsDB","openliga":"OpenLigaDB"};
+    "sportsdb":"TheSportsDB","openliga":"OpenLigaDB",
+    "knvb":"KNVB – officieel Eredivisie-programma"};
   let dataset=null;
   const pct=v=>typeof v==="number" && Number.isFinite(v)
     ?new Intl.NumberFormat("nl-BE",{style:"percent",minimumFractionDigits:1,
@@ -143,6 +144,9 @@
       anchor.href=match.source_url;
       anchor.target="_blank";anchor.rel="noopener noreferrer";
       source.append(anchor);
+      if(match.provider==="knvb" && match.source_method==="dated_official_snapshot"){
+        source.append(" · Officieel programma, laatst gecontroleerd 17 oktober 2026");
+      }
       card.append(source);
       decoratePrediction(card,match);
       cards.push(card);
