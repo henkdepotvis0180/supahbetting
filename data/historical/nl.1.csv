@@ -1,4 +1,542 @@
 league,season,date,home,away,home_goals,away_goals
+nl.1,2018-19,2018-08-10,"PEC Zwolle","sc Heerenveen",2,3
+nl.1,2018-19,2018-08-11,"AFC Ajax","Heracles Almelo",1,1
+nl.1,2018-19,2018-08-11,"PSV Eindhoven","FC Utrecht",4,0
+nl.1,2018-19,2018-08-11,"SBV Excelsior","Fortuna Sittard",1,1
+nl.1,2018-19,2018-08-11,"Willem II","VVV-Venlo",0,1
+nl.1,2018-19,2018-08-12,"ADO Den Haag","FC Emmen",1,2
+nl.1,2018-19,2018-08-12,"AZ Alkmaar","NAC Breda",5,0
+nl.1,2018-19,2018-08-12,"De Graafschap","Feyenoord",2,0
+nl.1,2018-19,2018-08-12,"Vitesse","FC Groningen",5,1
+nl.1,2018-19,2018-08-17,"FC Groningen","Willem II",0,1
+nl.1,2018-19,2018-08-18,"Fortuna Sittard","PSV Eindhoven",1,2
+nl.1,2018-19,2018-08-18,"Heracles Almelo","ADO Den Haag",4,2
+nl.1,2018-19,2018-08-18,"NAC Breda","De Graafschap",3,0
+nl.1,2018-19,2018-08-18,"VVV-Venlo","AFC Ajax",0,1
+nl.1,2018-19,2018-08-19,"FC Emmen","AZ Alkmaar",1,4
+nl.1,2018-19,2018-08-19,"FC Utrecht","PEC Zwolle",2,0
+nl.1,2018-19,2018-08-19,"Feyenoord","SBV Excelsior",3,0
+nl.1,2018-19,2018-08-19,"sc Heerenveen","Vitesse",1,1
+nl.1,2018-19,2018-08-24,"ADO Den Haag","Fortuna Sittard",3,1
+nl.1,2018-19,2018-08-25,"AFC Ajax","FC Emmen",5,0
+nl.1,2018-19,2018-08-25,"De Graafschap","FC Groningen",0,1
+nl.1,2018-19,2018-08-25,"NAC Breda","SBV Excelsior",0,2
+nl.1,2018-19,2018-08-25,"PEC Zwolle","PSV Eindhoven",1,2
+nl.1,2018-19,2018-08-26,"AZ Alkmaar","Vitesse",0,0
+nl.1,2018-19,2018-08-26,"FC Utrecht","VVV-Venlo",1,1
+nl.1,2018-19,2018-08-26,"Willem II","Heracles Almelo",5,0
+nl.1,2018-19,2018-08-26,"sc Heerenveen","Feyenoord",3,5
+nl.1,2018-19,2018-08-31,"FC Emmen","De Graafschap",1,1
+nl.1,2018-19,2018-09-01,"Fortuna Sittard","FC Utrecht",1,1
+nl.1,2018-19,2018-09-01,"PSV Eindhoven","Willem II",6,1
+nl.1,2018-19,2018-09-01,"SBV Excelsior","ADO Den Haag",2,4
+nl.1,2018-19,2018-09-01,"VVV-Venlo","sc Heerenveen",1,1
+nl.1,2018-19,2018-09-02,"FC Groningen","PEC Zwolle",0,1
+nl.1,2018-19,2018-09-02,"Feyenoord","NAC Breda",4,2
+nl.1,2018-19,2018-09-02,"Heracles Almelo","AZ Alkmaar",3,2
+nl.1,2018-19,2018-09-02,"Vitesse","AFC Ajax",0,4
+nl.1,2018-19,2018-09-15,"ADO Den Haag","PSV Eindhoven",0,7
+nl.1,2018-19,2018-09-15,"AFC Ajax","FC Groningen",3,0
+nl.1,2018-19,2018-09-15,"De Graafschap","VVV-Venlo",1,2
+nl.1,2018-19,2018-09-15,"Willem II","SBV Excelsior",2,2
+nl.1,2018-19,2018-09-16,"AZ Alkmaar","Feyenoord",1,1
+nl.1,2018-19,2018-09-16,"FC Utrecht","FC Emmen",1,2
+nl.1,2018-19,2018-09-16,"NAC Breda","Fortuna Sittard",2,3
+nl.1,2018-19,2018-09-16,"PEC Zwolle","Vitesse",0,2
+nl.1,2018-19,2018-09-16,"sc Heerenveen","Heracles Almelo",3,5
+nl.1,2018-19,2018-09-21,"Heracles Almelo","De Graafschap",4,0
+nl.1,2018-19,2018-09-22,"Fortuna Sittard","Willem II",4,4
+nl.1,2018-19,2018-09-22,"SBV Excelsior","sc Heerenveen",3,3
+nl.1,2018-19,2018-09-22,"VVV-Venlo","NAC Breda",3,0
+nl.1,2018-19,2018-09-22,"Vitesse","ADO Den Haag",1,1
+nl.1,2018-19,2018-09-23,"FC Emmen","PEC Zwolle",0,1
+nl.1,2018-19,2018-09-23,"FC Groningen","AZ Alkmaar",1,3
+nl.1,2018-19,2018-09-23,"Feyenoord","FC Utrecht",1,0
+nl.1,2018-19,2018-09-23,"PSV Eindhoven","AFC Ajax",3,0
+nl.1,2018-19,2018-09-29,"Fortuna Sittard","AFC Ajax",0,2
+nl.1,2018-19,2018-09-29,"NAC Breda","PSV Eindhoven",0,2
+nl.1,2018-19,2018-09-29,"SBV Excelsior","VVV-Venlo",1,0
+nl.1,2018-19,2018-09-29,"sc Heerenveen","ADO Den Haag",1,1
+nl.1,2018-19,2018-09-30,"AZ Alkmaar","PEC Zwolle",2,2
+nl.1,2018-19,2018-09-30,"De Graafschap","Willem II",2,1
+nl.1,2018-19,2018-09-30,"FC Groningen","FC Utrecht",1,1
+nl.1,2018-19,2018-09-30,"Feyenoord","Vitesse",2,1
+nl.1,2018-19,2018-09-30,"Heracles Almelo","FC Emmen",2,1
+nl.1,2018-19,2018-10-05,"FC Utrecht","NAC Breda",2,1
+nl.1,2018-19,2018-10-06,"ADO Den Haag","FC Groningen",1,0
+nl.1,2018-19,2018-10-06,"De Graafschap","sc Heerenveen",0,5
+nl.1,2018-19,2018-10-06,"PEC Zwolle","SBV Excelsior",2,0
+nl.1,2018-19,2018-10-06,"PSV Eindhoven","VVV-Venlo",4,0
+nl.1,2018-19,2018-10-07,"AFC Ajax","AZ Alkmaar",5,0
+nl.1,2018-19,2018-10-07,"FC Emmen","Fortuna Sittard",3,3
+nl.1,2018-19,2018-10-07,"Vitesse","Heracles Almelo",4,0
+nl.1,2018-19,2018-10-07,"Willem II","Feyenoord",1,1
+nl.1,2018-19,2018-10-20,"FC Utrecht","AZ Alkmaar",2,1
+nl.1,2018-19,2018-10-20,"PSV Eindhoven","FC Emmen",6,0
+nl.1,2018-19,2018-10-20,"SBV Excelsior","Vitesse",2,0
+nl.1,2018-19,2018-10-20,"sc Heerenveen","AFC Ajax",0,4
+nl.1,2018-19,2018-10-21,"Feyenoord","PEC Zwolle",3,0
+nl.1,2018-19,2018-10-21,"Fortuna Sittard","De Graafschap",3,1
+nl.1,2018-19,2018-10-21,"Heracles Almelo","FC Groningen",4,1
+nl.1,2018-19,2018-10-21,"NAC Breda","Willem II",2,2
+nl.1,2018-19,2018-10-21,"VVV-Venlo","ADO Den Haag",2,0
+nl.1,2018-19,2018-10-26,"FC Emmen","VVV-Venlo",1,1
+nl.1,2018-19,2018-10-27,"ADO Den Haag","NAC Breda",1,1
+nl.1,2018-19,2018-10-27,"De Graafschap","SBV Excelsior",4,1
+nl.1,2018-19,2018-10-27,"FC Groningen","PSV Eindhoven",1,2
+nl.1,2018-19,2018-10-27,"PEC Zwolle","Heracles Almelo",1,1
+nl.1,2018-19,2018-10-28,"AFC Ajax","Feyenoord",3,0
+nl.1,2018-19,2018-10-28,"AZ Alkmaar","sc Heerenveen",2,3
+nl.1,2018-19,2018-10-28,"Vitesse","Fortuna Sittard",2,1
+nl.1,2018-19,2018-10-28,"Willem II","FC Utrecht",0,1
+nl.1,2018-19,2018-11-02,"SBV Excelsior","FC Groningen",2,4
+nl.1,2018-19,2018-11-03,"AFC Ajax","Willem II",2,0
+nl.1,2018-19,2018-11-03,"AZ Alkmaar","De Graafschap",1,0
+nl.1,2018-19,2018-11-03,"NAC Breda","Heracles Almelo",2,1
+nl.1,2018-19,2018-11-03,"PSV Eindhoven","Vitesse",1,0
+nl.1,2018-19,2018-11-04,"FC Utrecht","ADO Den Haag",3,0
+nl.1,2018-19,2018-11-04,"Fortuna Sittard","PEC Zwolle",3,0
+nl.1,2018-19,2018-11-04,"sc Heerenveen","FC Emmen",1,1
+nl.1,2018-19,2018-11-09,"PEC Zwolle","Willem II",2,3
+nl.1,2018-19,2018-11-10,"De Graafschap","PSV Eindhoven",1,4
+nl.1,2018-19,2018-11-10,"FC Emmen","NAC Breda",2,0
+nl.1,2018-19,2018-11-10,"VVV-Venlo","Fortuna Sittard",3,2
+nl.1,2018-19,2018-11-10,"Vitesse","FC Utrecht",2,1
+nl.1,2018-19,2018-11-11,"ADO Den Haag","AZ Alkmaar",0,1
+nl.1,2018-19,2018-11-11,"FC Groningen","sc Heerenveen",2,0
+nl.1,2018-19,2018-11-11,"Heracles Almelo","Feyenoord",0,2
+nl.1,2018-19,2018-11-11,"SBV Excelsior","AFC Ajax",1,7
+nl.1,2018-19,2018-11-24,"Fortuna Sittard","Heracles Almelo",3,0
+nl.1,2018-19,2018-11-24,"NAC Breda","AFC Ajax",0,3
+nl.1,2018-19,2018-11-24,"PEC Zwolle","ADO Den Haag",2,3
+nl.1,2018-19,2018-11-24,"PSV Eindhoven","sc Heerenveen",3,0
+nl.1,2018-19,2018-11-25,"FC Emmen","SBV Excelsior",1,2
+nl.1,2018-19,2018-11-25,"FC Utrecht","De Graafschap",5,0
+nl.1,2018-19,2018-11-25,"Feyenoord","FC Groningen",1,0
+nl.1,2018-19,2018-11-25,"VVV-Venlo","AZ Alkmaar",2,2
+nl.1,2018-19,2018-11-25,"Willem II","Vitesse",1,3
+nl.1,2018-19,2018-11-30,"SBV Excelsior","FC Utrecht",3,3
+nl.1,2018-19,2018-12-01,"AZ Alkmaar","Willem II",0,2
+nl.1,2018-19,2018-12-01,"De Graafschap","PEC Zwolle",0,2
+nl.1,2018-19,2018-12-01,"Vitesse","FC Emmen",1,1
+nl.1,2018-19,2018-12-01,"sc Heerenveen","Fortuna Sittard",3,1
+nl.1,2018-19,2018-12-02,"AFC Ajax","ADO Den Haag",5,1
+nl.1,2018-19,2018-12-02,"FC Groningen","NAC Breda",5,2
+nl.1,2018-19,2018-12-02,"Feyenoord","PSV Eindhoven",2,1
+nl.1,2018-19,2018-12-02,"Heracles Almelo","VVV-Venlo",4,1
+nl.1,2018-19,2018-12-06,"Feyenoord","VVV-Venlo",4,1
+nl.1,2018-19,2018-12-07,"Fortuna Sittard","AZ Alkmaar",0,3
+nl.1,2018-19,2018-12-07,"PSV Eindhoven","SBV Excelsior",6,0
+nl.1,2018-19,2018-12-08,"ADO Den Haag","De Graafschap",0,0
+nl.1,2018-19,2018-12-08,"PEC Zwolle","AFC Ajax",1,4
+nl.1,2018-19,2018-12-08,"Willem II","sc Heerenveen",1,5
+nl.1,2018-19,2018-12-09,"FC Emmen","Feyenoord",1,4
+nl.1,2018-19,2018-12-09,"FC Utrecht","Heracles Almelo",3,1
+nl.1,2018-19,2018-12-09,"NAC Breda","Vitesse",2,1
+nl.1,2018-19,2018-12-09,"VVV-Venlo","FC Groningen",0,0
+nl.1,2018-19,2018-12-14,"Willem II","ADO Den Haag",0,3
+nl.1,2018-19,2018-12-15,"AZ Alkmaar","SBV Excelsior",2,1
+nl.1,2018-19,2018-12-15,"Heracles Almelo","PSV Eindhoven",0,4
+nl.1,2018-19,2018-12-15,"PEC Zwolle","NAC Breda",0,0
+nl.1,2018-19,2018-12-15,"Vitesse","VVV-Venlo",2,1
+nl.1,2018-19,2018-12-16,"AFC Ajax","De Graafschap",8,0
+nl.1,2018-19,2018-12-16,"FC Groningen","FC Emmen",1,2
+nl.1,2018-19,2018-12-16,"Feyenoord","Fortuna Sittard",0,2
+nl.1,2018-19,2018-12-16,"sc Heerenveen","FC Utrecht",2,3
+nl.1,2018-19,2018-12-21,"VVV-Venlo","PEC Zwolle",2,0
+nl.1,2018-19,2018-12-22,"Fortuna Sittard","FC Groningen",0,0
+nl.1,2018-19,2018-12-22,"NAC Breda","sc Heerenveen",4,2
+nl.1,2018-19,2018-12-22,"PSV Eindhoven","AZ Alkmaar",3,1
+nl.1,2018-19,2018-12-22,"SBV Excelsior","Heracles Almelo",0,3
+nl.1,2018-19,2018-12-23,"ADO Den Haag","Feyenoord",2,2
+nl.1,2018-19,2018-12-23,"De Graafschap","Vitesse",2,2
+nl.1,2018-19,2018-12-23,"FC Emmen","Willem II",0,2
+nl.1,2018-19,2018-12-23,"FC Utrecht","AFC Ajax",1,3
+nl.1,2018-19,2019-01-18,"Vitesse","SBV Excelsior",3,2
+nl.1,2018-19,2019-01-19,"ADO Den Haag","VVV-Venlo",2,4
+nl.1,2018-19,2019-01-19,"AZ Alkmaar","FC Utrecht",3,0
+nl.1,2018-19,2019-01-19,"FC Groningen","Heracles Almelo",3,0
+nl.1,2018-19,2019-01-19,"PEC Zwolle","Feyenoord",3,1
+nl.1,2018-19,2019-01-20,"AFC Ajax","sc Heerenveen",4,4
+nl.1,2018-19,2019-01-20,"De Graafschap","Fortuna Sittard",5,1
+nl.1,2018-19,2019-01-20,"FC Emmen","PSV Eindhoven",2,2
+nl.1,2018-19,2019-01-20,"Willem II","NAC Breda",2,0
+nl.1,2018-19,2019-01-25,"NAC Breda","ADO Den Haag",1,1
+nl.1,2018-19,2019-01-26,"Heracles Almelo","PEC Zwolle",0,2
+nl.1,2018-19,2019-01-26,"PSV Eindhoven","FC Groningen",2,1
+nl.1,2018-19,2019-01-26,"SBV Excelsior","De Graafschap",2,0
+nl.1,2018-19,2019-01-26,"VVV-Venlo","FC Emmen",2,3
+nl.1,2018-19,2019-01-27,"FC Utrecht","Willem II",0,1
+nl.1,2018-19,2019-01-27,"Feyenoord","AFC Ajax",6,2
+nl.1,2018-19,2019-01-27,"Fortuna Sittard","Vitesse",2,1
+nl.1,2018-19,2019-01-27,"sc Heerenveen","AZ Alkmaar",0,2
+nl.1,2018-19,2019-02-01,"De Graafschap","NAC Breda",3,0
+nl.1,2018-19,2019-02-02,"AFC Ajax","VVV-Venlo",6,0
+nl.1,2018-19,2019-02-02,"AZ Alkmaar","FC Emmen",5,0
+nl.1,2018-19,2019-02-02,"Vitesse","sc Heerenveen",2,2
+nl.1,2018-19,2019-02-02,"Willem II","FC Groningen",1,2
+nl.1,2018-19,2019-02-03,"ADO Den Haag","Heracles Almelo",2,0
+nl.1,2018-19,2019-02-03,"PEC Zwolle","FC Utrecht",4,3
+nl.1,2018-19,2019-02-03,"PSV Eindhoven","Fortuna Sittard",5,0
+nl.1,2018-19,2019-02-03,"SBV Excelsior","Feyenoord",2,1
+nl.1,2018-19,2019-02-08,"NAC Breda","AZ Alkmaar",0,3
+nl.1,2018-19,2019-02-09,"Feyenoord","De Graafschap",4,0
+nl.1,2018-19,2019-02-09,"Heracles Almelo","AFC Ajax",1,0
+nl.1,2018-19,2019-02-09,"VVV-Venlo","Willem II",2,1
+nl.1,2018-19,2019-02-09,"sc Heerenveen","PEC Zwolle",1,1
+nl.1,2018-19,2019-02-10,"FC Emmen","ADO Den Haag",3,2
+nl.1,2018-19,2019-02-10,"FC Groningen","Vitesse",2,1
+nl.1,2018-19,2019-02-10,"FC Utrecht","PSV Eindhoven",2,2
+nl.1,2018-19,2019-02-10,"Fortuna Sittard","SBV Excelsior",4,1
+nl.1,2018-19,2019-02-15,"ADO Den Haag","PEC Zwolle",1,0
+nl.1,2018-19,2019-02-16,"AZ Alkmaar","VVV-Venlo",3,0
+nl.1,2018-19,2019-02-16,"Heracles Almelo","Fortuna Sittard",6,0
+nl.1,2018-19,2019-02-16,"Vitesse","Willem II",3,2
+nl.1,2018-19,2019-02-16,"sc Heerenveen","PSV Eindhoven",2,2
+nl.1,2018-19,2019-02-17,"AFC Ajax","NAC Breda",5,0
+nl.1,2018-19,2019-02-17,"De Graafschap","FC Utrecht",0,1
+nl.1,2018-19,2019-02-17,"FC Groningen","Feyenoord",1,0
+nl.1,2018-19,2019-02-17,"SBV Excelsior","FC Emmen",2,1
+nl.1,2018-19,2019-02-22,"VVV-Venlo","Heracles Almelo",0,1
+nl.1,2018-19,2019-02-23,"FC Utrecht","SBV Excelsior",0,0
+nl.1,2018-19,2019-02-23,"Fortuna Sittard","sc Heerenveen",2,4
+nl.1,2018-19,2019-02-23,"NAC Breda","FC Groningen",0,0
+nl.1,2018-19,2019-02-23,"PEC Zwolle","De Graafschap",0,3
+nl.1,2018-19,2019-02-24,"ADO Den Haag","AFC Ajax",1,5
+nl.1,2018-19,2019-02-24,"FC Emmen","Vitesse",0,3
+nl.1,2018-19,2019-02-24,"PSV Eindhoven","Feyenoord",1,1
+nl.1,2018-19,2019-02-24,"Willem II","AZ Alkmaar",2,1
+nl.1,2018-19,2019-03-01,"De Graafschap","ADO Den Haag",1,1
+nl.1,2018-19,2019-03-02,"Heracles Almelo","FC Utrecht",1,5
+nl.1,2018-19,2019-03-02,"SBV Excelsior","PSV Eindhoven",0,2
+nl.1,2018-19,2019-03-02,"Vitesse","NAC Breda",4,1
+nl.1,2018-19,2019-03-03,"AZ Alkmaar","Fortuna Sittard",4,2
+nl.1,2018-19,2019-03-03,"FC Groningen","VVV-Venlo",3,2
+nl.1,2018-19,2019-03-03,"Feyenoord","FC Emmen",4,0
+nl.1,2018-19,2019-03-03,"sc Heerenveen","Willem II",4,2
+nl.1,2018-19,2019-03-08,"FC Utrecht","FC Groningen",0,0
+nl.1,2018-19,2019-03-09,"ADO Den Haag","sc Heerenveen",2,3
+nl.1,2018-19,2019-03-09,"PSV Eindhoven","NAC Breda",2,0
+nl.1,2018-19,2019-03-09,"VVV-Venlo","SBV Excelsior",1,0
+nl.1,2018-19,2019-03-09,"Willem II","De Graafschap",3,2
+nl.1,2018-19,2019-03-10,"AFC Ajax","Fortuna Sittard",4,0
+nl.1,2018-19,2019-03-10,"FC Emmen","Heracles Almelo",1,1
+nl.1,2018-19,2019-03-10,"PEC Zwolle","AZ Alkmaar",0,0
+nl.1,2018-19,2019-03-10,"Vitesse","Feyenoord",1,1
+nl.1,2018-19,2019-03-13,"AFC Ajax","PEC Zwolle",2,1
+nl.1,2018-19,2019-03-15,"Fortuna Sittard","FC Emmen",3,1
+nl.1,2018-19,2019-03-16,"Feyenoord","Willem II",2,3
+nl.1,2018-19,2019-03-16,"Heracles Almelo","Vitesse",3,2
+nl.1,2018-19,2019-03-16,"NAC Breda","FC Utrecht",0,4
+nl.1,2018-19,2019-03-16,"sc Heerenveen","De Graafschap",0,3
+nl.1,2018-19,2019-03-17,"AZ Alkmaar","AFC Ajax",1,0
+nl.1,2018-19,2019-03-17,"FC Groningen","ADO Den Haag",1,0
+nl.1,2018-19,2019-03-17,"SBV Excelsior","PEC Zwolle",0,2
+nl.1,2018-19,2019-03-17,"VVV-Venlo","PSV Eindhoven",0,1
+nl.1,2018-19,2019-03-30,"ADO Den Haag","Vitesse",3,3
+nl.1,2018-19,2019-03-30,"AZ Alkmaar","FC Groningen",1,0
+nl.1,2018-19,2019-03-30,"De Graafschap","Heracles Almelo",1,2
+nl.1,2018-19,2019-03-30,"Willem II","Fortuna Sittard",3,2
+nl.1,2018-19,2019-03-30,"sc Heerenveen","SBV Excelsior",1,0
+nl.1,2018-19,2019-03-31,"AFC Ajax","PSV Eindhoven",3,1
+nl.1,2018-19,2019-03-31,"FC Utrecht","Feyenoord",3,2
+nl.1,2018-19,2019-03-31,"NAC Breda","VVV-Venlo",1,1
+nl.1,2018-19,2019-03-31,"PEC Zwolle","FC Emmen",3,0
+nl.1,2018-19,2019-04-02,"FC Groningen","De Graafschap",1,0
+nl.1,2018-19,2019-04-02,"Heracles Almelo","Willem II",3,4
+nl.1,2018-19,2019-04-02,"Vitesse","AZ Alkmaar",2,2
+nl.1,2018-19,2019-04-03,"FC Emmen","AFC Ajax",2,5
+nl.1,2018-19,2019-04-03,"Fortuna Sittard","ADO Den Haag",0,0
+nl.1,2018-19,2019-04-03,"SBV Excelsior","NAC Breda",1,2
+nl.1,2018-19,2019-04-03,"VVV-Venlo","FC Utrecht",2,6
+nl.1,2018-19,2019-04-04,"Feyenoord","sc Heerenveen",3,0
+nl.1,2018-19,2019-04-04,"PSV Eindhoven","PEC Zwolle",4,0
+nl.1,2018-19,2019-04-06,"ADO Den Haag","FC Utrecht",5,0
+nl.1,2018-19,2019-04-06,"De Graafschap","AZ Alkmaar",1,1
+nl.1,2018-19,2019-04-06,"FC Groningen","SBV Excelsior",1,0
+nl.1,2018-19,2019-04-06,"Heracles Almelo","NAC Breda",1,0
+nl.1,2018-19,2019-04-06,"Willem II","AFC Ajax",1,4
+nl.1,2018-19,2019-04-07,"FC Emmen","sc Heerenveen",2,0
+nl.1,2018-19,2019-04-07,"PEC Zwolle","Fortuna Sittard",5,0
+nl.1,2018-19,2019-04-07,"VVV-Venlo","Feyenoord",0,3
+nl.1,2018-19,2019-04-07,"Vitesse","PSV Eindhoven",3,3
+nl.1,2018-19,2019-04-12,"NAC Breda","FC Emmen",1,1
+nl.1,2018-19,2019-04-13,"AFC Ajax","SBV Excelsior",6,2
+nl.1,2018-19,2019-04-13,"AZ Alkmaar","ADO Den Haag",2,3
+nl.1,2018-19,2019-04-13,"Feyenoord","Heracles Almelo",2,1
+nl.1,2018-19,2019-04-13,"Fortuna Sittard","VVV-Venlo",1,1
+nl.1,2018-19,2019-04-14,"FC Utrecht","Vitesse",0,0
+nl.1,2018-19,2019-04-14,"PSV Eindhoven","De Graafschap",2,1
+nl.1,2018-19,2019-04-14,"Willem II","PEC Zwolle",2,0
+nl.1,2018-19,2019-04-14,"sc Heerenveen","FC Groningen",1,1
+nl.1,2018-19,2019-04-19,"Heracles Almelo","sc Heerenveen",2,1
+nl.1,2018-19,2019-04-20,"FC Emmen","FC Utrecht",2,0
+nl.1,2018-19,2019-04-20,"FC Groningen","AFC Ajax",0,1
+nl.1,2018-19,2019-04-20,"Feyenoord","AZ Alkmaar",2,1
+nl.1,2018-19,2019-04-20,"VVV-Venlo","De Graafschap",4,1
+nl.1,2018-19,2019-04-20,"Vitesse","PEC Zwolle",4,1
+nl.1,2018-19,2019-04-21,"Fortuna Sittard","NAC Breda",2,1
+nl.1,2018-19,2019-04-21,"PSV Eindhoven","ADO Den Haag",3,1
+nl.1,2018-19,2019-04-21,"SBV Excelsior","Willem II",1,1
+nl.1,2018-19,2019-04-23,"AFC Ajax","Vitesse",4,2
+nl.1,2018-19,2019-04-23,"AZ Alkmaar","Heracles Almelo",2,1
+nl.1,2018-19,2019-04-23,"De Graafschap","FC Emmen",1,0
+nl.1,2018-19,2019-04-23,"sc Heerenveen","VVV-Venlo",2,2
+nl.1,2018-19,2019-04-24,"FC Utrecht","Fortuna Sittard",2,1
+nl.1,2018-19,2019-04-24,"NAC Breda","Feyenoord",0,4
+nl.1,2018-19,2019-04-25,"ADO Den Haag","SBV Excelsior",3,1
+nl.1,2018-19,2019-04-25,"Willem II","PSV Eindhoven",0,3
+nl.1,2018-19,2019-04-29,"PEC Zwolle","FC Groningen",3,2
+nl.1,2018-19,2019-05-12,"AFC Ajax","FC Utrecht",4,1
+nl.1,2018-19,2019-05-12,"AZ Alkmaar","PSV Eindhoven",1,0
+nl.1,2018-19,2019-05-12,"FC Groningen","Fortuna Sittard",3,0
+nl.1,2018-19,2019-05-12,"Feyenoord","ADO Den Haag",0,2
+nl.1,2018-19,2019-05-12,"Heracles Almelo","SBV Excelsior",4,5
+nl.1,2018-19,2019-05-12,"PEC Zwolle","VVV-Venlo",2,4
+nl.1,2018-19,2019-05-12,"Vitesse","De Graafschap",6,1
+nl.1,2018-19,2019-05-12,"Willem II","FC Emmen",2,3
+nl.1,2018-19,2019-05-12,"sc Heerenveen","NAC Breda",2,1
+nl.1,2018-19,2019-05-15,"ADO Den Haag","Willem II",6,2
+nl.1,2018-19,2019-05-15,"De Graafschap","AFC Ajax",1,4
+nl.1,2018-19,2019-05-15,"FC Emmen","FC Groningen",1,0
+nl.1,2018-19,2019-05-15,"FC Utrecht","sc Heerenveen",3,1
+nl.1,2018-19,2019-05-15,"Fortuna Sittard","Feyenoord",1,4
+nl.1,2018-19,2019-05-15,"NAC Breda","PEC Zwolle",0,0
+nl.1,2018-19,2019-05-15,"PSV Eindhoven","Heracles Almelo",3,1
+nl.1,2018-19,2019-05-15,"SBV Excelsior","AZ Alkmaar",4,2
+nl.1,2018-19,2019-05-15,"VVV-Venlo","Vitesse",1,3
+nl.1,2019-20,2019-08-02,"PEC Zwolle","Willem II",1,3
+nl.1,2019-20,2019-08-03,"FC Emmen","FC Groningen",0,1
+nl.1,2019-20,2019-08-03,"FC Twente","PSV Eindhoven",1,1
+nl.1,2019-20,2019-08-03,"VVV-Venlo","RKC Waalwijk",3,1
+nl.1,2019-20,2019-08-03,"Vitesse","AFC Ajax",2,2
+nl.1,2019-20,2019-08-04,"ADO Den Haag","FC Utrecht",2,4
+nl.1,2019-20,2019-08-04,"AZ Alkmaar","Fortuna Sittard",4,0
+nl.1,2019-20,2019-08-04,"Feyenoord","Sparta Rotterdam",2,2
+nl.1,2019-20,2019-08-04,"Heracles Almelo","sc Heerenveen",0,4
+nl.1,2019-20,2019-08-09,"Sparta Rotterdam","VVV-Venlo",4,1
+nl.1,2019-20,2019-08-10,"AFC Ajax","FC Emmen",5,0
+nl.1,2019-20,2019-08-10,"FC Groningen","FC Twente",1,3
+nl.1,2019-20,2019-08-10,"Willem II","Vitesse",0,2
+nl.1,2019-20,2019-08-11,"FC Utrecht","PEC Zwolle",3,1
+nl.1,2019-20,2019-08-11,"Fortuna Sittard","Heracles Almelo",1,1
+nl.1,2019-20,2019-08-11,"PSV Eindhoven","ADO Den Haag",3,1
+nl.1,2019-20,2019-08-11,"RKC Waalwijk","AZ Alkmaar",0,2
+nl.1,2019-20,2019-08-11,"sc Heerenveen","Feyenoord",1,1
+nl.1,2019-20,2019-08-16,"Vitesse","PEC Zwolle",3,0
+nl.1,2019-20,2019-08-17,"ADO Den Haag","Sparta Rotterdam",1,2
+nl.1,2019-20,2019-08-17,"FC Emmen","sc Heerenveen",2,0
+nl.1,2019-20,2019-08-17,"VVV-Venlo","AFC Ajax",1,4
+nl.1,2019-20,2019-08-18,"AZ Alkmaar","FC Groningen",0,0
+nl.1,2019-20,2019-08-18,"FC Twente","RKC Waalwijk",3,3
+nl.1,2019-20,2019-08-18,"Feyenoord","FC Utrecht",1,1
+nl.1,2019-20,2019-08-18,"Fortuna Sittard","Willem II",2,3
+nl.1,2019-20,2019-08-18,"Heracles Almelo","PSV Eindhoven",0,2
+nl.1,2019-20,2019-08-24,"Heracles Almelo","Vitesse",1,1
+nl.1,2019-20,2019-08-24,"Willem II","FC Emmen",2,1
+nl.1,2019-20,2019-08-24,"sc Heerenveen","FC Twente",0,0
+nl.1,2019-20,2019-08-25,"FC Utrecht","VVV-Venlo",1,2
+nl.1,2019-20,2019-08-25,"PEC Zwolle","Sparta Rotterdam",2,2
+nl.1,2019-20,2019-08-25,"RKC Waalwijk","ADO Den Haag",0,3
+nl.1,2019-20,2019-08-30,"FC Emmen","PEC Zwolle",1,3
+nl.1,2019-20,2019-08-31,"ADO Den Haag","VVV-Venlo",1,0
+nl.1,2019-20,2019-08-31,"FC Groningen","Heracles Almelo",1,2
+nl.1,2019-20,2019-08-31,"sc Heerenveen","Fortuna Sittard",1,1
+nl.1,2019-20,2019-09-01,"FC Twente","FC Utrecht",3,1
+nl.1,2019-20,2019-09-01,"RKC Waalwijk","PSV Eindhoven",1,3
+nl.1,2019-20,2019-09-01,"Sparta Rotterdam","AFC Ajax",1,4
+nl.1,2019-20,2019-09-01,"Vitesse","AZ Alkmaar",2,1
+nl.1,2019-20,2019-09-01,"Willem II","Feyenoord",0,1
+nl.1,2019-20,2019-09-14,"AFC Ajax","sc Heerenveen",4,1
+nl.1,2019-20,2019-09-14,"AZ Alkmaar","Sparta Rotterdam",5,1
+nl.1,2019-20,2019-09-14,"FC Utrecht","FC Emmen",3,1
+nl.1,2019-20,2019-09-14,"PSV Eindhoven","Vitesse",5,0
+nl.1,2019-20,2019-09-14,"VVV-Venlo","FC Groningen",2,1
+nl.1,2019-20,2019-09-15,"Feyenoord","ADO Den Haag",3,2
+nl.1,2019-20,2019-09-15,"Fortuna Sittard","FC Twente",2,3
+nl.1,2019-20,2019-09-15,"Heracles Almelo","Willem II",4,1
+nl.1,2019-20,2019-09-15,"PEC Zwolle","RKC Waalwijk",6,2
+nl.1,2019-20,2019-09-20,"FC Twente","Heracles Almelo",2,3
+nl.1,2019-20,2019-09-21,"FC Groningen","PEC Zwolle",2,0
+nl.1,2019-20,2019-09-21,"Sparta Rotterdam","RKC Waalwijk",4,0
+nl.1,2019-20,2019-09-21,"Vitesse","Fortuna Sittard",4,2
+nl.1,2019-20,2019-09-21,"Willem II","VVV-Venlo",1,0
+nl.1,2019-20,2019-09-22,"ADO Den Haag","AZ Alkmaar",0,1
+nl.1,2019-20,2019-09-22,"FC Emmen","Feyenoord",3,3
+nl.1,2019-20,2019-09-22,"PSV Eindhoven","AFC Ajax",1,1
+nl.1,2019-20,2019-09-22,"sc Heerenveen","FC Utrecht",1,1
+nl.1,2019-20,2019-09-25,"AFC Ajax","Fortuna Sittard",5,0
+nl.1,2019-20,2019-09-25,"PSV Eindhoven","FC Groningen",3,1
+nl.1,2019-20,2019-09-26,"Feyenoord","AZ Alkmaar",0,3
+nl.1,2019-20,2019-09-27,"FC Emmen","ADO Den Haag",3,0
+nl.1,2019-20,2019-09-28,"AFC Ajax","FC Groningen",2,0
+nl.1,2019-20,2019-09-28,"Fortuna Sittard","Sparta Rotterdam",0,0
+nl.1,2019-20,2019-09-28,"VVV-Venlo","sc Heerenveen",0,3
+nl.1,2019-20,2019-09-29,"AZ Alkmaar","Heracles Almelo",2,0
+nl.1,2019-20,2019-09-29,"FC Utrecht","Willem II",2,0
+nl.1,2019-20,2019-09-29,"Feyenoord","FC Twente",5,1
+nl.1,2019-20,2019-09-29,"PEC Zwolle","PSV Eindhoven",0,4
+nl.1,2019-20,2019-09-29,"RKC Waalwijk","Vitesse",1,2
+nl.1,2019-20,2019-10-04,"FC Groningen","RKC Waalwijk",3,0
+nl.1,2019-20,2019-10-05,"Heracles Almelo","FC Emmen",2,0
+nl.1,2019-20,2019-10-05,"Sparta Rotterdam","FC Twente",2,1
+nl.1,2019-20,2019-10-05,"Vitesse","FC Utrecht",2,1
+nl.1,2019-20,2019-10-05,"sc Heerenveen","PEC Zwolle",1,0
+nl.1,2019-20,2019-10-06,"ADO Den Haag","AFC Ajax",0,2
+nl.1,2019-20,2019-10-06,"Fortuna Sittard","Feyenoord",4,2
+nl.1,2019-20,2019-10-06,"PSV Eindhoven","VVV-Venlo",4,1
+nl.1,2019-20,2019-10-06,"Willem II","AZ Alkmaar",1,1
+nl.1,2019-20,2019-10-19,"AZ Alkmaar","sc Heerenveen",2,4
+nl.1,2019-20,2019-10-19,"FC Twente","Willem II",0,1
+nl.1,2019-20,2019-10-19,"FC Utrecht","PSV Eindhoven",3,0
+nl.1,2019-20,2019-10-19,"RKC Waalwijk","AFC Ajax",1,2
+nl.1,2019-20,2019-10-19,"VVV-Venlo","Vitesse",0,4
+nl.1,2019-20,2019-10-20,"FC Emmen","Fortuna Sittard",2,1
+nl.1,2019-20,2019-10-20,"FC Groningen","Sparta Rotterdam",2,0
+nl.1,2019-20,2019-10-20,"Feyenoord","Heracles Almelo",1,1
+nl.1,2019-20,2019-10-20,"PEC Zwolle","ADO Den Haag",3,1
+nl.1,2019-20,2019-10-25,"FC Twente","FC Emmen",4,1
+nl.1,2019-20,2019-10-26,"Fortuna Sittard","VVV-Venlo",4,1
+nl.1,2019-20,2019-10-26,"Heracles Almelo","PEC Zwolle",4,0
+nl.1,2019-20,2019-10-26,"Vitesse","ADO Den Haag",0,2
+nl.1,2019-20,2019-10-26,"Willem II","RKC Waalwijk",2,1
+nl.1,2019-20,2019-10-27,"AFC Ajax","Feyenoord",4,0
+nl.1,2019-20,2019-10-27,"PSV Eindhoven","AZ Alkmaar",0,4
+nl.1,2019-20,2019-10-27,"Sparta Rotterdam","FC Utrecht",1,2
+nl.1,2019-20,2019-10-27,"sc Heerenveen","FC Groningen",1,1
+nl.1,2019-20,2019-11-01,"PEC Zwolle","AFC Ajax",2,4
+nl.1,2019-20,2019-11-02,"AZ Alkmaar","FC Twente",3,0
+nl.1,2019-20,2019-11-02,"RKC Waalwijk","Heracles Almelo",2,0
+nl.1,2019-20,2019-11-02,"Sparta Rotterdam","PSV Eindhoven",2,2
+nl.1,2019-20,2019-11-03,"ADO Den Haag","sc Heerenveen",1,1
+nl.1,2019-20,2019-11-03,"FC Emmen","Vitesse",2,1
+nl.1,2019-20,2019-11-03,"FC Groningen","Willem II",2,0
+nl.1,2019-20,2019-11-03,"FC Utrecht","Fortuna Sittard",6,0
+nl.1,2019-20,2019-11-03,"VVV-Venlo","Feyenoord",0,3
+nl.1,2019-20,2019-11-08,"Vitesse","FC Groningen",1,2
+nl.1,2019-20,2019-11-09,"Fortuna Sittard","ADO Den Haag",1,0
+nl.1,2019-20,2019-11-09,"Heracles Almelo","VVV-Venlo",6,1
+nl.1,2019-20,2019-11-09,"sc Heerenveen","Sparta Rotterdam",2,1
+nl.1,2019-20,2019-11-10,"AFC Ajax","FC Utrecht",4,0
+nl.1,2019-20,2019-11-10,"AZ Alkmaar","FC Emmen",3,0
+nl.1,2019-20,2019-11-10,"FC Twente","PEC Zwolle",2,1
+nl.1,2019-20,2019-11-10,"Feyenoord","RKC Waalwijk",3,2
+nl.1,2019-20,2019-11-10,"Willem II","PSV Eindhoven",2,1
+nl.1,2019-20,2019-11-23,"ADO Den Haag","Willem II",3,3
+nl.1,2019-20,2019-11-23,"AFC Ajax","Heracles Almelo",4,1
+nl.1,2019-20,2019-11-23,"FC Utrecht","AZ Alkmaar",0,3
+nl.1,2019-20,2019-11-23,"PEC Zwolle","Fortuna Sittard",3,1
+nl.1,2019-20,2019-11-24,"FC Groningen","Feyenoord",1,1
+nl.1,2019-20,2019-11-24,"PSV Eindhoven","sc Heerenveen",2,1
+nl.1,2019-20,2019-11-24,"RKC Waalwijk","FC Emmen",1,1
+nl.1,2019-20,2019-11-24,"Sparta Rotterdam","Vitesse",2,0
+nl.1,2019-20,2019-11-24,"VVV-Venlo","FC Twente",2,1
+nl.1,2019-20,2019-11-29,"sc Heerenveen","Vitesse",3,2
+nl.1,2019-20,2019-11-30,"Fortuna Sittard","FC Groningen",1,0
+nl.1,2019-20,2019-11-30,"Heracles Almelo","ADO Den Haag",4,0
+nl.1,2019-20,2019-11-30,"Willem II","Sparta Rotterdam",4,0
+nl.1,2019-20,2019-12-01,"AZ Alkmaar","VVV-Venlo",1,0
+nl.1,2019-20,2019-12-01,"FC Emmen","PSV Eindhoven",1,1
+nl.1,2019-20,2019-12-01,"FC Twente","AFC Ajax",2,5
+nl.1,2019-20,2019-12-01,"FC Utrecht","RKC Waalwijk",0,1
+nl.1,2019-20,2019-12-01,"Feyenoord","PEC Zwolle",1,0
+nl.1,2019-20,2019-12-06,"AFC Ajax","Willem II",0,2
+nl.1,2019-20,2019-12-07,"ADO Den Haag","FC Twente",0,0
+nl.1,2019-20,2019-12-07,"PEC Zwolle","AZ Alkmaar",0,3
+nl.1,2019-20,2019-12-07,"PSV Eindhoven","Fortuna Sittard",5,0
+nl.1,2019-20,2019-12-07,"VVV-Venlo","FC Emmen",2,0
+nl.1,2019-20,2019-12-08,"FC Groningen","FC Utrecht",0,1
+nl.1,2019-20,2019-12-08,"RKC Waalwijk","sc Heerenveen",1,3
+nl.1,2019-20,2019-12-08,"Sparta Rotterdam","Heracles Almelo",0,0
+nl.1,2019-20,2019-12-08,"Vitesse","Feyenoord",0,0
+nl.1,2019-20,2019-12-13,"sc Heerenveen","Willem II",1,2
+nl.1,2019-20,2019-12-14,"ADO Den Haag","FC Groningen",1,1
+nl.1,2019-20,2019-12-14,"FC Twente","Vitesse",0,3
+nl.1,2019-20,2019-12-14,"Fortuna Sittard","RKC Waalwijk",3,2
+nl.1,2019-20,2019-12-14,"VVV-Venlo","PEC Zwolle",1,2
+nl.1,2019-20,2019-12-15,"AZ Alkmaar","AFC Ajax",1,0
+nl.1,2019-20,2019-12-15,"FC Emmen","Sparta Rotterdam",2,0
+nl.1,2019-20,2019-12-15,"Feyenoord","PSV Eindhoven",3,1
+nl.1,2019-20,2019-12-15,"Heracles Almelo","FC Utrecht",1,3
+nl.1,2019-20,2019-12-20,"RKC Waalwijk","FC Twente",3,0
+nl.1,2019-20,2019-12-21,"PSV Eindhoven","PEC Zwolle",4,1
+nl.1,2019-20,2019-12-21,"Sparta Rotterdam","AZ Alkmaar",3,0
+nl.1,2019-20,2019-12-21,"Willem II","Fortuna Sittard",0,0
+nl.1,2019-20,2019-12-21,"sc Heerenveen","Heracles Almelo",1,1
+nl.1,2019-20,2019-12-22,"AFC Ajax","ADO Den Haag",6,1
+nl.1,2019-20,2019-12-22,"FC Groningen","FC Emmen",2,0
+nl.1,2019-20,2019-12-22,"FC Utrecht","Feyenoord",1,2
+nl.1,2019-20,2019-12-22,"Vitesse","VVV-Venlo",3,0
+nl.1,2019-20,2020-01-17,"PEC Zwolle","FC Utrecht",3,3
+nl.1,2019-20,2020-01-18,"AZ Alkmaar","Willem II",1,3
+nl.1,2019-20,2020-01-18,"FC Twente","FC Groningen",0,0
+nl.1,2019-20,2020-01-18,"Feyenoord","sc Heerenveen",3,1
+nl.1,2019-20,2020-01-18,"Fortuna Sittard","Vitesse",1,3
+nl.1,2019-20,2020-01-19,"ADO Den Haag","RKC Waalwijk",2,0
+nl.1,2019-20,2020-01-19,"AFC Ajax","Sparta Rotterdam",2,1
+nl.1,2019-20,2020-01-19,"FC Emmen","Heracles Almelo",1,0
+nl.1,2019-20,2020-01-19,"VVV-Venlo","PSV Eindhoven",1,1
+nl.1,2019-20,2020-01-24,"FC Utrecht","ADO Den Haag",4,0
+nl.1,2019-20,2020-01-25,"Heracles Almelo","Feyenoord",2,3
+nl.1,2019-20,2020-01-25,"RKC Waalwijk","VVV-Venlo",1,2
+nl.1,2019-20,2020-01-25,"Sparta Rotterdam","Fortuna Sittard",1,1
+nl.1,2019-20,2020-01-25,"sc Heerenveen","AZ Alkmaar",1,2
+nl.1,2019-20,2020-01-26,"FC Groningen","AFC Ajax",2,1
+nl.1,2019-20,2020-01-26,"PSV Eindhoven","FC Twente",1,1
+nl.1,2019-20,2020-01-26,"Vitesse","FC Emmen",1,1
+nl.1,2019-20,2020-01-26,"Willem II","PEC Zwolle",0,0
+nl.1,2019-20,2020-01-31,"AZ Alkmaar","RKC Waalwijk",4,0
+nl.1,2019-20,2020-02-01,"ADO Den Haag","Vitesse",0,0
+nl.1,2019-20,2020-02-01,"FC Twente","Sparta Rotterdam",2,0
+nl.1,2019-20,2020-02-01,"Feyenoord","FC Emmen",3,0
+nl.1,2019-20,2020-02-01,"PEC Zwolle","FC Groningen",1,0
+nl.1,2019-20,2020-02-02,"AFC Ajax","PSV Eindhoven",1,0
+nl.1,2019-20,2020-02-02,"Fortuna Sittard","sc Heerenveen",2,1
+nl.1,2019-20,2020-02-02,"VVV-Venlo","FC Utrecht",1,1
+nl.1,2019-20,2020-02-02,"Willem II","Heracles Almelo",1,0
+nl.1,2019-20,2020-02-07,"Heracles Almelo","Fortuna Sittard",2,0
+nl.1,2019-20,2020-02-08,"FC Groningen","Vitesse",1,0
+nl.1,2019-20,2020-02-08,"PSV Eindhoven","Willem II",3,0
+nl.1,2019-20,2020-02-08,"RKC Waalwijk","PEC Zwolle",0,0
+nl.1,2019-20,2020-02-08,"sc Heerenveen","VVV-Venlo",1,1
+nl.1,2019-20,2020-02-11,"FC Emmen","FC Twente",2,0
+nl.1,2019-20,2020-02-11,"Sparta Rotterdam","ADO Den Haag",4,2
+nl.1,2019-20,2020-02-14,"VVV-Venlo","Heracles Almelo",1,0
+nl.1,2019-20,2020-02-15,"ADO Den Haag","PSV Eindhoven",0,3
+nl.1,2019-20,2020-02-15,"FC Twente","AZ Alkmaar",2,0
+nl.1,2019-20,2020-02-15,"Fortuna Sittard","FC Emmen",0,0
+nl.1,2019-20,2020-02-16,"AFC Ajax","RKC Waalwijk",3,0
+nl.1,2019-20,2020-02-16,"PEC Zwolle","Feyenoord",3,4
+nl.1,2019-20,2020-02-16,"Sparta Rotterdam","FC Groningen",1,2
+nl.1,2019-20,2020-02-16,"Vitesse","sc Heerenveen",4,2
+nl.1,2019-20,2020-02-16,"Willem II","FC Utrecht",1,1
+nl.1,2019-20,2020-02-21,"RKC Waalwijk","Sparta Rotterdam",0,1
+nl.1,2019-20,2020-02-22,"FC Emmen","Willem II",4,2
+nl.1,2019-20,2020-02-22,"FC Groningen","VVV-Venlo",0,1
+nl.1,2019-20,2020-02-22,"Feyenoord","Fortuna Sittard",2,1
+nl.1,2019-20,2020-02-22,"sc Heerenveen","ADO Den Haag",2,2
+nl.1,2019-20,2020-02-23,"AZ Alkmaar","PEC Zwolle",2,0
+nl.1,2019-20,2020-02-23,"FC Utrecht","FC Twente",2,1
+nl.1,2019-20,2020-02-23,"Heracles Almelo","AFC Ajax",1,0
+nl.1,2019-20,2020-02-23,"Vitesse","PSV Eindhoven",1,2
+nl.1,2019-20,2020-02-28,"Willem II","FC Groningen",3,1
+nl.1,2019-20,2020-02-29,"ADO Den Haag","Heracles Almelo",0,0
+nl.1,2019-20,2020-02-29,"FC Twente","sc Heerenveen",2,3
+nl.1,2019-20,2020-02-29,"PEC Zwolle","Vitesse",4,3
+nl.1,2019-20,2020-02-29,"VVV-Venlo","Fortuna Sittard",0,0
+nl.1,2019-20,2020-03-01,"AFC Ajax","AZ Alkmaar",0,2
+nl.1,2019-20,2020-03-01,"PSV Eindhoven","Feyenoord",1,1
+nl.1,2019-20,2020-03-01,"RKC Waalwijk","FC Utrecht",2,1
+nl.1,2019-20,2020-03-01,"Sparta Rotterdam","FC Emmen",5,1
+nl.1,2019-20,2020-03-06,"Fortuna Sittard","PEC Zwolle",1,1
+nl.1,2019-20,2020-03-07,"AZ Alkmaar","ADO Den Haag",4,0
+nl.1,2019-20,2020-03-07,"FC Emmen","VVV-Venlo",3,0
+nl.1,2019-20,2020-03-07,"Vitesse","FC Twente",1,0
+nl.1,2019-20,2020-03-07,"sc Heerenveen","AFC Ajax",1,3
+nl.1,2019-20,2020-03-08,"FC Groningen","PSV Eindhoven",0,1
+nl.1,2019-20,2020-03-08,"FC Utrecht","Sparta Rotterdam",5,1
+nl.1,2019-20,2020-03-08,"Feyenoord","Willem II",2,0
+nl.1,2019-20,2020-03-08,"Heracles Almelo","RKC Waalwijk",4,2
 nl.1,2020-21,2020-09-12,"sc Heerenveen","Willem II",2,0
 nl.1,2020-21,2020-09-12,"PEC Zwolle","Feyenoord",0,2
 nl.1,2020-21,2020-09-12,"FC Twente","Fortuna Sittard",2,0
