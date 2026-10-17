@@ -145,14 +145,14 @@ class UpcomingTests(unittest.TestCase):
         self.assertEqual(len(requests),35)
         self.assertTrue(any("API-token" in warning for warning in warnings))
 
-    def test_no_provider_data_results_in_provisional_archived_only(self):
+    def test_archive_fixtures_are_not_misrepresented_as_real_upcoming_games(self):
         with tempfile.TemporaryDirectory() as d:
             data={"fixtures":[{"id":"archive-1","league":"nl.1",
                "date":"2026-10-20","season":"2026-27","home":"Ajax","away":"PSV"}]}
             result=refresh_upcoming(
                 inventory=data,data_dir=d,now=NOW,model=RAW_MODEL,
                 provider_fetcher=lambda **kw:([],["provider not available"]))
-            self.assertEqual(result["schedule_count"],1)
+            self.assertEqual(result["schedule_count"],0)
             self.assertEqual(result["predicted_count"],0)
             self.assertEqual(result["provider_warnings"],["provider not available"])
             self.assertTrue((Path(d)/"upcoming_predictions.json").is_file())
