@@ -1,3 +1,22 @@
+# SupahBetting Research v0.13 — serieuze onderzoeksomgeving
+
+## Start hier (nieuwe experimentele branch)
+
+Deze `feature/research-v0.13-serious-dashboard`-branch zet echte komende wedstrijden en hun **Poisson-modelkansen** meteen bovenaan de pagina. Geen demo-wedstrijden, geen handmatig kopiëren van modelbestanden en België voorlopig uitgeschakeld.
+
+- **`start_supahbetting.bat`**: voert onmiddellijk een lokale audit van model en historische data uit, opent het dashboard en laat de monitor wedstrijden en recente resultaten ophalen.
+- **`ververs_speelschema.bat`**: alleen actuele agenda-/scorebronnen opnieuw checken.
+- **`migreer_naar_git.bat`**: optioneel eenmalig vanuit je oude ZIP overstappen naar een eigen Git-checkout, mét bestaande `.supahbetting` en `data/research`. Daarna **`update_supahbetting.bat`** voor code-updates zonder ZIP-overzetwerk.
+- **`vergelijk_modellen.bat`**: afzonderlijk Poisson versus Dixon-Coles vergelijken op chronologisch verzamelde historische wedstrijden. **Geen** automatische fusie zonder onafhankelijke validatie.
+
+De vooraf gebundelde researchbaseline beslaat beschikbare wedstrijden vanaf januari 2016 (vorige ingest: 22.665 eindstanden, bron op dat moment nog niet bijgewerkt tot vandaag). De modelchecker kan dus bevestigen dat de historische basis aanwezig is, maar niet claimen dat de huidige uitslagen compleet zijn. Via lokale, door de bron als **FINISHED** bevestigde uitslagen kan het experimentele scoremodel automatisch opnieuw getraind worden; providerbestanden en die lokale modelgewichten worden **niet als publieke CC0-data naar GitHub gepusht**.
+
+Modelvoorkeuren leggen uit wat de historische doelpuntverwachting, aanval/verdediging en het competitie-thuisvoordeel bijdragen. Ze zijn geen bewezen winstgevende weddenschap: ontbreken van betrouwbare actuele odds, teamnieuws en prospectieve tests blijft zichtbaar.
+
+**Lees eerst [de volledige Nederlandse handleiding](docs/RESEARCH_SERIEUS_V013.md).** Deze branch blijft in een aparte concept-PR, zonder wijziging van de productiebranch.
+
+---
+
 # SupahBetting v0.8.2
 
 ## Research Lab v0.12 — 2016 t/m heden (nieuwe **testbranch**)
