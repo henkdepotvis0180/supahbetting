@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.5.1 — 2026-10-17
+- Eén modulair, lokaal JSON-configuratiebestand voor API-sleutels: .supahbetting/providers.json.
+- Automatisch een leeg bestand aanmaken bij eerste dashboardstart, bestaande sleutels nooit overschrijven.
+- Windows-tool bewerk_api_config.bat: open het lokale bestand in Kladblok.
+- football-data.org leest zijn API-token uit providers > football-data > api_key.
+- De oude Windows-omgevingsvariabele FOOTBALL_DATA_API_KEY blijft bestaan als fallback.
+- Nieuwe aanbieders kunnen dezelfde centrale configuratieparser gebruiken, maar hebben nog een eigen adapter nodig.
+- JSON-validatie, 32 KB-limiet, credentials niet in UI/API-foutmeldingen en beperkt bestandsrecht op Unix.
+- Malformed JSON schakelt alleen de betreffende geconfigureerde API-bron uit; de rest van het dashboard blijft bruikbaar.
+- Tests toegevoegd voor eerste start, behoud van sleutels, provider-uitbreiding, foutafhandeling en privacy.
+
+
 ## v0.5.0 — 2026-10-17
 - Multi-provider wedstrijdoverzicht: OpenLigaDB, gratis TheSportsDB v1 en optioneel football-data.org v4.
 - Eredivisie, Eerste Divisie, Belgische Pro League en internationale competities.
