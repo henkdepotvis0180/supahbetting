@@ -19,9 +19,20 @@ def game(day="2016-08-12", ft=(2, 1), home="Alpha", away="Beta"):
 class ResearchDataTests(unittest.TestCase):
     def test_2016_and_current_season_included(self):
         years = seasons(date(2026, 10, 17))
-        self.assertEqual(years[0], "2016-17")
+        self.assertEqual(years[0], "2015-16")
         self.assertEqual(years[-1], "2026-27")
-        self.assertEqual(len(years), 11)
+        self.assertEqual(len(years), 12)
+
+    def test_january_june_2016_included_but_2015_excluded(self):
+        today = date(2026,10,17)
+        source = {"matches": [
+            game("2015-12-01", (1,0), "A", "B"),
+            game("2016-02-01", (2,1), "C", "D"),
+        ]}
+        matches, planned = parse_source(source, "en.1", "2015-16", today)
+        self.assertEqual(len(matches), 1)
+        self.assertEqual(matches[0]["date"], "2016-02-01")
+        self.assertEqual(planned, [])
 
     def test_strict_goals(self):
         self.assertEqual(valid_score([2, 0]), [2, 0])
@@ -69,13 +80,13 @@ class ResearchDataTests(unittest.TestCase):
             first = refresh(directory=temp, full=True, fetcher=fake_fetch, delay=0, today=today)
             self.assertEqual(len(first["matches"]), 2)
             self.assertEqual(len(first["new_final_match_ids"]), 2)
-            self.assertEqual(len(calls), 11 * len(LEAGUES))
+            self.assertEqual(len(calls), 12 * len(LEAGUES))
             calls.clear()
             second = refresh(directory=temp, fetcher=fake_fetch, delay=0, today=today)
             self.assertEqual(len(calls), 2 * len(LEAGUES))
             self.assertEqual(len(second["new_final_match_ids"]), 0)
             self.assertEqual(len(second["matches"]), 2)
-            self.assertEqual(second["season_range"], ["2016-17", "2026-27"])
+            self.assertEqual(second["season_range"], ["2015-16", "2026-27"])
             self.assertEqual(
                 len(json.loads((Path(temp) / "inventory.json").read_text())["matches"]), 2
             )
