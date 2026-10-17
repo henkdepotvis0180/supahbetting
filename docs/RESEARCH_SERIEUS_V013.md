@@ -204,3 +204,68 @@ zonder de provider te belasten. Een officieel
 `configureer_speelschema_api.bat`) biedt een onafhankelijke bron.
 Een werkende provider is géén garantie op een compleet speelschema of
 recente modeltrainingsdata.
+
+
+## 7. Eredivisie weer zichtbaar bij TheSportsDB-storing (17 oktober 2026)
+
+**Oorzaak:** de v0.13-website toont alleen geverifieerde wedstrijden uit
+aangesloten speelschemabronnen, geen oude OpenFootball-archiefagenda. Toen
+TheSportsDB herhaaldelijk HTTP-errors gaf, bleef voor `nl.1` zonder
+football-data.org-token geen actuele speelschemaleverancier over.
+**De Eredivisie en getrainde teamratings waren niet verdwenen.**
+
+De experimentele branch heeft nu een **eigen KNVB-koppeling voor de
+Eredivisie**, los van TheSportsDB:
+
+- De monitor controleert de officiële pagina
+  <https://www.knvb.nl/competities/eredivisie/programma> met één
+  begrensd verzoek per refresh, en probeert uitsluitend echte in die
+  pagina aangekondigde datum-thuisploeg-tijd-uitploeg-combinaties
+  te parseren.
+- Als dat netwerkverzoek mislukt of de parser geen voldoende herkenbaar
+  programma vindt, gebruikt hij de beperkte, **handmatig op
+  17 oktober 2026 gecontroleerde officiële KNVB-programmagegevens**
+  in `supahbetting/data/knvb_eredivisie_2026_27.json` (26 echte
+  wedstrijden van 17 oktober t/m 1 november). Dat is **geen livefeed**.
+- Omdat het KNVB-programma kan worden gewijzigd, is deze reservekopie
+  maximaal **zeven dagen** als recent gecontroleerd geclassificeerd.
+  Daarna zijn de vermelde data nog informatief, maar nooit ongemerkt
+  opnieuw als actueel bevestigd; de monitor moet de officiële
+  agenda opnieuw ophalen of een andere geldige bron vinden.
+- Alleen wedstrijden waarvan de aftrap nog niet heeft plaatsgevonden
+  komen tussen de toekomstige wedstrijden. De tijden zijn op de
+  KNVB-pagina in Amsterdamse lokale tijd opgegeven en worden zorgvuldig
+  naar UTC omgerekend, óók over de wintertijdomschakeling op
+  25 oktober 2026.
+- De naamvarianten van **Telstar (Telstar 1963)** en
+  **N.E.C. (NEC)** worden nu via expliciete aliassen aan het reeds
+  getrainde scoremodel gekoppeld. Er worden geen teams verzonnen.
+- KNVB krijgt een afzonderlijk bronlabel en bronverwijzing op de website.
+  Een **actuele** KNVB-webcontrole heeft voorrang; bij een
+  **gedateerde** KNVB-reservekopie krijgt een nieuwere
+  football-data.org-koppeling voorrang.
+- Geen KNVB-gegevens worden als OpenFootball-CC0-data naar GitHub
+  gesynchroniseerd; officiële speelschema's en wedstrijdresultaten
+  blijven gescheiden van de trainingsuitslagen.
+
+**Concreet voorbeeld:** na 17 oktober 2026 omstreeks 17.41 uur
+lokale tijd blijven de nog niet begonnen wedstrijden
+**Telstar–Feyenoord (20.00 uur)** en
+**Sparta Rotterdam–Willem II (21.00 uur)** zichtbaar. De reeds
+begonnen ADO Den Haag–PSV-wedstrijd van 16.30 uur wordt niet als
+toekomstig aangeduid. Op zondag 18 oktober vermeldt de KNVB o.a.
+PEC Zwolle–Go Ahead Eagles en FC Groningen–Ajax.
+
+**Update-instructie:** stop de oude monitor, gebruik
+`update_supahbetting.bat` wanneer je een Git-checkout hebt (of
+download de nieuwste ZIP van dezelfde experimentele branch met behoud
+van `.supahbetting/` en `data/research/`), start
+`start_supahbetting.bat`, en voer desgewenst
+`ververs_speelschema.bat` uit. Kijk in het monitorvenster naar
+bronwaarschuwingen en controleer in de website
+`Wedstrijden & modelvoorkeuren` met filter **Eredivisie**.
+
+De huidige modeluitslagen lopen op dit moment nog achter t/m
+20 september 2026. KNVB zorgt voor de **wedstrijdkalender**, niet
+voor geverifieerde dagelijkse **eindstanden**. De voorspellingen
+blijven daarom experimenteel en vermelden hun oudere trainingsdatum.
