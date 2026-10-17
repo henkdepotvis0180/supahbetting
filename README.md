@@ -2,7 +2,7 @@
 
 **Lokaal Nederlandstalig voetbalanalyseplatform met een betrouwbare basis voor enkelvoudige én combinatie-betslips.**
 
-SupahBetting is software voor onderzoek en **fictieve weddenschappen**. Vanaf v0.7 bevat het ook een apart, werkelijk getraind 1X2-basismodel. Nieuw in v0.5: **meerdere voetbalgegevensbronnen**, waaronder Nederlandse en Belgische competities; de bestaande OpenLigaDB-community-doelpuntenfeed blijft aanwezig. Er zijn **geen live bookmakerquoteringen**, geen directe bookmakeraccounts en geen functie voor echt geld. De modelkansen zijn nog niet gekalibreerd of onafhankelijk gevalideerd. Een positieve model-EV is **geen bewijs van winstgevendheid**.
+SupahBetting is software voor onderzoek en **fictieve weddenschappen**. Vanaf v0.7 bevat het ook een apart, werkelijk getraind 1X2-basismodel. Nieuw in v0.5: **meerdere voetbalgegevensbronnen**, waaronder Nederlandse en Belgische competities; de bestaande OpenLigaDB-community-doelpuntenfeed blijft aanwezig. Er zijn **geen live bookmakerquoteringen**, geen directe bookmakeraccounts en geen functie voor echt geld. Het aparte getrainde basismodel heeft een chronologische historische toets gehad, maar is niet tegen actuele bookmakers geijkt en gebruikt data tot 2024. Een positieve model-EV is **geen bewijs van winstgevendheid**.
 
 ## Wat is werkend?
 
@@ -303,7 +303,7 @@ GitHub Actions draait de tests onder Python 3.11 en 3.12 en controleert JavaScri
 
 - Alleen **1X2**-selecties, maximaal één markt per wedstrijd per ticket.
 - Geen live **odds-feed** van Toto, Unibet of andere bookmakers. Er is nu wel een afzonderlijke openbare score- en doelpuntenfeed.
-- Geen direct gekoppeld ProphitBet-/OddsHarvester-/Prediict-proces.
+- De drie forks zijn via hun native CSV/JSON-export gekoppeld, **niet** als automatisch uitgevoerde trainings-/scrapeprocessen.
 - De kans op een combinatie wordt vermenigvuldigd onder de **aanname van onafhankelijke wedstrijden**. Dit is ook bij verschillende wedstrijden niet altijd juist.
 - Geen kalibratie of chronologische out-of-sample-backtest; de EV-waarden zijn onderzoeksindicaties.
 - Alleen lokaal toegankelijk via **127.0.0.1**; geen gebruikersaccounts, HTTPS, LAN of internetpublicatie.
