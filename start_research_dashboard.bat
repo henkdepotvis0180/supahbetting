@@ -2,20 +2,27 @@
 setlocal
 cd /d "%~dp0"
 set "PYTHONUTF8=1"
-echo [1/3] Snelle modelcontrole (offline)
+echo ================================================
+echo  SupahBetting Eredivisie Research v0.14
+echo ================================================
+echo [1/4] Historische 2016+ CC0 dataset lokaal controleren
 where py >nul 2>&1
 if not errorlevel 1 (
+  py -3 -m supahbetting.research_nl_bootstrap
+  echo [2/4] Getraind model snel beoordelen
   py -3 -m supahbetting.research_readiness
 ) else (
   where python >nul 2>&1
   if errorlevel 1 (
-    echo Python 3.11+ ontbreekt. Installeer Python.
+    echo Installeer Python 3.11 of hoger.
     pause
     exit /b 1
   )
+  python -m supahbetting.research_nl_bootstrap
+  echo [2/4] Getraind model snel beoordelen
   python -m supahbetting.research_readiness
 )
-echo [2/3] Periodieke bron- en trainingsmonitor starten
-start "SupahBetting Research v0.13 - monitor" cmd /k ""%~dp0start_research_monitor.bat""
-echo [3/3] Website starten
+echo [3/4] Monitor starten: uitslagen en echt speelschema
+start "SupahBetting Research v0.14 - monitor" cmd /k ""%~dp0start_research_monitor.bat""
+echo [4/4] Dashboard starten
 call "%~dp0start_dashboard.bat"
