@@ -37,3 +37,8 @@ data/research/monitor.lock
 data/research/upcoming_predictions.json
 data/research/provider_forecast_log.json
 data/research/upcoming.lock
+# Research v0.13 proprietary/limited-license local data and derived models
+data/research/provider_finals_local.json
+data/research/augmented_model_local.json
+data/research/augmented_training_state.json
+data/research/model_challengers.json
