@@ -20,3 +20,15 @@ providers.local.json
 training_reports/hardware_profile.json
 training_reports/local_optimizer_checkpoint.json
 training_reports/local_optimizer_report.json
+
+# v0.12 lokale monitor, broncache en geverifieerde context
+# Gecontroleerde CC0-uitslagen worden apart door research_sync gepubliceerd.
+data/research/raw/
+data/research/inventory.json
+data/research/candidate_model.json
+data/research/research_report.json
+data/research/shadow_predictions.json
+data/research/verified_context.json
+data/research/monitor_status.json
+data/research/monitor_state.json
+data/research/monitor.lock
