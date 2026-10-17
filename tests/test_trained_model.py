@@ -148,7 +148,7 @@ class ModelApiTests(unittest.TestCase):
             opts["headers"]={"Content-Type":"application/json"}
         try:
             with urlopen(Request(self.url+path,**opts),timeout=5) as r:
-                return r.status,json.loads(r.read()) if path!=" /trained.js" else {}
+                return r.status,json.loads(r.read())
         except HTTPError as exc:
             return exc.code,json.loads(exc.read())
 
@@ -157,7 +157,7 @@ class ModelApiTests(unittest.TestCase):
         self.assertEqual(status,200)
         self.assertTrue(response["available"])
         self.assertEqual(response["training_matches"],13172)
-        self.assertNotIn("teams",response["leagues"]["nl.1"] if False else {})
+        self.assertNotIn("team_records",response["leagues"]["nl.1"])
         self.assertGreater(response["leagues"]["nl.1"]["teams"],10)
 
     def test_known_teams_return_trained_1x2_probabilities(self):
