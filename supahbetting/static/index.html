@@ -12,6 +12,7 @@
   <script src="/research.js" defer></script>
   <script src="/model.js" defer></script>
   <script src="/trained.js" defer></script>
+  <script src="/research_data.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#wedstrijden">Naar wedstrijden</a>
@@ -152,6 +153,41 @@
         </div>
       </div>
       <p class="trained-note">Het model kent geen actuele opstellingen, blessures, live wedstrijdverloop of bookmakerprijzen. De geschatte doelpunten zijn **geen schotgebaseerde xG**. Het testresultaat is een nauwkeurigheidsmeting, geen bewijs voor winstgevend wedden.</p>
+    </section>
+
+    <section id="research-data" class="research-data-section" aria-labelledby="research-data-title">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">V0.12 ONDERZOEK · 2016–HEDEN · CONTROLEERBARE BRONNEN</div>
+          <h2 id="research-data-title">Live trainingslaboratorium</h2>
+          <p>Uitslagen, datadekking en echte vooraf vastgelegde voorspellingen. Extra informatie over spelers, opstellingen en gras wordt nooit verzonnen.</p>
+        </div>
+        <button id="research-data-refresh" type="button" class="btn btn-quiet">Ververs gegevens</button>
+      </div>
+      <div class="research-data-toolbar">
+        <span id="research-data-status" role="status" aria-live="polite">Onderzoeksstatus laden…</span>
+        <span>GitHub publicatie alleen na geverifieerde veranderingen · testbranch</span>
+      </div>
+      <div id="research-data-summary" class="research-data-grid" aria-live="polite">
+        <div class="panel research-insight"><span class="research-insight-label">Data ophalen</span><strong>Onderzoeksmonitor controleren…</strong></div>
+      </div>
+      <div class="research-data-columns">
+        <div class="panel research-data-panel">
+          <h3>Dekking per competitie</h3>
+          <p>Bronnen kunnen onvolledig of vertraagd zijn. Geen wedstrijddata = geen bewering.</p>
+          <div id="research-data-leagues" class="research-data-table-wrap"></div>
+        </div>
+        <div class="panel research-data-panel">
+          <h3>Recente eindstanden &amp; modelcontrole</h3>
+          <div id="research-data-matches" class="research-data-table-wrap"></div>
+        </div>
+      </div>
+      <div class="panel research-data-panel">
+        <h3>Welke factoren gebruiken we écht?</h3>
+        <p>Een factor telt pas mee nadat we kunnen aantonen dat hij vóór aftrap bekend was én voorspellingen op ongeziene wedstrijden verbetert.</p>
+        <div id="research-data-factors" class="research-data-table-wrap"></div>
+      </div>
+      <p class="trained-note">Privacy en betrouwbaarheid: geen onbevestigde beschuldigingen van matchfixing, medische dossiers, privévoeding of andere ongecontroleerde persoonlijke gegevens. Trainen op historische resultaten is geen bewijs van toekomstige winst.</p>
     </section>
 
     <section id="research" class="research-section" aria-labelledby="research-title">
