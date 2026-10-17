@@ -592,6 +592,21 @@ def refresh_upcoming(*, inventory=None, data_dir=LOCAL, now=None,
             output=data_dir / "upcoming_predictions.json",
         )
         result["nl_result_source"] = nl_status
+        # Summaries only: never put licensed CSV rows or personal filenames
+        # in the public browser response or on GitHub.
+        csv_file=data_dir/"nl_csv_finals_local.json"
+        if csv_file.is_file():
+            try:
+                csv_local=json.loads(csv_file.read_text(encoding="utf-8"))
+                imported=csv_local.get("matches",[])
+                result["nl_manual_history"]={
+                    "matches":len(imported),
+                    "seasons":len({m["season"] for m in imported}),
+                    "latest_result_date":max((m["date"] for m in imported),default=None),
+                    "source":"manually_supplied_csv_on_this_pc",
+                }
+            except (ValueError,OSError,KeyError,TypeError):
+                result["nl_manual_history"]={"error":"invalid_local_csv"}
         result["local_data_update"] = {
             **refresh_state,
             "nl_api_added": nl_status.get("new_confirmed",0),
