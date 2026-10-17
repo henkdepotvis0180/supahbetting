@@ -12,6 +12,37 @@
 
 Voor de complete kalenderperiode vanaf januari 2016 wordt ook de tweede helft van seizoen 2015/16 meegenomen. De eerste start vraagt tot **12 seizoenen × 7 competities** op (maximaal 84 seizoensbestanden, inclusief 2015/16 voor januari–juni 2016). Er is een vertraging tussen verzoeken om de open bron niet onnodig te belasten. Daarna worden normaal alleen het huidige en vorige seizoen gecontroleerd; **minimaal wekelijks** worden alle seizoenen opnieuw bekeken om eerder ontbrekende bestanden te vinden. Handmatige hercontrole van alle seizoenen kan met `python -m supahbetting.research_monitor --once --full`.
 
+## Wedstrijden van vandaag en toekomstige voorspellingen
+
+Deze researchbranch heeft nu een **tweede dashboardsectie ‘Wedstrijden vandaag & binnenkort’** naast ‘Live trainingslaboratorium’. Daar kun je filteren op competitie, vandaag, drie of vijftien dagen, en alleen beschikbare 1X2-voorspellingen. Elk kaartje vermeldt aftraptijd, bron, kansen voor thuis/gelijk/uit, verwachte doelpunten, de laatste uitslag in het model en zo nodig een waarschuwing.
+
+### Zo krijg je de lijst te zien
+
+1. Download de nieuwste ZIP van de researchbranch en **bewaar vóór vervanging** de originele `.supahbetting/` en `data/research/` uit je vorige map. De eerste bevat je lokale configuratie, de tweede je datasets en onveranderlijke voorspelsnapshots.
+2. Open `start_research_dashboard.bat` voor de gewone server plus de periodieke monitor. De monitor werkt het speelschema in zijn controlecyclus bij.
+3. Wil je **direct** het speelschema opnieuw ophalen zonder volledig te trainen? Open `ververs_speelschema.bat`. Ga terug naar de browser en klik **‘Dashboard bijwerken’** (dit laadt alleen de lokale cache opnieuw).
+4. Voor uitgebreidere dekking kun je **optioneel** `configureer_speelschema_api.bat` starten en het eigen **football-data.org**-token invullen bij `providers > football-data > api_key`. Dat token staat uitsluitend in `.supahbetting/providers.json` op je computer en wordt niet naar GitHub geüpload. Het is **geen** GitHub-token of bookmaker-API-token.
+
+Zonder token werkt het systeem via TheSportsDB en voor enkele competities OpenLigaDB. De gratis versie van **TheSportsDB** biedt maximaal *drie wedstrijden per geselecteerde dag en één volgend/vorig duel per competitie*; de lijst kan dus **onvolledig** zijn. Met een geldige football-data.org API-sleutel zijn (binnen toegestane competities en het abonnement) toekomstige wedstrijden over de periode van vijftien dagen beter gedekt. Gratis football-data.org staat **maximaal tien requests per minuut** toe. De onderzoeksmonitor respecteert deze begrenzingen en voert geen API-aanvraag uit zodra een bezoeker de pagina opent.
+
+Voor de Belgische Pro League levert football-data.org in onze huidige mapping geen algemene competitiecode, zodat het gratis TheSportsDB-speelschema een belangrijke — maar beperkte — bron blijft. Andere rechten/licenties moeten apart bevestigd worden voordat we die koppelen.
+
+### Wanneer is er een voorspelling?
+
+- De wedstrijd is door een actieve speelschemabron als **gepland** gemeld, met een tijdstip **na het ophalen**.
+- Beide clubs zijn exact of via een expliciet gecontroleerd alias bekend in het onderzoeksmodel.
+- De gespeelde trainingsuitslagen van die competitie zijn **niet meer dan 89 dagen oud**. Een model dat ernstig achterloopt, krijgt geen automatisch percentage.
+- De aftraptijd is aanwezig en betrouwbaar; anders staat duidelijk ‘geen geverifieerde aftraptijd’.
+- We tonen een waarschuwing als de laatste trainingsuitslag **14 dagen of langer** geleden is. De kansen gebruiken nog geen schot-xG, tactische eventdata, blessures of verwachte opstellingen.
+
+OpenFootball-archiefwedstrijden mogen als *voorlopig* in de kalender worden getoond als een actieve bron ze niet bevestigt, maar krijgen **geen** modelvoorspelling. Zo suggereren we niet dat een oud schema actueel is. Live/afgelopen/geannuleerde wedstrijden worden evenmin voorgesteld als toekomstige voorspellingen.
+
+### Echte prospectieve tests en privacy
+
+Het lokale bestand `data/research/provider_forecast_log.json` bewaart de oorspronkelijke kansen en tijdstippen bij de **eerste voorspelling vóór aftrap**. Wanneer exact hetzelfde providerwedstrijdnummer later als afgelopen wordt gerapporteerd, worden Brier en log loss toegevoegd. Een verplaatste wedstrijd kan niet onopgemerkt met een oude voorspelling beoordeeld worden. Dit bestand blijft **lokaal**: het wordt nooit vervangen tijdens een nieuwe ZIP-installatie en nooit als providergegevens naar de openbare onderzoeksbranch geüpload.
+
+De actuele API-speelschema's staan uitsluitend lokaal in `data/research/upcoming_predictions.json`: ze kunnen andere licenties hebben dan de publieke CC0-wedstrijdresultaten. **Alleen** de gecontroleerde CC0-historiek, het afzonderlijke experimentele model en het bijbehorende onderzoeksrapport blijven automatisch naar GitHub gaan als die resultaten wijzigen. Een werkende speelschema-koppeling betekent dus niet dat de historische wedstrijddata al volledig tot vandaag zijn bijgewerkt.
+
 ### Opgeslagen bestanden
 
 - `data/research/inventory.json`: lokaal volledig wedstrijd- en fixture-overzicht, met hiaten.
