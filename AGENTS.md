@@ -69,7 +69,7 @@ De tools zijn *nog niet* direct aan elkaar gekoppeld. Het importformaat in READM
 - **supahbetting/fork_research.py** bevat aparte onderzoekstabellen, dedup, strikte event- en marktmatches, stale pricing flags en theoretical EV. De bestaande Store/slips zijn onaangetast.
 - **supahbetting/research_cli.py** en browserknop importeren lokale exports. Bestanden staan in .supahbetting/imports/{prophitbet,oddsharvester,prediict}. Geen onbegrensde bestandspaden via HTTP.
 - **supahbetting/static/research.js** presenteert onderzoeksresultaten en bronvermelding, geen real-money transactie.
-- De originele ML-componenten zijn **niet uitgevoerd of gebundeld**: ProphitBet Qt/PyTorch-/sklearn, OddsHarvester Playwright en Prediict joblib hebben eigen uitvoeromgeving.
+- De originele ML-componenten zijn **niet uitgevoerd of gebundeld**: ProphitBet Qt/TensorFlow/scikit-learn, OddsHarvester Playwright en Prediict joblib hebben eigen uitvoeromgeving.
 - Prediict heeft geen aangetoonde licentie voor herdistributie: neem geen broncode of modelbestanden over en laad geen ongecontroleerde pickle/joblib.
 - OddsHarvester-exportdata alleen importeren na wettige, toegestane verzameling; geen automatische omzeiling van oddsprovider-inlog, CAPTCHA, rate limiting of voorwaarden.
 - Alleen volledig expliciete wedstrijd/marktmatching; géén fuzzy auto-team matching, geen eerdere kalenderdatum samenvoegen, geen ongedateerde cross-file matching.
