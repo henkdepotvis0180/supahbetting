@@ -120,9 +120,16 @@ def refresh(*, directory=LOCAL, full=None, delay=1.0, fetcher=None, today=None):
     today = today or datetime.now(timezone.utc).date()
     directory = Path(directory)
     inventory = directory / "inventory.json"
-    full = not inventory.exists() if full is None else full
     fetcher = fetcher or retrieve
     old = json.loads(inventory.read_text(encoding="utf-8")) if inventory.exists() else {}
+    if full is None:
+        last_full = old.get("last_full_check_at_utc")
+        try:
+            age = (datetime.combine(today, datetime.min.time(), tzinfo=timezone.utc)
+                   - datetime.fromisoformat(last_full)).total_seconds() if last_full else None
+        except (TypeError, ValueError):
+            age = None
+        full = not inventory.exists() or age is None or age >= 7 * 86400
     completed = {m["id"]: m for m in old.get("matches", [])}
     fixtures = {m["id"]: m for m in old.get("fixtures", [])}
     coverage = {x["key"]: x for x in old.get("coverage", [])}
@@ -174,6 +181,10 @@ def refresh(*, directory=LOCAL, full=None, delay=1.0, fetcher=None, today=None):
         "schema_version": 1, "source": "openfootball/football.json",
         "license": "CC0-1.0", "fetched_at_utc": datetime.now(timezone.utc).isoformat(),
         "season_range": [requested[0], requested[-1]],
+        "last_full_check_at_utc": (
+            datetime.now(timezone.utc).isoformat() if full
+            else old.get("last_full_check_at_utc")
+        ),
         "matches": matches, "fixtures": planned,
         "coverage": sorted(coverage.values(), key=lambda m: m["key"]),
         "failed_sources": failures, "new_final_match_ids": new_ids,
