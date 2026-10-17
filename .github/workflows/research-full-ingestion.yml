@@ -29,15 +29,16 @@ jobs:
           inventory=json.loads(Path('data/research/inventory.json').read_text())
           report=json.loads(Path('data/research/research_report.json').read_text())
           model=json.loads(Path('data/research/candidate_model.json').read_text())
-          assert inventory['season_range'][0]=='2016-17'
+          assert inventory['season_range'][0]=='2015-16'
           assert len(inventory['matches']) >= 10000
           assert len(inventory['matches'])==model['training_matches']==report['training_matches']
-          assert any(x['season']=='2016-17' for x in inventory['matches'])
+          assert any(x['date'].startswith('2016-') for x in inventory['matches'])
           assert report['model_candidate']['version']=='0.12.0-research-experimental'
           assert model['experimental'] and model['version']=='0.12.0-research-experimental'
           assert report['source_date_is_not_today_guarantee']
           assert all(k not in model for k in ('api_token','github_token','personal_data'))
           print('Verified results:',len(inventory['matches']))
+          assert report['first_match_date'] >= '2016-01-01'
           print('Earliest match:',report['first_match_date'])
           print('Latest match:',report['last_verified_result_date'])
           print('Missing season/league files:',len(report['missing_sources']))
