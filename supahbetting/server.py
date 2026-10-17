@@ -439,11 +439,10 @@ def main():
     try:
         scan_result = research_hub.scan_inbox()
         print("Fork-export inbox: " + str(research_hub.inbox.resolve()))
-        print(
-            "Ingelezen bestanden bij opstarten: " +
-            str(scan_result["files_imported"]) +
-            ". Gebruik de knop 'Bronbestanden inlezen' om later opnieuw te scannen."
-        )
+        if scan_result["files_imported"]:
+            print("Aanvullende geïmporteerde paperbetbestanden:", scan_result["files_imported"])
+        else:
+            print("Oude fork-export inbox leeg; dit is GEEN melding over historische voetbaldata.")
     except OSError:
         LOG.warning("Kan lokale bronbestanden nu niet inlezen; dashboard start door")
     server = ThreadingHTTPServer(
@@ -452,7 +451,7 @@ def main():
         )
     )
     server.daemon_threads = True
-    print(f"SupahBetting v0.8.2: http://127.0.0.1:{args.port}", flush=True)
+    print(f"SupahBetting Research v0.13: http://127.0.0.1:{args.port}", flush=True)
     print("SupahBetting Research v0.13 · lokale vooranalyse; geen demo-wedstrijden.", flush=True)
     print("Model en bronactualiteit worden in het dashboard gecontroleerd.", flush=True)
     try:
