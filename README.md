@@ -1,8 +1,8 @@
-# SupahBetting v0.6.0
+# SupahBetting v0.7.0
 
 **Lokaal Nederlandstalig voetbalanalyseplatform met een betrouwbare basis voor enkelvoudige én combinatie-betslips.**
 
-SupahBetting is software voor onderzoek en **fictieve weddenschappen**. Nieuw in v0.5: **meerdere voetbalgegevensbronnen**, waaronder Nederlandse en Belgische competities; de bestaande OpenLigaDB-community-doelpuntenfeed blijft aanwezig. Er zijn **geen live bookmakerquoteringen**, geen directe bookmakeraccounts en geen functie voor echt geld. De modelkansen zijn nog niet gekalibreerd of onafhankelijk gevalideerd. Een positieve model-EV is **geen bewijs van winstgevendheid**.
+SupahBetting is software voor onderzoek en **fictieve weddenschappen**. Vanaf v0.7 bevat het ook een apart, werkelijk getraind 1X2-basismodel. Nieuw in v0.5: **meerdere voetbalgegevensbronnen**, waaronder Nederlandse en Belgische competities; de bestaande OpenLigaDB-community-doelpuntenfeed blijft aanwezig. Er zijn **geen live bookmakerquoteringen**, geen directe bookmakeraccounts en geen functie voor echt geld. De modelkansen zijn nog niet gekalibreerd of onafhankelijk gevalideerd. Een positieve model-EV is **geen bewijs van winstgevendheid**.
 
 ## Wat is werkend?
 
@@ -183,6 +183,18 @@ De server accepteert uitsluitend de vaste HTTPS-YouTube-nocookie-embedvorm. De i
 - Een wedstrijd uit de feed kan als uitgangspunt voor een **nieuwe analyse** worden gekozen; het formulier vereist daarna eigen xG/odds.
 - De ODbL-datalicentie kan extra eisen stellen bij herpublicatie of het opbouwen en verspreiden van afgeleide databases; raadpleeg de licentietekst.
 - Alleen lokaal beschikbaar op 127.0.0.1, geen accountbeveiliging of publieke hosting.
+
+## Nieuw v0.7: een echt getraind basismodel
+
+SupahBetting bevat nu **models/baseline_v1.json**: een vooraf getraind 1X2-model met Elo en recente vorm. Het model is met 18.085 historische wedstrijden uit de Prediict-fork getraind en chronologisch beoordeeld op 3.143 latere wedstrijden. De testnauwkeurigheid bedroeg **53,33%**, versus **44,61%** bij een eenvoudige historische uitkomstfrequentie als referentie.
+
+**Belangrijk:** de beschikbare bronhistorie eindigt op **2 juni 2024**. Dit model kent dus niet de actuele vorm, trainers, promoties of transfers in seizoen 2026/27 en is niet bewezen beter dan bookmakers of winstgevend.
+
+Voor gebruik heb je geen extra ML-installatie nodig: start het dashboard, open een geplande wedstrijd en klik op **Bereken modelkansen**. De drie voorspellingen zijn uitsluitend voor onderzoek; ze beïnvloeden de bestaande paperbets niet.
+
+Om later zelf een bijgewerkt basismodel te trainen, plaats je een **volledige, aangevulde historische CSV** in **.supahbetting/training_history.csv** en start je **train_baseline.bat**. Dit gebruikt een aparte Python-omgeving met scikit-learn, valideert chronologisch en vervangt het JSON-model alleen na geslaagde training. Herstart daarna het dashboard.
+
+**Lees alle details:** [Trainingsmethode, resultaten, beperkingen en bijtrainen](docs/PRETRAINED_MODEL.md).
 
 ## Native integratie van de drie GitHub-forks (v0.6.0)
 
