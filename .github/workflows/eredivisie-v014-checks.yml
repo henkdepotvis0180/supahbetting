@@ -16,6 +16,9 @@ jobs:
       matrix:
         runner: [ubuntu-latest, windows-latest]
         python: ['3.11', '3.12']
+        include:
+          - runner: windows-latest
+            python: '3.14'
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 20
     steps:
