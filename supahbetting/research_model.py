@@ -13,6 +13,7 @@ from pathlib import Path
 
 from .research_data import LOCAL, atomic_json
 from .research_signals import fixture_signals
+from .research_quality import audit_quality
 from .trained_model import (
     LEAGUES, CURRENT_SEASON, TEST_SEASON, VALIDATION_SEASON, MODEL_FILE,
     LeagueRatings, run_sequential, score, summarize,
@@ -112,6 +113,7 @@ def train_candidate(inventory, baseline_path=MODEL_FILE):
         "dataset_sha256": _history_digest(matches),
         "season_range_requested": inventory["season_range"],
         "source_coverage": inventory["coverage"],
+        "source_quality": audit_quality(inventory),
         "additional_variables_used": [],
         "warning": (
             "Public source may be incomplete or delayed. Retrospective periods are "
@@ -229,6 +231,8 @@ def build_research_report(inventory, candidate, shadow):
             "trained_on_matches": candidate["training_matches"],
         },
         "shadow_forecast_evaluation": shadow,
+        "new_finished_results_since_last_check": len(inventory["new_final_match_ids"]),
+        "initial_backfill_matches": inventory.get("initial_backfill_matches"),
         "data_availability": {
             "score_result": "available_when_published",
             "lineups": "not_connected",
