@@ -2,37 +2,42 @@
 setlocal
 cd /d "%~dp0"
 if not exist ".git\" (
- echo De huidige map is een ZIP-installatie, geen Git-checkout.
- echo Gebruik eenmalig migreer_naar_git.bat om de originele
- echo .supahbetting instellingen en data\research te bewaren.
+ echo ZIP-map gevonden. Voer eerst migreer_naar_git.bat uit
+ echo en geef jouw vorige SupahBetting-map op om data te behouden.
  pause
  exit /b 1
 )
 where git >nul 2>&1
 if errorlevel 1 (
- echo Git is niet geinstalleerd of ontbreekt in PATH.
+ echo Git voor Windows ontbreekt.
  pause
  exit /b 1
 )
-echo Lokale veranderingen controleren...
 git diff --quiet
 if errorlevel 1 (
- echo De repository bevat gewijzigde bestanden. Bijwerken afgebroken.
+ echo Niet-gecommitte codewijzigingen aanwezig. Geen update uitgevoerd.
  pause
  exit /b 1
 )
 git diff --cached --quiet
 if errorlevel 1 (
- echo Er staan niet-gecommitte wijzigingen klaar. Bijwerken afgebroken.
+ echo Nog te committen codewijzigingen. Update gestopt.
  pause
  exit /b 1
 )
-echo Onderzoeksbranch bijwerken zonder bestaande data te verwijderen...
-git pull --ff-only origin feature/research-v0.13-serious-dashboard
+for /f "delims=" %%B in ('git branch --show-current') do set "BRANCH=%%B"
+if /I not "%BRANCH%"=="feature/eredivisie-data-v0.14" (
+ echo Deze map staat op branch %BRANCH%
+ echo Gebruik de nieuwe v0.14-map via migreer_naar_git.bat
+ echo om andere experimentele versies niet ongemerkt te mengen.
+ pause
+ exit /b 1
+)
+git pull --ff-only origin feature/eredivisie-data-v0.14
 if errorlevel 1 (
- echo Git kon niet veilig bijwerken. Je lokale data zijn ongewijzigd.
+ echo Code niet veilig bijgewerkt; lokale trainingsgegevens blijven behouden.
  pause
  exit /b 1
 )
-echo Code bijgewerkt. De onderzoeksmodelgegevens blijven lokaal.
+echo v0.14-code bijgewerkt. Je API-configuratie en lokale scores blijven intact.
 call "%~dp0start_supahbetting.bat"
