@@ -28,6 +28,32 @@ De monitor bewaart data ook als GitHub tijdelijk niet bereikbaar is. Bij de volg
 
 **Dataverversing ≠ data-actualiteit.** [OpenFootball football.json](https://github.com/openfootball/football.json) genereert in 2026 wel dagelijks bronkopieën, maar schrijft expliciet dat onderliggende bronnen niet gegarandeerd dagelijks bijgewerkt worden. Het dashboard toont daarom de **daadwerkelijke nieuwste eindstand**, ontbrekende competitie-/seizoensbestanden en laatst gecontroleerde datum. De tool verzint geen ontbrekende uitslagen. Ook betekent 2016–heden de kalenderperiode die we proberen op te halen; het betekent niet 'alle wedstrijden ter wereld'. De eerste scope is zeven grote competities.
 
+## v0.12 gegevenskwaliteit — reparatie van de eerste dashboardcontrole
+
+De eerste onderzoeksrun op **17 oktober 2026** laadde 22.665 OpenFootball-wedstrijden, maar de laatste wedstrijd in die publieke bron bleek van **20 september 2026**. De Belgische Pro League liep zelfs maar tot **2 november 2025**, en **10 competitie-/seizoensbestanden** ontbraken. Dit zijn bronhiaten: er was **geen reden om de download geslaagd maar actueel te noemen**.
+
+De monitor en het dashboard onderscheiden voortaan:
+- **Eerste historische import** (bij deze run 22.665) van **nieuwe wedstrijden na de vorige broncontrole** (bij de eerste run per definitie 0);
+- het werkelijke datumverschil tussen de computerklok en de laatst ingelezen eindstand;
+- waarschuwingen per competitie, bij 14+ dagen vertraging en bij 90+ dagen ernstig verouderd;
+- het aantal voorspellingen dat vóór een speeldag is vastgelegd versus het aantal voorspellingen waarvoor later al een uitslag kon worden beoordeeld.
+
+Ook als de leverancier een bestand vandaag opnieuw genereert, blijft het dashboard een waarschuwing tonen als de inhoud alleen oudere scores bevat. De vertraging wordt **niet** opgelost door het model harder of langer te trainen.
+
+### Andere bronnen en voorwaarden
+
+[OpenFootball](https://github.com/openfootball/football.json) is CC0 en mag veilig op de experimentele branch worden gepubliceerd, maar meldt dat zijn onderliggende data niet gegarandeerd dagelijks worden bijgewerkt.
+
+[Football-Data.co.uk](https://www.football-data.co.uk/belgiumm.php) publiceert actuele en historische Belgische wedstrijden in CSV. De [fair-usagevoorwaarden](https://www.football-data.co.uk/contact.php) staan echter uitsluitend licht gebruik door particulieren of academisch onderzoek toe, met **maximaal twee geautomatiseerde downloads per week** en zonder zware commerciële scrape- of trainingsprojecten. Daarom wordt deze dataset niet ongemerkt opgehaald, met CC0-resultaten vermengd of integraal naar GitHub gepusht. Een losse, expliciet ingeschakelde lokale import moet deze voorwaarden en de herkomst respecteren.
+
+De reeds ondersteunde [football-data.org API](https://www.football-data.org/documentation/api) kan later als aanvullend controlepunt dienen als er een geldige API-sleutel en passende competitietoegang is. Toegang tot de Belgische competitie is daarmee niet automatisch gegarandeerd.
+
+### Oude ZIP bijwerken zonder gegevens te verliezen
+
+Omdat je de repository als ZIP hebt uitgepakt, wordt die **niet automatisch door GitHub vervangen**. Gebruik de nieuwste ZIP van de **researchbranch**, sluit beide CMD-vensters, en bewaar bij vervanging van je map zeker de lokale mappen **`.supahbetting/`** en **`data/research/`**. Hierin staan respectievelijk de instellingen en de historische voorraad, eerdere rapporten en de vooraf geregistreerde voorspellingen. Die prognoses mogen niet worden verwijderd of achteraf opnieuw aangemaakt omdat hun tijdstip nodig is voor eerlijke toekomsttests.
+
+De nieuwe dashboardwaarschuwingen verschijnen na het openen van het dashboard uit de nieuwe ZIP en een daaropvolgende gegevenscontrole. Alleen de broncode aanpassen maakt de oude bronnen niet recenter.
+
 ## Speleranalyse en veldinvloeden: wat kan wel?
 
 | Factor | Technisch zinvol? | Wat is daarvoor nodig? |
