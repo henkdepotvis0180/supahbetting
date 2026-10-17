@@ -47,6 +47,16 @@ class ResearchStoreTests(unittest.TestCase):
         self.assertEqual(status["odds"],0)
         self.assertEqual(self.research.opportunities()["opportunities"],[])
 
+    def test_zero_model_probability_can_be_stored_without_aborting(self):
+        path=self._write("prophitbet","certain.csv",
+            "Home Team,Away Team,1,X,2,Prob(1),Prob(X),Prob(2)\n"
+            "Ajax,PSV,2.2,3.0,3.5,0.0,0.5,0.5\n")
+        result=self.research.ingest(path,"prophitbet")
+        self.assertEqual(result["imported"],6)
+        opps=self.research.opportunities()["opportunities"]
+        self.assertTrue(any(x["probability"] == 0.0 and
+                            x["fair_odds"] is None for x in opps))
+
     def test_prophitbet_six_observations_and_dedup(self):
         path=self._write("prophitbet","fixtures.csv",
             "Home Team,Away Team,1,X,2,Prob(1),Prob(X),Prob(2)\n"
