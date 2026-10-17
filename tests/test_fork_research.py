@@ -89,6 +89,26 @@ class ResearchStoreTests(unittest.TestCase):
         self.assertEqual({r["bookmaker"] for r in scan["opportunities"]},{"Bet A"})
         self.assertTrue(all(r["freshness"]=="max_24_uur_oud" for r in scan["opportunities"]))
 
+    def test_all_three_forks_join_only_same_dated_match(self):
+        self.research.ingest(self._write("prophitbet","manual.csv",
+            "Date,Home,Away,1,X,2,Prob(1),Prob(X),Prob(2)\n"
+            "2026-10-19,Ajax,PSV,2.1,3.4,3.6,0.50,0.25,0.25\n"),"prophitbet")
+        self.research.ingest(self._write("oddsharvester","odds.json",
+            json.dumps([odds_record()])),"oddsharvester")
+        self.research.ingest(self._write("prediict","bets.csv",
+            "home_team,away_team,date,outcome,model_probability,bookmaker_odds\n"
+            "Ajax,PSV,2026-10-19T19:00:00Z,Home Win,0.51,2.15\n"),"prediict")
+        comparison=self.research.opportunities(
+            now=datetime(2026,10,17,10,tzinfo=timezone.utc)
+        )["opportunities"]
+        self.assertGreaterEqual(len(comparison),7)
+        self.assertEqual(
+            {x["prediction_source"] for x in comparison},
+            {"prophitbet","prediict"}
+        )
+        self.assertIn("oddsharvester", {x["odds_source"] for x in comparison})
+        self.assertTrue(all(x["kickoff_date"]=="2026-10-19" for x in comparison))
+
     def test_same_teams_on_different_dates_do_not_match(self):
         pred=self._write("prediict","pred.csv",
             "home_team,away_team,date,home_win_prob,draw_prob,away_win_prob\n"
