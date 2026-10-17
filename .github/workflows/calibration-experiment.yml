@@ -1,0 +1,25 @@
+name: Experimental calibration backtest
+on:
+  push:
+    branches: [feature/model-v0.11.0]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Chronological calibration experiment
+        run: python -m supahbetting.calibration_experiment
+      - name: Regression suite
+        run: python -m unittest discover -s tests -v
+      - name: Save metrics
+        uses: actions/upload-artifact@v4
+        with:
+          name: calibration-v011-report
+          path: training_reports/calibration_experiment_v0.11.json
