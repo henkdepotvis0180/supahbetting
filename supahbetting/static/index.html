@@ -10,6 +10,7 @@
   <script src="/app.js" defer></script>
   <script src="/live.js" defer></script>
   <script src="/research.js" defer></script>
+  <script src="/model.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#wedstrijden">Naar wedstrijden</a>
@@ -19,14 +20,14 @@
         <span class="logo" aria-hidden="true">S</span>
         <div><strong>Supah<span>Betting</span></strong><small>Voetbalanalyse &amp; combinaties</small></div>
       </div>
-      <div class="header-right"><span class="mode-badge"><span class="status-dot"></span> PAPER MODE</span><span class="version">v0.6.0</span></div>
+      <div class="header-right"><span class="mode-badge"><span class="status-dot"></span> PAPER MODE</span><span class="version">v0.7.0</span></div>
     </div>
   </header>
   <main class="container">
     <div class="notice info" role="note">
       <span aria-hidden="true">ⓘ</span>
       <div><strong>Onderzoeksomgeving — geen echte inzetten.</strong>
-        Kansen zijn gebaseerd op handmatig ingevoerde xG-waarden en een eenvoudig Poisson-model; niet op gevalideerde live voorspellingen. Quoteringen zijn handmatig en geen actuele bookmakersprijzen.
+        De bestaande paperbets gebruiken nog handmatig ingevoerde xG-waarden. Het aparte historisch getrainde basismodel schat 1X2-uitkomsten en is niet bewezen winstgevend. Quoteringen zijn handmatig en geen actuele bookmakersprijzen.
       </div>
     </div>
 
@@ -37,6 +38,17 @@
         <p>Bekijk per wedstrijd de modelkansen en bookmakersquoteringen. Bouw een enkelvoudige of combinatie-betslip en test fictief wat jouw strategie oplevert.</p>
       </div>
       <button type="button" id="demo-button" class="btn btn-quiet">Voorbeeldwedstrijden laden</button>
+    </section>
+
+    <section class="trained-model-status" aria-labelledby="baseline-heading">
+      <div class="eyebrow">EERSTE GETRAINDE 1X2 BASISMODEL</div>
+      <h2 id="baseline-heading">Historische voorspellingen</h2>
+      <div id="baseline-status" class="baseline-status" aria-live="polite">
+        Modelstatus ophalen…
+      </div>
+      <p class="muted">Open een geplande wedstrijd in het wedstrijdcentrum en klik op
+      <strong>Bereken modelkansen</strong>. Er wordt niets ingezet of automatisch
+      gecombineerd met bookmakerquoteringen.</p>
     </section>
 
     <section class="live-section" id="live" aria-labelledby="live-title">
