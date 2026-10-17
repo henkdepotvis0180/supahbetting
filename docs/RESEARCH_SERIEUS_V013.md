@@ -1,0 +1,162 @@
+# SupahBetting Research v0.13 — serieuze lokale voetbalanalyse
+
+**Status: experimentele onderzoeksbranch `feature/research-v0.13-serious-dashboard`.**
+Dit is géén goedgekeurd productiemodel en de historische log-loss zegt
+niets over bewezen rendement bij bookmakers. De bestaande `main` en
+`supahbetting/models/baseline.json` blijven ongemoeid.
+
+## 1. Eén keer installeren, daarna geen modellen meer kopiëren
+
+**Bestaande ZIP-gebruiker:** Download deze v0.13-ZIP en pak hem in een nieuwe
+map uit. Start **`migreer_naar_git.bat`**, voer eenmalig het volledige pad van je
+oude SupahBetting-map in (bijvoorbeeld het pad met je oude
+`data\research\inventory.json`). Het script maakt via Git een nieuwe map
+`SupahBetting-Research-v013` en neemt jouw oude `.supahbetting` en
+`data\research` mee, inclusief originele tijdstippen van voorspellingen. Het
+kopieert **niet** oude Git-tracked CC0-bronbestanden over de nieuwste heen.
+
+Alternatief: direct deze ZIP gebruiken met **`start_supahbetting.bat`**. De
+ingepakte 2016–2026 modelbasis is dan meteen aanwezig. Nieuwe lokale gegevens
+uit jouw vorige installatie worden daarbij echter niet automatisch
+overgenomen.
+
+**Vanaf dat moment:**
+- Start `start_supahbetting.bat` voor dashboard en monitor.
+- Start `update_supahbetting.bat` om de **experimentele Git-branch** via
+  `git pull --ff-only` op te halen en de applicatie te starten.
+- Gebruik `ververs_speelschema.bat` voor een handmatige nieuwe broncontrole
+  zonder tien jaar opnieuw binnen te halen.
+- Gebruik `vergelijk_modellen.bat` om de aparte Dixon-Coles-kandidaat tegen
+  het oorspronkelijke Poisson-model te toetsen; dit past niets in productie aan.
+
+### Automatisch bij website-opstart
+
+1. **Binnen enkele seconden** controleert de lokale startscriptmodelchecker
+   welke historische basis en modelversie aanwezig zijn, wat de datum van de
+   laatste eindstand is en of de dataset-vingerafdruk overeenkomt.
+2. De dashboardserver start direct op `http://127.0.0.1:8765/`.
+3. In een tweede monitorvenster begint **zonder blokkeren van het dashboard**
+   de beperkte actuele speelschema-API-controle. De eerste complete refresh
+   duurt langer dan de lokale modelcheck omdat netwerkverzoeken verantwoord
+   moeten worden gespreid.
+4. Op basis van geverifieerde nieuwe eindstanden (niet van vermoede livescores)
+   werkt v0.13 het **lokale** experimentele model bij. Als exact dezelfde
+   uitslagen al verwerkt zijn, worden die niet opnieuw geteld.
+5. Na de eerste controle werkt de monitor door, standaard eens per zes uur
+   zolang het venster en de computer aan zijn. De browser leest uit een lokale
+   cache en start **geen nieuwe API-calls bij iedere paginaverversing**.
+
+**Belangrijk:** een geslaagde HTTP-download betekent niet dat het model van
+vandaag is. Het modelwaarschuwingspaneel meldt ontbrekende laatste dagen, een
+incomplete competitie, mislukte API-connecties en onvoldoende historiek.
+
+## 2. Website — echte wedstrijden eerst, geen demo
+
+Het dashboard begint nu met **‘Wedstrijden & modelvoorkeuren’** en toont
+Nederland, Engeland, Duitsland, Spanje, Italië en Frankrijk. België komt
+later terug als de recente uitslagen en competitiedekking bevestigd zijn.
+Je kunt kiezen voor vandaag, de komende drie of vijftien dagen, met filters
+voor competitie en beschikbare voorspellingen. Onder de lijst is een apart
+uitklapbaar overzicht van recent bevestigde eindstanden van gisteren/vandaag.
+
+Er verschijnen **geen demo-wedstrijden** en de oude
+`POST /api/demo`-route is uitgeschakeld. Oudere demo-rijen blijven op de
+computer staan, maar worden verborgen zodat geen echte opgeslagen informatie
+stilzwijgend wordt verwijderd. Paperbetfuncties en het uitgebreide
+trainingslaboratorium zijn verplaatst naar uitklapbare onderdelen.
+
+### Waarom heeft een team volgens het model meer kans?
+
+Voor iedere wedstrijd uit een actieve geverifieerde bron met een gekend team
+berekent de onderzoeksversie:
+
+- kansen voor **thuiswinst, gelijkspel en uitwinst**;
+- doelpuntverwachtingen en gespeelde wedstrijden in het scoremodel;
+- recente ouderdom van het model per competitie;
+- onderbouwde argumenten uit berekende aanval-, verdediging- en
+  thuis-/uitindicatoren.
+
+Met **‘Waarom kiest het model hiervoor?’** lees je welke signalen uit de
+werkelijke trainingsdata komen en welke onzekerheden ontbreken. Alleen een
+duidelijke kansvoorsprong, voldoende historiek en recente uitslagen mogen als
+*modelvoorkeur* opvallen. Geen voornaam of medische status wordt verzonnen.
+
+**Een kansinschatting is geen weddenschap-advies.** Zonder controleerbare
+bookmakerprijzen, marge en onafhankelijk getoetste winstverwachting kunnen we
+niet vaststellen of een favoriet daadwerkelijk *betting value* heeft.
+
+## 3. Tien jaar training, actualiteit en bronrechten
+
+De CC0 OpenFootball-basis is samengesteld uit bestanden van seizoenen 2015/16
+(vanaf **1 januari 2016**) t/m 2026/27. Bij de vorige echte import waren
+**22.665** eindstanden beschikbaar. De algemene bron was toen bij
+**20 september 2026** gestopt; dit is geen volledige of gegarandeerd actuele
+tienjarige dekking. De Belgische Pro League was nog ouder.
+
+- De openbare scorebasis en herkomstcontrole blijven van
+  `openfootball/football.json` (CC0); de bijbehorende research-GitHub
+  synchronisatie blijft intact.
+- Bepaalde actuele uitslagen van TheSportsDB, OpenLigaDB of football-data.org
+  zijn onder andere voorwaarden beschikbaar. Die eindstanden worden **alleen
+  lokaal** geverifieerd, ontdubbeld, op bronconflicten gecontroleerd en daarna
+  eventueel gebruikt om het **lokale** `augmented_model_local.json`
+  opnieuw te berekenen. De ruwe externe bronbestanden en daaruit afgeleide
+  lokale modellen worden **niet als CC0 naar GitHub gepubliceerd**.
+- De lokale provider-uitkomsten staan in
+  `data/research/provider_finals_local.json`, het extra experimentele model
+  in `data/research/augmented_model_local.json` en de
+  vingerafdruk in `data/research/augmented_training_state.json`.
+  Deze bestanden en je originele prognoselogboeken vallen onder `.gitignore`.
+- Bij uiteenlopende eindstanden uit verschillende bronnen wordt de match in
+  quarantaine gezet in plaats van ongemerkt een score te kiezen.
+- Het apparaat hoeft geen model van een website te downloaden of te plakken;
+  de baseline zit al in GitHub en het lokale model wordt opnieuw opgebouwd
+  zodra nieuwe betrouwbare resultaten beschikbaar zijn.
+
+### Voor de recentste kalenderwedstrijden
+
+`football-data.org` is optioneel, met een eigen lokaal API-token via
+`configureer_speelschema_api.bat`. De gratis dienst biedt twaalf
+competities, maximaal tien verzoeken per minuut en vertraagde uitslagen;
+de beschikbaarheid per competitie hangt van je abonnement af. Voor
+TheSportsDB is de gratis speelschemadekking beperkt. Als er niets kan worden
+geverifieerd, toont de app expliciet ‘geen bevestigde wedstrijden’ in
+plaats van testdata te genereren.
+
+## 4. Extern model en eerlijk vergelijken
+
+Het open-source project [The Open Model](https://github.com/Hicruben/theopenmodel)
+gebruikt Elo, Dixon-Coles en Monte Carlo. Dat is een interessante externe
+onderzoekskandidaat (MIT-code, voorspellingen onder CC BY 4.0), maar de
+competities, tijdlijnen en afhankelijkheden verschillen van onze historische
+data. Het zou misleidend zijn om diens claims, percentages of actuele uitkomsten
+zomaar als beter model over te nemen.
+
+Daarom heeft deze branch eerst
+`python -m supahbetting.research_challengers` (of
+`vergelijk_modellen.bat`). Het vergelijkt een vooraf vaste
+Dixon-Coles-correctie (ρ = −0,13) met de onafhankelijke Poisson-kansen op
+dezelfde chronologisch afgesplitste gespeelde wedstrijden. Het maakt een
+rapport in `data/research/model_challengers.json`.
+
+**Nog geen automatische fusie:** de echte toekomstige voorspellingen moeten
+onafhankelijk vóór aftrap worden geregistreerd, en beide kandidaten moeten
+over een voldoende grote steekproef via Brier, log loss, kalibratie en
+data-/licentiedekking worden vergeleken. Pas daarna kunnen we een
+modelvariant promoten, zonder terugkijkfouten.
+
+## 5. Wat nog ontbreekt voor ‘super goed getraind’?
+
+- Betrouwbare actuele resultaten voor **alle** zes competities, niet alleen
+  de beperkte gratis API-dekking.
+- Completere spelers- en teamstatistieken (geschoten/verdedigde kansen,
+  keeperprestaties, opstellingen en speeltijd) met geldige bronlicentie.
+- Verifieerbare en vóór de aftrap bekende gegevens over beschikbaarheid,
+  vermoeidheid, weersverwachtingen en veldondergrond.
+- Een grote, maandenlange **echt prospectieve** steekproef, ook bij negatieve
+  uitkomsten. Historische scores zijn geen winstgarantie.
+- Alleen met echte bookmakerprijzen is een vergelijking met break-even odds,
+  netto verwachte waarde en bookmaker-marge zinvol.
+
+**Deze v0.13-branch blijft onderzoekssoftware, zonder echte inzetten of
+integratie met bookmakeraccounts.**
