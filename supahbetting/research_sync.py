@@ -58,7 +58,7 @@ def safe_report(report):
         "last_verified_result_date", "training_matches", "first_match_date",
         "requested_seasons", "competitions", "missing_sources",
         "retrieval_failures", "source_coverage", "upcoming_fixtures",
-        "latest_finished_matches", "historical_metrics", "model_candidate",
+        "latest_finished_matches", "derived_team_form_preview", "historical_metrics", "model_candidate",
         "shadow_forecast_evaluation", "data_availability", "disclaimer"
     )
     return {key: report[key] for key in keys if key in report}
