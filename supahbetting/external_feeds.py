@@ -26,6 +26,16 @@ from .provider_config import (
 )
 
 LOG = logging.getLogger("supahbetting.providers")
+
+
+class ProviderHTTPFailure(LiveDataUnavailable):
+    """HTTP status only; never include credentials or raw remote error bodies."""
+
+    def __init__(self, provider, status_code):
+        self.provider = provider
+        self.status_code = int(status_code)
+        super().__init__(provider + " gaf HTTP " + str(self.status_code))
+
 MAX_RESPONSE = 1_100_000
 
 SPORTSDB_LEAGUES = {
@@ -109,10 +119,16 @@ def fetch_bounded_json(path, provider, token=""):
             if len(raw) > MAX_RESPONSE:
                 raise LiveDataUnavailable("Antwoord van databron overschrijdt de limiet")
             return json.loads(raw.decode("utf-8-sig"))
-    except (HTTPError, URLError, TimeoutError, OSError, UnicodeError,
-            ValueError) as exc:
-        LOG.warning("Request naar %s mislukt (route %s): %s", provider, path, type(exc).__name__)
-        raise LiveDataUnavailable("Databron tijdelijk onbereikbaar of toegang beperkt") from exc
+    except HTTPError as exc:
+        LOG.warning("Request naar %s geweigerd: HTTP %d (route %s)",
+                    provider, exc.code, path)
+        raise ProviderHTTPFailure(provider, exc.code) from exc
+    except (URLError, TimeoutError, OSError, UnicodeError, ValueError) as exc:
+        LOG.warning("Request naar %s mislukt (route %s): %s",
+                    provider, path, type(exc).__name__)
+        raise LiveDataUnavailable(
+            "Databron tijdelijk onbereikbaar; check netwerk, DNS of TLS"
+        ) from exc
 
 
 def parse_utc(value):
