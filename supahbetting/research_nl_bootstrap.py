@@ -36,7 +36,7 @@ def bootstrap(*, directory=LOCAL, published=PUBLISHED):
             records=data["matches"]
             if not isinstance(records,list) or len(records)>7000:
                 return {"state":"invalid_coverage","league":league}
-            seasons={}
+            season_counts={}
             for m in records:
                 if (type(m.get("hg")) is not int or type(m.get("ag")) is not int
                         or not 0<=m["hg"]<=20 or not 0<=m["ag"]<=20
@@ -51,10 +51,10 @@ def bootstrap(*, directory=LOCAL, published=PUBLISHED):
                 if m["id"] in stored:
                     return {"state":"duplicate_id","league":league}
                 stored[m["id"]]={**m,"league":league}
-                seasons[m["season"]]=seasons.get(m["season"],0)+1
+                season_counts[m["season"]]=season_counts.get(m["season"],0)+1
                 first=min(first or m["date"],m["date"])
                 latest=max(latest or m["date"],m["date"])
-            for season,count in seasons.items():
+            for season,count in season_counts.items():
                 coverage.append({
                     "key":season+"/"+league,
                     "state":"bundled_cc0_snapshot",
