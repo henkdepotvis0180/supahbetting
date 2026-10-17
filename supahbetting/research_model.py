@@ -107,10 +107,11 @@ def train_candidate(inventory, baseline_path=MODEL_FILE):
     return candidate, states
 
 
-def update_shadow(inventory, states, shadow_path=SHADOW_PATH, today=None):
+def update_shadow(inventory, states, shadow_path=SHADOW_PATH, today=None, now=None):
     """Generate strictly future-date forecasts and evaluate previous committed ones."""
     from .trained_model import label
-    today = today or datetime.now(timezone.utc).date()
+    now = now or datetime.now(timezone.utc)
+    today = today or now.date()
     shadow_path = Path(shadow_path)
     previous = json.loads(shadow_path.read_text(encoding="utf-8")) if shadow_path.exists() else {}
     records = previous.get("predictions", {})
@@ -142,7 +143,7 @@ def update_shadow(inventory, states, shadow_path=SHADOW_PATH, today=None):
             "fixture_id": fixture["id"], "league": fixture["league"],
             "season": fixture["season"], "home": fixture["home"],
             "away": fixture["away"], "scheduled_date": fixture["date"],
-            "forecast_created_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            "forecast_created_at": now.isoformat(timespec="seconds"),
             "as_of_latest_result": inventory.get("latest_result_date"),
             "model": "0.12.0-research-experimental",
             "probabilities": probs, "actual": None,
