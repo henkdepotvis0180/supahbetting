@@ -20,6 +20,8 @@ from .baseline_model import BaselineError, load_baseline, predict as baseline_pr
 from .trained_model import (TrainingError, load_pretrained, predict_trained,
                             PROVIDER_LEAGUES)
 from .experimental_model import EXPERIMENTAL_FILE
+from .research_data import LOCAL as RESEARCH_LOCAL
+from .research_features import coverage_report as research_context_coverage
 
 ROOT = Path(__file__).parent / "static"
 JSON_LIMIT = 24_576
@@ -236,6 +238,28 @@ def make_handler(store, live_scores=None, provider_hub=None, research_hub=None, 
                         },
                         "production_unchanged": True,
                         "warning": "Retrospectieve metingen; geen bewezen bettingvoordeel.",
+                    })
+                if path == "/api/research/data/status":
+                    report_path = RESEARCH_LOCAL / "research_report.json"
+                    monitor_path = RESEARCH_LOCAL / "monitor_status.json"
+                    if not report_path.is_file():
+                        return self.reply(200, {
+                            "available": False,
+                            "message": "Start start_research_monitor.bat om gecontroleerde historische data op te halen.",
+                        })
+                    if report_path.stat().st_size > 3_000_000:
+                        return self.reply(503, {"available": False, "message": "Onderzoeksrapport te groot"})
+                    report = json.loads(report_path.read_text(encoding="utf-8"))
+                    monitor = (
+                        json.loads(monitor_path.read_text(encoding="utf-8"))
+                        if monitor_path.is_file() and monitor_path.stat().st_size < 20_000
+                        else {"state": "not_running_or_unknown"}
+                    )
+                    return self.reply(200, {
+                        "available": True,
+                        "report": report,
+                        "monitor": monitor,
+                        "context": research_context_coverage(),
                     })
                 if path == "/api/research/status":
                     return self.reply(200, research_hub.status())
