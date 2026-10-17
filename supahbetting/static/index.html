@@ -11,6 +11,7 @@
   <script src="/live.js" defer></script>
   <script src="/research.js" defer></script>
   <script src="/model.js" defer></script>
+  <script src="/trained.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#wedstrijden">Naar wedstrijden</a>
@@ -20,14 +21,14 @@
         <span class="logo" aria-hidden="true">S</span>
         <div><strong>Supah<span>Betting</span></strong><small>Voetbalanalyse &amp; combinaties</small></div>
       </div>
-      <div class="header-right"><span class="mode-badge"><span class="status-dot"></span> PAPER MODE</span><span class="version">v0.7.0</span></div>
+      <div class="header-right"><span class="mode-badge"><span class="status-dot"></span> PAPER MODE</span><span class="version">v0.8.0</span></div>
     </div>
   </header>
   <main class="container">
     <div class="notice info" role="note">
       <span aria-hidden="true">ⓘ</span>
       <div><strong>Onderzoeksomgeving — geen echte inzetten.</strong>
-        De bestaande paperbets gebruiken nog handmatig ingevoerde xG-waarden. Het aparte historisch getrainde basismodel schat 1X2-uitkomsten en is niet bewezen winstgevend. Quoteringen zijn handmatig en geen actuele bookmakersprijzen.
+        De bestaande paperbets gebruiken handmatig ingevoerde of zorgvuldig gekozen modeldoelpuntverwachtingen. Het aparte historisch getrainde basismodel schat 1X2-uitkomsten en is niet bewezen winstgevend. Quoteringen zijn handmatig en geen actuele bookmakersprijzen.
       </div>
     </div>
 
@@ -41,7 +42,7 @@
     </section>
 
     <section class="trained-model-status" aria-labelledby="baseline-heading">
-      <div class="eyebrow">EERSTE GETRAINDE 1X2 BASISMODEL</div>
+      <div class="eyebrow">EERSTE GETRAINDE 1X2 BASISMODEL · ELO/VORM</div>
       <h2 id="baseline-heading">Historische voorspellingen</h2>
       <div id="baseline-status" class="baseline-status" aria-live="polite">
         Modelstatus ophalen…
@@ -115,6 +116,44 @@
 
     <div id="message" class="toast hidden" aria-live="polite"></div>
 
+    <section class="trained-section" id="trained" aria-labelledby="trained-title">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">ECHT GETRAIND · HISTORISCHE WEDSTRIJDUITSLAGEN</div>
+          <h2 id="trained-title">Voorspellingen van ons basismodel</h2>
+          <p>Getraind op echte uitslagen van zeven Europese competities. Bekijk verwachte doelpunten en kansen op thuiswinst, gelijkspel en uitwinst, zonder bookmakerodds te verzinnen.</p>
+        </div>
+        <span class="trained-tag">Poisson · experimenteel</span>
+      </div>
+      <div id="trained-stats" class="trained-stat-grid" aria-live="polite">
+        <div class="panel trained-stat"><span>Training</span><strong>Model laden…</strong></div>
+      </div>
+      <div class="panel trained-form-panel">
+        <h3>Bereken een wedstrijd met het getrainde model</h3>
+        <p>Alleen teams die in de historische dataset voorkomen worden herkend. Er wordt geen onzekere clubmatch gegokt.</p>
+        <form id="trained-form" class="trained-form">
+          <label>Competitie
+            <select id="trained-league" required>
+              <option value="nl.1">Eredivisie</option>
+              <option value="be.1">Belgische Pro League</option>
+              <option value="en.1">Premier League</option>
+              <option value="de.1">Bundesliga</option>
+              <option value="es.1">La Liga</option>
+              <option value="it.1">Serie A</option>
+              <option value="fr.1">Ligue 1</option>
+            </select>
+          </label>
+          <label>Thuisploeg <input id="trained-home" maxlength="100" required placeholder="Bijv. Ajax" autocomplete="off"></label>
+          <label>Uitploeg <input id="trained-away" maxlength="100" required placeholder="Bijv. PSV" autocomplete="off"></label>
+          <button type="submit" class="btn btn-primary">Bereken modelkansen</button>
+        </form>
+        <div id="trained-result" class="trained-result" aria-live="polite">
+          <p>Voer een competitie en twee teams in of kies een geplande wedstrijd in het livecentrum.</p>
+        </div>
+      </div>
+      <p class="trained-note">Het model kent geen actuele opstellingen, blessures, live wedstrijdverloop of bookmakerprijzen. De geschatte doelpunten zijn **geen schotgebaseerde xG**. Het testresultaat is een nauwkeurigheidsmeting, geen bewijs voor winstgevend wedden.</p>
+    </section>
+
     <section id="research" class="research-section" aria-labelledby="research-title">
       <div class="section-header">
         <div>
@@ -169,8 +208,8 @@
             <label>Uitteam <input name="away_team" required maxlength="70" placeholder="Bijv. PSV" autocomplete="off"></label>
             <label>Aftrap (optioneel) <input name="kickoff" type="datetime-local"></label>
             <label>Bron <input name="source" value="Handmatig" required maxlength="80"></label>
-            <label>xG thuis <input name="home_xg" type="number" min="0" max="8" step=".01" value="1.50" required></label>
-            <label>xG uit <input name="away_xg" type="number" min="0" max="8" step=".01" value="1.10" required></label>
+            <label>Verwachte goals thuis <input name="home_xg" type="number" min="0" max="8" step=".01" value="1.50" required></label>
+            <label>Verwachte goals uit <input name="away_xg" type="number" min="0" max="8" step=".01" value="1.10" required></label>
             <label>Odds thuis (1) <input name="odds_home" type="number" min="1.01" max="100" step=".01" value="2.15" required></label>
             <label>Odds gelijk (X) <input name="odds_draw" type="number" min="1.01" max="100" step=".01" value="3.35" required></label>
             <label>Odds uit (2) <input name="odds_away" type="number" min="1.01" max="100" step=".01" value="3.55" required></label>
