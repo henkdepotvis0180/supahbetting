@@ -1,0 +1,48 @@
+name: Train and publish baseline
+
+on:
+  push:
+    branches:
+      - feature/trained-football-baseline-v0.7
+    paths:
+      - "data/historical/**"
+      - "supahbetting/trained_model.py"
+      - ".github/workflows/train-baseline.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Train 7 leagues using completed CC0 football results
+        run: |
+          python -m supahbetting.trained_model --data-dir data/historical --output supahbetting/models/baseline.json
+      - name: Verify generated baseline schema and held-out scores
+        run: |
+          python -c "from supahbetting.trained_model import load_pretrained; m=load_pretrained(); assert m['training_matches'] > 10000; assert m['evaluation']['test']['matches'] > 1000; assert len(m['leagues']) == 7; print('Verified', m['training_matches'], 'completed matches')"
+          python -m unittest discover -s tests -v
+          python -m compileall -q supahbetting
+          node --check supahbetting/static/app.js
+          node --check supahbetting/static/live.js
+          node --check supahbetting/static/research.js
+      - name: Commit pretrained model back to feature branch
+        run: |
+          git config user.name "supahbetting-model-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add supahbetting/models/baseline.json
+          if git diff --cached --quiet; then
+            echo "Model artifact already matches."
+          else
+            git commit -m "model: publish trained Poisson baseline and holdout report [skip ci]"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
