@@ -1,0 +1,86 @@
+name: Research v0.13 independent model comparison
+
+on:
+  push:
+    branches: [feature/research-v0.13-serious-dashboard]
+    paths:
+      - '.github/workflows/research-v013-benchmark.yml'
+      - 'supahbetting/research_challengers.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  benchmark-poisson-dixon-coles:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Use only verified public-domain historical results already in Git
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from supahbetting.research_data import LOCAL,atomic_json
+          from supahbetting.trained_model import LEAGUES
+          matches=[]
+          for league in LEAGUES:
+              path=Path("data/research/verified")/(league+".json")
+              if not path.is_file():
+                  raise RuntimeError("Missing public licensed source: "+league)
+              raw=json.loads(path.read_text(encoding="utf-8"))
+              if raw.get("league")!=league or raw.get("license")!="CC0-1.0":
+                  raise RuntimeError("Unverified data source: "+league)
+              for m in raw["matches"]:
+                  matches.append({"league":league, **m})
+          assert len(matches)>15000, "No complete audit-ready historical record"
+          matches.sort(key=lambda m:(m["date"],m["league"],m["home"],m["away"]))
+          atomic_json(LOCAL/"inventory.json",{
+              "schema_version":1,"source":"openfootball/football.json",
+              "matches":matches
+          })
+          print("Public CC0 matches:",len(matches))
+          PY
+      - name: Compare unchanged model with bounded Dixon-Coles correction
+        run: python -m supahbetting.research_challengers
+      - name: Verify no automatic fusion and valid chronological metrics
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          obj=json.loads(Path("data/research/model_challengers.json").read_text())
+          assert obj["selection_policy"]=="NO_MODEL_FUSION_OR_PROMOTION"
+          assert obj["periods"]["2024-25"]["matches"]>1000
+          assert obj["periods"]["2025-26"]["matches"]>1000
+          assert obj["periods"]["2026-27"]["matches"]>0
+          for season,stats in obj["periods"].items():
+              for key in ("poisson_logloss","dixon_coles_logloss",
+                          "poisson_brier","dixon_coles_brier"):
+                  assert 0<stats[key]<10,(season,key,stats)
+          print("Historical challenger evaluation completed; model not promoted")
+          PY
+      - name: Archive comparison report
+        uses: actions/upload-artifact@v4
+        with:
+          name: supahbetting-research-v013-poisson-versus-dixon-coles
+          path: data/research/model_challengers.json
+          retention-days: 30
+      - name: Publish aggregate-only comparison on experimental branch
+        run: |
+          mkdir -p training_reports/research_challengers
+          cp data/research/model_challengers.json training_reports/research_challengers/benchmark_v013.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- training_reports/research_challengers/benchmark_v013.json
+          if git diff --cached --quiet; then
+            echo "No model benchmark update"
+          else
+            git commit -m "research: chronologically compare Poisson and Dixon-Coles without model promotion [skip ci]"
+            git push origin "HEAD:refs/heads/${GITHUB_REF_NAME}"
+          fi
