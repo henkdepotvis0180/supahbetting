@@ -99,7 +99,7 @@ function renderMatches() {
         <span>Bookmakermarge ${percent(m.analysis.market_margin)}</span></div>
       ${m.is_settled ? `<div class="match-result">✓ Afgehandeld: ${m.result_home} – ${m.result_away}</div>` : ""}
     </article>`).join("") :
-    '<div class="empty">Geen wedstrijden gevonden. Voeg zelf een wedstrijd toe of laad fictieve voorbeelden.</div>';
+    '<div class="empty">Geen handmatig ingevoerde wedstrijden. Bekijk bovenaan het actuele speelschema.</div>';
 }
 
 function renderLegs() {
@@ -278,13 +278,6 @@ async function settleMatch(form) {
 }
 
 function init() {
-  $("demo-button").addEventListener("click", async () => {
-    try {
-      const data = await api("/api/demo", "POST", {});
-      await refresh();
-      notify(data.message + " — dit zijn géén echte wedstrijden.");
-    } catch (err) { notify(err.message, true); }
-  });
   $("refresh-button").addEventListener("click", refresh);
   $("match-form").addEventListener("submit", saveMatch);
   $("save-slip").addEventListener("click", saveSlip);
