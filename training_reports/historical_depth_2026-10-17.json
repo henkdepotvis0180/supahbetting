@@ -1,0 +1,43 @@
+{
+  "source": "OpenFootball CC0-1.0",
+  "retraining_compared_to": "SupahBetting v0.8.1 Poisson score model",
+  "previous_training_matches": 13467,
+  "candidate_training_matches": 19884,
+  "added_older_results": 6417,
+  "training_start_date": "2017-08-04",
+  "last_result_date": "2026-09-20",
+  "parameter_selection": "2024-25 validation, not 2025/26 or 2026/27",
+  "comparison_warning": "This is a retrospective comparison. Choosing a model based on holdout scores makes those holdouts selection-influenced. No evidence of profitability against historical bookmaker prices.",
+  "scores": {
+    "validation": {
+      "matches": 2351,
+      "before_brier": 0.5983,
+      "after_brier": 0.59779,
+      "brier_delta": -0.00051,
+      "before_logloss": 1.00188,
+      "after_logloss": 1.00103,
+      "logloss_delta": -0.00085,
+      "simple_frequency_logloss": 1.07727
+    },
+    "test": {
+      "matches": 2037,
+      "before_brier": 0.58474,
+      "after_brier": 0.58431,
+      "brier_delta": -0.00043,
+      "before_logloss": 0.98432,
+      "after_logloss": 0.9837,
+      "logloss_delta": -0.00062,
+      "simple_frequency_logloss": 1.05245
+    },
+    "prospective_2026_27": {
+      "matches": 295,
+      "before_brier": 0.5799,
+      "after_brier": 0.58166,
+      "brier_delta": 0.00176,
+      "before_logloss": 0.97842,
+      "after_logloss": 0.98071,
+      "logloss_delta": 0.00229,
+      "simple_frequency_logloss": 1.06598
+    }
+  }
+}
