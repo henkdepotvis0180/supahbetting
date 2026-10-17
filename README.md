@@ -2,6 +2,16 @@
 
 **Lokaal Nederlandstalig voetbalanalyseplatform met een betrouwbare basis voor enkelvoudige én combinatie-betslips.**
 
+## Experimentele v0.11.0 — naast v0.10.0 (ontwikkelbranch)
+
+Het door de gebruiker uitgevoerde 64-kandidatenonderzoek heeft `alpha=0.04`, `prior_matches=3` geselecteerd op 2024/25. GitHub Actions heeft hieruit een **apart**, opnieuw berekend experimenteel model opgebouwd: `supahbetting/models/baseline_v0.11.0_experimental.json`. De bestaande productie blijft op `supahbetting/models/baseline.json` (v0.10.0). In het dashboard kun je bij een wedstrijd op **Vergelijk v0.10.0 met v0.11.0 (experimenteel)** klikken.
+
+De chronologische retrospectieve test-log-loss over 2025/26 is **0,97725** (experimenteel) tegenover **0,98370** (bestaand). Dit is een klein verschil in foutmaat, geen bewezen winstgevendheid. De nieuwste beschikbare historische uitslag is nog steeds **20 september 2026**.
+
+Handleiding: [Experimenteel model v0.11.0](docs/EXPERIMENTEEL_MODEL_V011.md) en [Universele Windows-training met automatische GitHub-upload](docs/UNIVERSEEL_TRAINEN.md). `train_model.bat` werkt het lokale productiemodel opnieuw bij op **dezelfde** dataset, maar voegt zonder nieuwe uitslagen geen informatie toe en synchroniseert niet naar GitHub. `train_en_test_auto.bat` vergelijkt parameters, publiceert na een volledige run de onderzoeksresultaten en triggert een gecontroleerde herbouw van het aparte experimentele model.
+
+
+
 SupahBetting is software voor onderzoek en **fictieve weddenschappen**. Vanaf v0.8 bevat het **twee daadwerkelijk getrainde, afzonderlijke voetbalmodellen**: een Elo-/vormmodel en een zeven-competities doelpunten-/Poisson-model. Nieuw in v0.5: **meerdere voetbalgegevensbronnen**, waaronder Nederlandse en Belgische competities; de bestaande OpenLigaDB-community-doelpuntenfeed blijft aanwezig. Er zijn **geen live bookmakerquoteringen**, geen directe bookmakeraccounts en geen functie voor echt geld. Het aparte getrainde basismodel heeft chronologische historische toetsen gehad, maar is niet tegen actuele bookmakers geijkt. Het eerste Elo-/vormmodel gebruikt data tot 2024; het tweede model heeft nieuwe bronuitslagen uit 2025/26, maar per competitie zijn sommige bestanden onvolledig. Een positieve model-EV is **geen bewijs van winstgevendheid**.
 
 ## Extra historische modeltraining (v0.8.2 — 17 oktober 2026)
