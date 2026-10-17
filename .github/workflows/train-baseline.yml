@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - feature/trained-football-baseline-v0.7
+      - main
     paths:
       - "data/historical/**"
       - "supahbetting/trained_model.py"
@@ -35,6 +36,7 @@ jobs:
           node --check supahbetting/static/app.js
           node --check supahbetting/static/live.js
           node --check supahbetting/static/research.js
+          node --check supahbetting/static/trained.js
       - name: Commit pretrained model back to feature branch
         run: |
           git config user.name "supahbetting-model-bot"
