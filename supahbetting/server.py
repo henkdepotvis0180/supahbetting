@@ -272,6 +272,7 @@ def make_handler(store, live_scores=None, provider_hub=None, research_hub=None, 
                     "/app.js": ("app.js", "text/javascript; charset=utf-8"),
                     "/live.js": ("live.js", "text/javascript; charset=utf-8"),
                     "/research.js": ("research.js", "text/javascript; charset=utf-8"),
+                    "/research_data.js": ("research_data.js", "text/javascript; charset=utf-8"),
                     "/model.js": ("model.js", "text/javascript; charset=utf-8"),
                     "/trained.js": ("trained.js", "text/javascript; charset=utf-8"),
                 }
