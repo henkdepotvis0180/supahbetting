@@ -30,7 +30,7 @@ def _utc(iso):
         return None
 
 
-def _approved_final(row, model, now):
+def _approved_final(row, model, now, *, max_age_days=21):
     """A real finished match, at least 90 mins after claimed kickoff."""
     if (not isinstance(row, dict) or row.get("status") != "finished"
             or row.get("source_confirmed") is not True):
@@ -41,7 +41,7 @@ def _approved_final(row, model, now):
     if league not in LEAGUES or league == "be.1":
         return None
     kickoff = _utc(row.get("kickoff"))
-    if not kickoff or not (timedelta(hours=1,minutes=30) <= now-kickoff <= timedelta(days=21)):
+    if not kickoff or not (timedelta(hours=1,minutes=30) <= now-kickoff <= timedelta(days=max_age_days)):
         return None
     hg, ag = row.get("hg"), row.get("ag")
     if type(hg) is not int or type(ag) is not int or not (0 <= hg <= 20 and 0 <= ag <= 20):
@@ -68,7 +68,7 @@ def _approved_final(row, model, now):
     }
 
 
-def collect_verified_finals(fetched, model, *, now=None, path=LOCAL_FINALS):
+def collect_verified_finals(fetched, model, *, now=None, path=LOCAL_FINALS, max_age_days=21):
     """Quarantine conflicting scores; never overwrite evidence silently."""
     now = now or datetime.now(timezone.utc)
     path = Path(path)
@@ -77,7 +77,7 @@ def collect_verified_finals(fetched, model, *, now=None, path=LOCAL_FINALS):
     conflicts = {r["id"]:r for r in original.get("conflicts", [])}
     new, rejected = 0, 0
     for raw in fetched:
-        item = _approved_final(raw, model, now)
+        item = _approved_final(raw, model, now, max_age_days=max_age_days)
         if not item or item["id"] in conflicts:
             continue
         prior = rows.get(item["id"])
