@@ -135,9 +135,13 @@ def load_matches(folder=DATA_DIR):
                         or not row["home"] or not row["away"]
                         or row["home"] == row["away"]):
                     raise TrainingError("Onrealistische wedstrijduitslag")
-                if row["season"] not in ("2020-21", "2021-22", "2022-23",
-                                         "2023-24", "2024-25", "2025-26"):
-                    raise TrainingError("Onverwacht historisch seizoen")
+                season = row["season"]
+                match = re.fullmatch(r"(20[0-3][0-9])-([0-9]{2})", season)
+                if (not match or int(match.group(1)) < 2020 or
+                        int(match.group(2)) != (int(match.group(1)) + 1) % 100 or
+                        day.year not in (int(match.group(1)),
+                                         int(match.group(1)) + 1)):
+                    raise TrainingError("Onverwacht historisch seizoen of datum")
                 rows.append({
                     "league": league, "season": row["season"],
                     "date": day.isoformat(), "home": row["home"],
