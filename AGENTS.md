@@ -76,3 +76,15 @@ De tools zijn *nog niet* direct aan elkaar gekoppeld. Het importformaat in READM
 - Toon nooit oude of ongedateerde boekmakerquotes als live prijzen. Positive EV van niet onafhankelijk gekalibreerde modellen is geen bewezen voordeel.
 - Tests: python -m unittest discover -s tests -v; Python 3.11+; node --check supahbetting/static/research.js.
 - Bij uitbreiding ondersteunt het systeem nieuwe adapters via native exports, bronregistratie en expliciete geïsoleerde tests.
+
+## v0.7 getraind basismodel
+- Het echte statistische modelbestand staat in **models/baseline_v1.json** (veilige JSON, géén joblib/pickle/uitvoer van externe broncode).
+- Training: **supahbetting/train_baseline.py**, GitHub Actions **.github/workflows/train-baseline.yml**, gebruiker optioneel **train_baseline.bat**.
+- Runtime: **supahbetting/baseline_model.py** pure Python standaardbibliotheek; UI: **supahbetting/static/model.js**.
+- De huidige historische dataset is uit de eigen Prediict-fork en eindigt op 2024-06-02. Toon dat altijd expliciet; geen 2026 betrouwbaarheid claimen.
+- De chronologische holdout metrics zijn van het **pretest-model**. Na evaluatie wordt het model op alle data opnieuw getraind, dus dit eindmodel heeft niet dezelfde onafhankelijke holdout. Metriekdefinities en herkomst in docs/PRETRAINED_MODEL.md.
+- Voor nieuwe trainingsdata: volledige, chronologisch gesorteerde historie; alleen resultaten vóór wedstrijddatum mogen in de kenmerken. Zelfde-dag wedstrijden nooit door elkaar laten lekken.
+- Geen concurrerende modeltraining bij serverstart; terugschrijven van nieuwe gewichten is een expliciete offline actie.
+- Team-mapping mag alleen via exact verifieerbare namen/curated aliases, geen fuzzy joins.
+- Model-uitvoer niet zonder aanvullende validatie of toestemming in bookmaker-/bettingautomatisering opnemen, en geen geld inzetten. Winstgevendheid niet bewezen.
+- Python CI unit tests + Node scriptcheck, trainingworkflow met aparte sklearn-afhankelijkheden.
