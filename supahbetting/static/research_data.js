@@ -64,29 +64,50 @@
     const context=payload.context || {};
     const model=report.model_candidate || {};
     const periods=report.historical_metrics || {};
+    const quality=report.source_quality || {};
+    const freshness=quality.leagues || {};
+    const globalAge=quality.days_since_latest_result;
+    const recentText=globalAge === null || globalAge === undefined
+      ? "Leeftijd uitslag onbekend"
+      : globalAge === 0 ? "Laatste eindstand van vandaag"
+      : globalAge+" dagen sinds laatste eindstand";
+    const newCount=report.new_finished_results_since_last_check
+      ?? monitor.new_final_matches ?? 0;
     summary.replaceChildren(
       tile("Gecontroleerde uitslagen",numeric(report.training_matches),
-        "Vanaf 2016/17 waar de bron beschikbaar is"),
+        "Vanaf 1 januari 2016, waar de bron beschikbaar is"),
       tile("Nieuwste eindstand",date(report.last_verified_result_date),
-        "Niet noodzakelijk van vandaag"),
+        recentText+(quality.is_stale?" · BRON ACHTERLOPEND":"")),
       tile("Echte toekomstige tests",numeric(prospective.graded_predictions),
         "Alleen voorspellingen vastgelegd vóór de speeldag"),
       tile("Prospectieve log loss",decimal(prospective.prospective_logloss),
         "Lager is beter; geen winstgarantie"),
       tile("Historische test log loss",decimal(periods.test?.model_logloss),
         "Retrospectief seizoen 2025/26"),
-      tile("Bevestigde nieuwe uitslagen",numeric(monitor.new_final_matches),
-        "Bij de laatste lokale broncontrole")
+      tile("Nieuw sinds vorige controle",numeric(newCount),
+        "Eerste import: "+numeric(quality.initial_backfill_matches ??
+          report.initial_backfill_matches)+" historische uitslagen")
     );
     status.replaceChildren(
       text("strong","Broncontrole: "+(report.last_checked_at_utc || "onbekend")),
       text("span"," · GitHub: "+(monitor.sync_state || "geen status")),
-      text("span"," · "+(report.missing_sources?.length || 0)+" ontbrekende bronbestanden")
+      text("span"," · "+(report.missing_sources?.length || 0)+" ontbrekende bronbestanden"),
+      text("span",quality.is_stale?" · Waarschuwing: scores zijn verouderd":
+        " · Bronactualiteit blijft te controleren")
     );
     const competitions=Object.values(report.competitions || {});
     coverage.replaceChildren(tableOfRows(
-      ["Competitie","Eindstanden","Laatste resultaat","Gepland"],
-      competitions.map(c => [c.name,numeric(c.finished),date(c.last_result_date),numeric(c.scheduled)])
+      ["Competitie","Eindstanden","Laatste resultaat","Leeftijd bron","Gepland"],
+      Object.entries(report.competitions || {}).map(([code,c]) => {
+        const entry=freshness[code] || {};
+        const age=entry.days_since_last_result;
+        const severity=entry.freshness || "unknown";
+        const label=typeof age==="number" ? age+" dagen"+(
+          severity==="severely_stale"?" · ERNSTIG VERTRAAGD":
+          severity==="stale"?" · VERTRAAGD":"") : "Onbekend";
+        return [c.name,numeric(c.finished),date(c.last_result_date),
+          label,numeric(c.scheduled)];
+      })
     ));
     const factors = [
       ["Uitslagen", "Gecontroleerd waar beschikbaar", "Ja — bestaande scoremodel"],
@@ -128,6 +149,13 @@
           (m.home_form?.rest_days ?? "—")+" / "+(m.away_form?.rest_days ?? "—")
         ])
       ));
+    }
+    if(quality.is_stale) {
+      games.append(titleBlock("Bronactualiteit: waarschuwing",
+        "De laatste eindstand is "+date(report.last_verified_result_date)+
+        ". De monitor haalt bronbestanden op, maar een succesvolle download "
+        +"betekent niet dat de onderliggende competities actueel zijn. "
+        +"Gebruik deze dataset niet als complete actuele wedstrijddatabase."));
     }
     const missing = report.missing_sources || [];
     if (missing.length) {
