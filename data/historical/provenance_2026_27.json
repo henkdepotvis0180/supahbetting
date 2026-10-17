@@ -1,0 +1,48 @@
+{
+  "note": "Alleen gedocumenteerde eindstanden; geen automatisch verzonnen scores. 2026-27 loopt bij de bron tot 20 september 2026, mogelijk onvolledig.",
+  "snapshot_date": "2026-10-17",
+  "last_completed_match_date": "2026-09-20",
+  "source_repository": "https://github.com/openfootball/football.json",
+  "license": "CC0-1.0",
+  "season": "2026-27",
+  "source_files": [
+    {
+      "league": "nl.1",
+      "added_finals": 62,
+      "git_blob_sha": "6968fd62fc9c539c3b9d9bb31d4e7789dee7e79d",
+      "path": "2026-27/nl.1.json"
+    },
+    {
+      "league": "en.1",
+      "added_finals": 45,
+      "git_blob_sha": "60e281f0fcc51cfca1a901353666a688cf62a8ba",
+      "path": "2026-27/en.1.json"
+    },
+    {
+      "league": "de.1",
+      "added_finals": 33,
+      "git_blob_sha": "c8696353819299a131f8041513f8c50ee28522a2",
+      "path": "2026-27/de.1.json"
+    },
+    {
+      "league": "es.1",
+      "added_finals": 64,
+      "git_blob_sha": "daf0d8a5ff04578b06ca32927bfcb6609e50797c",
+      "path": "2026-27/es.1.json"
+    },
+    {
+      "league": "it.1",
+      "added_finals": 50,
+      "git_blob_sha": "6b8e10596db7df51f98cd81bb4ea03304e784a1f",
+      "path": "2026-27/it.1.json"
+    },
+    {
+      "league": "fr.1",
+      "added_finals": 41,
+      "git_blob_sha": "ac75f05d04f914b95d2e70d7e267fd43c32e5d4",
+      "path": "2026-27/fr.1.json"
+    }
+  ],
+  "no_source_file_for": "be.1",
+  "total_new_completed_matches": 295
+}
