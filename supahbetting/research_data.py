@@ -177,7 +177,10 @@ def refresh(*, directory=LOCAL, full=None, delay=1.0, fetcher=None, today=None):
     if not matches:
         raise ValueError("Geen gecontroleerde wedstrijden; bestaand bestand behouden")
     seen_before = {m["id"] for m in old.get("matches", [])}
-    new_ids = [m["id"] for m in matches if m["id"] not in seen_before]
+    is_first_import = not inventory.exists()
+    # A full initial backfill is NOT 22,000+ matches "played since the last scan".
+    new_ids = ([] if is_first_import else
+               [m["id"] for m in matches if m["id"] not in seen_before])
     result = {
         "schema_version": 1, "source": "openfootball/football.json",
         "license": "CC0-1.0", "fetched_at_utc": datetime.now(timezone.utc).isoformat(),
@@ -189,6 +192,14 @@ def refresh(*, directory=LOCAL, full=None, delay=1.0, fetcher=None, today=None):
         "matches": matches, "fixtures": planned,
         "coverage": sorted(coverage.values(), key=lambda m: m["key"]),
         "failed_sources": failures, "new_final_match_ids": new_ids,
+        "is_initial_import": is_first_import,
+        "first_import_at_utc": (
+            datetime.now(timezone.utc).isoformat() if is_first_import
+            else old.get("first_import_at_utc")
+        ),
+        "initial_backfill_matches": (
+            len(matches) if is_first_import else old.get("initial_backfill_matches")
+        ),
         "latest_result_date": max(m["date"] for m in matches),
         "warning": "Upstream kan achterlopen; geen bewijs van volledige dekking of actualiteit.",
     }
@@ -206,6 +217,8 @@ def main():
         "finished_matches": len(result["matches"]),
         "future_fixtures": len(result["fixtures"]),
         "new_results": len(result["new_final_match_ids"]),
+        "initial_backfill": result.get("initial_backfill_matches"),
+        "is_initial_import": result["is_initial_import"],
         "latest_result_date": result["latest_result_date"],
         "missing_sources": [c["key"] for c in result["coverage"]
                             if c["state"] == "not_published"],
