@@ -204,6 +204,10 @@ function liveRenderDetail(detail) {
     '<div class="live-detail-notice">' + liveEscape(detail.video_note) + '</div>' +
     (detail.video_embed_url ? '<div class="live-detail-actions"><button id="live-load-video" class="btn btn-quiet" type="button">▶ Officiële video tonen</button></div>' +
       '<div class="live-video" id="live-video-box"></div>' : '') +
+    (detail.status === 'scheduled' ? '<div class="model-analysis-panel"><h3 class="live-section-title">Getraind basismodel (1X2)</h3>' +
+        '<p class="muted">Historische teamsterkte en recente vorm; niet bewezen winstgevend.</p>' +
+        '<button type="button" id="live-model-predict" class="btn btn-quiet">Bereken modelkansen</button>' +
+        '<div id="live-model-result" class="model-result" aria-live="polite"></div></div>' : '') +
     '<div class="live-detail-actions">' +
     (detail.status === 'scheduled' ? '<button id="live-use-analysis" type="button" class="btn btn-primary">Gebruik wedstrijd voor analyse</button>' : '') +
     '<button id="live-reload-detail" type="button" class="btn btn-quiet">↻ Feed verversen</button></div>' +
@@ -213,6 +217,12 @@ function liveRenderDetail(detail) {
   liveEl('live-reload-detail').addEventListener('click', () => liveLoadDetail(true));
   if (detail.status === 'scheduled') {
     liveEl('live-use-analysis').addEventListener('click', () => liveUseForAnalysis(detail));
+    const modelButton=liveEl('live-model-predict');
+    if (modelButton && typeof window.supahPredictMatch === 'function') {
+      modelButton.addEventListener('click', () =>
+        window.supahPredictMatch(detail, liveUi.selected ? liveUi.selected.league : '')
+      );
+    }
   }
   if (detail.video_embed_url) {
     liveEl('live-load-video').addEventListener('click', () => {

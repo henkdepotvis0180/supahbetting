@@ -1,0 +1,3 @@
+# Alleen nodig als je opnieuw wilt trainen. Niet nodig voor het dashboard.
+scikit-learn>=1.4,<2
+numpy>=1.26,<3
