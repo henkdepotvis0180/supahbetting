@@ -330,7 +330,7 @@ def build_upcoming(*, model=None, inventory=None, fetched=None, now=None,
 
 def fetch_provider_schedules(*, now=None, football_data=None,
                              sports_fetcher=None, openliga=None, pause=2.2):
-    """Limited API usage: 6 authenticated competition queries, 28 free sports requests.
+    """Limited API usage: 6 authenticated competition queries, 35 paced free sports requests.
 
     Free TheSportsDB v1 returns at most three day events and one next game,
     so NEVER claim these schedules are exhaustive.
@@ -367,6 +367,7 @@ def fetch_provider_schedules(*, now=None, football_data=None,
             for day in sports_days
         ]
         paths.append("/api/v1/json/123/eventsnextleague.php?id=" + provider_code)
+        paths.append("/api/v1/json/123/eventspastleague.php?id=" + provider_code)
         for path in paths:
             try:
                 raw = sports_fetcher(path)
@@ -381,7 +382,7 @@ def fetch_provider_schedules(*, now=None, football_data=None,
                         pass
             except (OSError, ValueError, RuntimeError, LiveDataUnavailable) as exc:
                 warnings.append("TheSportsDB " + provider_code + ": " + type(exc).__name__)
-            # Four requests x seven leagues = 28. Space requests across >60 s.
+            # Five requests x seven leagues = 35. Pace across >75 seconds.
             if pause:
                 time.sleep(max(0.0, pause))
     openliga = openliga if openliga is not None else LiveScores()
