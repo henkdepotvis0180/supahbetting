@@ -106,6 +106,11 @@ class BaselineInferenceTests(unittest.TestCase):
         self.assertFalse(out["model_validated_profit"])
         self.assertIn("oud",out["warning"])
 
+    def test_official_fixture_names_map_to_historical_teams(self):
+        out=predict(sample_artifact(),"Arsenal FC","Chelsea FC","PL")
+        self.assertTrue(all(out["teams_in_history"].values()))
+        self.assertEqual(out["league"],"E0")
+
     def test_missing_team_is_explicit(self):
         result=predict(sample_artifact(),"Unknown AFC","Chelsea","PL")
         self.assertFalse(result["teams_in_history"]["home"])
