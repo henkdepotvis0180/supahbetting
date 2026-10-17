@@ -9,6 +9,7 @@ const tNum = x => new Intl.NumberFormat("nl-NL",{
 }).format(x);
 
 let lastPrediction = null;
+let experimentalAvailable = false;
 
 async function requestTrained(path, payload=null) {
   const opts = {};
@@ -65,6 +66,22 @@ async function trainedLoadStatus() {
         "Afgeronde wedstrijden t/m "+(status.last_observed_result_date||"onbekend")+
         " · kleine steekproef, geen bookmakersvalidatie")
     );
+    try {
+      const candidate = await requestTrained("/api/trained/experimental/status");
+      experimentalAvailable = Boolean(candidate.available);
+      if(experimentalAvailable) {
+        root.append(
+          statTile("v0.11.0 (experimenteel)",
+            tNum(candidate.evaluation.test.model_logloss),
+            "Log loss 2025/26 · v0.10.0: "+tNum(test.model_logloss)),
+          statTile("Parameters v0.11.0",
+            "α "+candidate.parameters.alpha+" · prior "+candidate.parameters.prior_matches,
+            "Afzonderlijk model; v0.10 blijft actief")
+        );
+      }
+    } catch (_error) {
+      experimentalAvailable = false;
+    }
   }catch(e){
     root.replaceChildren(statTile("Model niet beschikbaar","Controleer server",e.message));
   }
@@ -100,6 +117,58 @@ function renderPrediction(result) {
       "Getraind basismodel v"+result.model_version);
   });
   root.append(heading,info,grid,conf,warning,btn);
+  if(experimentalAvailable) {
+    const compareBtn=document.createElement("button");
+    compareBtn.type="button";compareBtn.className="btn btn-quiet";
+    compareBtn.textContent="Vergelijk v0.10.0 met v0.11.0 (experimenteel)";
+    const comparison=document.createElement("div");
+    comparison.className="trained-result";
+    compareBtn.addEventListener("click",async()=>{
+      compareBtn.disabled=true;
+      comparison.textContent="Beide modellen vergelijken…";
+      try {
+        const result=await requestTrained("/api/trained/compare",{
+          league:tEl("trained-league").value,
+          home_team:tEl("trained-home").value,
+          away_team:tEl("trained-away").value
+        });
+        comparison.replaceChildren();
+        const title=document.createElement("h3");
+        title.textContent="Voorspellingen naast elkaar (zelfde wedstrijd)";
+        const pair=document.createElement("div");
+        pair.className="trained-prob-grid";
+        for(const [label,pred] of [
+          ["Bestaand v0.10.0",result.baseline],
+          ["Experimenteel v0.11.0",result.experimental]
+        ]) {
+          const panel=document.createElement("div");
+          panel.className="panel trained-stat";
+          const heading=document.createElement("strong");
+          heading.textContent=label;
+          panel.append(heading);
+          for(const [key,name] of [["home","Thuis"],["draw","Gelijk"],["away","Uit"]]) {
+            const line=document.createElement("p");
+            line.textContent=name+": "+tPct(pred.probabilities[key]);
+            panel.append(line);
+          }
+          const goals=document.createElement("small");
+          goals.textContent="Doelpunten thuis "+tNum(pred.expected_goals_home)+
+            " · uit "+tNum(pred.expected_goals_away);
+          panel.append(goals);
+          pair.append(panel);
+        }
+        const warning=document.createElement("p");
+        warning.className="trained-warning";
+        warning.textContent=result.note;
+        comparison.append(title,pair,warning);
+      } catch(error) {
+        comparison.textContent="Vergelijken niet mogelijk: "+error.message;
+      } finally {
+        compareBtn.disabled=false;
+      }
+    });
+    root.append(compareBtn,comparison);
+  }
 }
 
 function fillAnalysis(home,away,result,source) {

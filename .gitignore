@@ -15,3 +15,8 @@ paper_bets.jsonl
 # Extra afscherming: nooit lokaal ingevulde tokens committen
 providers.json
 providers.local.json
+
+# Lokale trainingsvoortgang / machineprofiel (geen persoonlijke data committen)
+training_reports/hardware_profile.json
+training_reports/local_optimizer_checkpoint.json
+training_reports/local_optimizer_report.json
