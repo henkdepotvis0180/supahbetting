@@ -32,3 +32,7 @@ data/research/verified_context.json
 data/research/monitor_status.json
 data/research/monitor_state.json
 data/research/monitor.lock
+
+# Afzonderlijke licentiegebonden bronagenda's en echte lokale voorspelsnapshots
+data/research/upcoming_predictions.json
+data/research/provider_forecast_log.json
