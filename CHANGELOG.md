@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.8.0 — 2026-10-17
+- Tweede onafhankelijke pretrained voetbaluitslagenmodel toegevoegd, zonder het Elo-/vormmodel uit v0.7 te overschrijven.
+- Zeven competities waaronder Eredivisie en Belgische Pro League; 13.172 echte afgeronde wedstrijdresultaten uit OpenFootball (CC0).
+- Eigen Poisson-basismodel met historische aanval/verdedigingskracht, thuisvoordeel, teamsterkte, seizoensregressie en parameters gekozen op 2024/25.
+- 2.037 chronologisch beoordeelde wedstrijden uit 2025/26: model Brier 0,58474 versus 0,63649 voor simpele frequentie-referentie; model log loss 0,98432 versus 1,05357.
+- Brondatacompleetheid voor België en andere competities expliciet gemarkeerd. Scoremodel is geen echte schot-xG, geen bookmakersvergelijking en geen bewijs van winstgevend wedden.
+- Meegeleverd trained JSON-model in supahbetting/models/baseline.json; bestaande oudere Elo JSON blijft in models/baseline_v1.json.
+- Nieuw model-dashboard met 1X2-voorspellingen en verwachte goals, datumbereik, onzekerheidslabel en overname in handmatige analyse.
+- Geplande wedstrijden uit livecentrum kunnen met het nieuwe doelpuntenmodel worden ingevuld; bookmakerodds blijven leeg.
+- train_model.bat en aparte GitHub Actions trainingsworkflow om de Poisson-dataset later uit te breiden, naast het bestaande train_baseline.bat van het eerste model.
+- Meer tests voor modelkwaliteit, pre-match anti-leakage, teamalias-verificatie en de tweede API; alle bestaande functies, livebronnen, config en paperbets behouden.
+
+
 ## v0.7.0 — 2026-10-17
 - **Echt getraind 1X2-basismodel** met Elo-sterkte, recente vorm en logistieke regressie, modelparameters opgeslagen als veilig JSON zonder pickle/joblib.
 - GitHub Actions traint op 18.085 historische wedstrijden uit jouw Prediict-fork; vijf grote Europese competities.
