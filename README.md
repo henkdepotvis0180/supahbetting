@@ -274,7 +274,7 @@ De CSV is **uitsluitend fictief**, geen actuele bookmakersdata. Onjuiste rijen w
 | [OddsHarvester](https://github.com/henkdepotvis0180/OddsHarvester) | Odds uit toegestane exports | MIT (`LICENSE.txt`); Python 3.12+, Playwright |
 | [prediict](https://github.com/henkdepotvis0180/prediict) | Analyse-inspiratie en onafhankelijke model-export | Geen licentie bevestigd; broncode niet overnemen zonder toestemming |
 
-**Waarom niet alles met één `pip install` samenvoegen?** Verschillende omgevingen kunnen versieconflicten veroorzaken. De centrale applicatie is daarom bewust afhankelijkheidsarm, met een apart gestandaardiseerd importkanaal. De drie upstream-programma's zijn nog niet rechtstreeks geïntegreerd.
+**Waarom niet alles met één `pip install` samenvoegen?** Verschillende omgevingen kunnen versieconflicten veroorzaken. De centrale applicatie is daarom bewust afhankelijkheidsarm, met een apart gestandaardiseerd importkanaal. De drie upstream-programma's zijn sinds v0.6 **via hun native CSV/JSON-uitvoer geïntegreerd**. De uitvoering van hun ML-modellen en scraper draait nog afzonderlijk, buiten de SupahBetting-backend.
 
 Controleer bij dataverzameling altijd de voorwaarden, robots-regels, rate limits en toepasselijke wetgeving van de betrokken aanbieder.
 
