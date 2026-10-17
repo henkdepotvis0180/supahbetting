@@ -1,5 +1,15 @@
 # SupahBetting v0.8.2
 
+## Research Lab v0.12 — 2016 t/m heden (nieuwe **testbranch**)
+
+Deze testbranch bevat een **nieuw, gescheiden onderzoeksdashboard** en `start_research_dashboard.bat`. Op de eerste start worden gecontroleerde publieke CC0-resultaten uit **2015/16 (uitsluitend vanaf 1 januari 2016)** tot het huidige seizoen uit zeven competities ingelezen. De onderzoeksmonitor kan elke zes uur naar nieuwe eindstanden kijken en alleen bij gewijzigde gecontroleerde uitslagen de datasets, een nieuw experimenteel scoremodel en een samenvatting naar GitHub op deze branch publiceren. Onvolledige bestanden en bronfouten worden zichtbaar bijgehouden. De oorspronkelijke wedstrijd-, trainings- en paperbetfuncties blijven behouden.
+
+De scoremodellen analyseren nog geen persoonlijke gezondheidsinformatie, tactische event-/trackingdata of veldkwaliteit: daarvoor is eerst een betrouwbare en juridisch bruikbare bron plus tijdsbewuste modeltoets nodig. **Echte toekomsttests** worden alleen bijgehouden als de voorspelling vóór de wedstrijddag is vastgelegd. Bestaand `baseline.json` blijft ongewijzigd.
+
+**Starten:** `start_research_dashboard.bat` (monitor + dashboard), `research_refresh_once.bat` (eenmalig), of `start_research_monitor.bat` (alleen monitor).
+
+Lees [de uitgebreide Nederlandse handleiding en onderzoeksroadmap](docs/RESEARCH_LAB_V012.md). Deze researchbranch is nog niet als productie bewezen.
+
 **Lokaal Nederlandstalig voetbalanalyseplatform met een betrouwbare basis voor enkelvoudige én combinatie-betslips.**
 
 ## Experimentele v0.11.0 — naast v0.10.0 (ontwikkelbranch)
