@@ -161,7 +161,7 @@ def main():
         parser.error("Interval moet tussen 1 en 168 uur zijn")
     with single_instance():
         health=audit_startup()
-        print("SupahBetting Research v0.13 gestart · model",health["level"])
+        print("SupahBetting Research v0.14 gestart · model",health["level"])
         print("Historische data t/m:", health["model_data_through"])
         print("Modelcheck:",health["warn"])
         # Refresh today's fixture cache concurrently with the slower 2016+
