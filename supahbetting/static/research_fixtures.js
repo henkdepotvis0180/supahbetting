@@ -186,11 +186,17 @@
       if(!resp.ok)throw Error("HTTP "+resp.status);
       const m=await resp.json();
       host.classList.toggle("research-readiness-degraded",m.level!=="ready");
+      const missingTen=Object.entries(m.league_history||{})
+        .filter(([,info])=>!info.at_least_10_seasons)
+        .map(([code,info])=>(nameOf[code]||code)+": "+info.season_count+" seizoenen");
       host.replaceChildren(
         el("strong","Modelstatus: "+m.level.toUpperCase()+" · "+(m.model_version||"ontbreekt")),
-        el("span"," · Historische basis: "+(m.ten_year_history?"minimaal 10 seizoenen":"nog te controleren")),
+        el("span"," · Historische dekking: "+(m.leagues_with_10_seasons??0)+"/"+
+          (m.active_league_count??6)+" competities met 10+ seizoenen"),
         el("span"," · Laatste uitslag: "+(m.model_data_through||"onbekend")),
-        el("p",m.warn+" · Geen aangetoonde winst tegen bookmakers.")
+        el("p",m.warn+" · Geen aangetoonde winst tegen bookmakers."),
+        ...(missingTen.length?[el("p","Nog geen 10 seizoenen voor: "+missingTen.join("; "),
+          "fixture-warning")]:[])
       );
     }catch(err){
       host.replaceChildren(el("p","Modelcontrole niet bereikbaar: "+err.message,"fixture-warning"));
