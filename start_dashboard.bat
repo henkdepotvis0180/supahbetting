@@ -3,7 +3,7 @@ setlocal
 cd /d "%~dp0"
 echo.
 echo ================================================
-echo  SupahBetting v0.5.1 - Lokaal onderzoeksdashboard
+echo  SupahBetting v0.6 - Lokaal onderzoeksdashboard
 echo ================================================
 echo.
 where py >nul 2>&1

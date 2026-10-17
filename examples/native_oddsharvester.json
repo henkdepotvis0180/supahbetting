@@ -1,0 +1,17 @@
+[
+  {
+    "scraped_date": "2026-01-10T10:00:00Z",
+    "match_date": "2026-01-12T19:00:00Z",
+    "home_team": "Fictief Noord",
+    "away_team": "Fictief Zuid",
+    "1x2_market": [
+      {
+        "1": "2.05",
+        "2": "3.55",
+        "bookmaker_name": "Fictieve bookmaker",
+        "period": "FullTime",
+        "X": "3.40"
+      }
+    ]
+  }
+]

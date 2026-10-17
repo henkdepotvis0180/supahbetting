@@ -1,4 +1,4 @@
-# SupahBetting v0.5.1
+# SupahBetting v0.6.0
 
 **Lokaal Nederlandstalig voetbalanalyseplatform met een betrouwbare basis voor enkelvoudige én combinatie-betslips.**
 
@@ -7,7 +7,8 @@ SupahBetting is software voor onderzoek en **fictieve weddenschappen**. Nieuw in
 ## Wat is werkend?
 
 - **Nieuw v0.5:** kies een databron en competitie in één dashboard. TheSportsDB gratis toont beperkt de Eredivisie/Eerste Divisie, België en internationale competities; football-data.org voegt vertraagde scores toe met een optionele persoonlijke API-sleutel.
-- **Nieuw v0.5.1:** lokaal centraal configuratiebestand voor je API-sleutels, met Windows Kladblok-knop en ondersteuning voor toekomstige providers.
+- **Nieuw v0.6:** native fork-exportadapters, onderzoeksranglijst voor modelkansen en bookmakerprijzen, deduplicatie en bron-/versheidscontrole.
+- **v0.5.1:** lokaal centraal configuratiebestand voor API-sleutels.
 - Backend-cache per vaste API-route, duidelijke foutafhandeling, bron- en vertragingslabels, geen live bookmakerodds.
 
 - **Live**: acht OpenLigaDB-competities, klikbare wedstrijdkaarten, scorebord en doelpunten met minuten.
@@ -183,9 +184,67 @@ De server accepteert uitsluitend de vaste HTTPS-YouTube-nocookie-embedvorm. De i
 - De ODbL-datalicentie kan extra eisen stellen bij herpublicatie of het opbouwen en verspreiden van afgeleide databases; raadpleeg de licentietekst.
 - Alleen lokaal beschikbaar op 127.0.0.1, geen accountbeveiliging of publieke hosting.
 
+## Native integratie van de drie GitHub-forks (v0.6.0)
+
+Deze release bevat **drie daadwerkelijke exportadapters** voor de oorspronkelijke bestandsformaten, een aparte SQLite-onderzoeksdatabase en een vergelijking van aangeleverde modelkansen met bookmakerquoteringen. Alle onderdelen van het bestaande dashboard blijven werken, inclusief live wedstrijdstanden en fictieve combinatiebets.
+
+**Belangrijk onderscheid:** de adapters importeren de *echte native CSV/JSON-uitvoer* van de forks. Ze starten de zware, externe ProphitBet-/Prediict-ML-omgeving of de OddsHarvester-scraper **niet automatisch** op. Hiervoor zouden aparte Python-omgevingen, externe toegang en verdere juridische controles nodig zijn. Er zijn geen AI-modellen of externe broncodes naar SupahBetting gekopieerd.
+
+### In de praktijk: zo koppel je een fork
+
+1. Download of update SupahBetting en dubbelklik op **start_dashboard.bat**. Bij de eerste start maakt het programma de bronmappen automatisch aan.
+2. De drie mappen staan onder `.supahbetting/imports/`:
+   - `prophitbet/`
+   - `oddsharvester/`
+   - `prediict/`
+3. Exporteer de voorspellingen/odds met één van de originele tools en plaats het CSV- of JSON-bestand in de juiste map.
+4. Klik in het nieuwe dashboardgedeelte **Modelkansen en bookmakerprijzen vergelijken** op **Bronbestanden inlezen**. Bij herstart leest de backend ook automatisch nieuwe bestanden in.
+5. Je ziet het aantal ingelezen voorspellingen/quoteringen, de berekende model-EV en het tijdstip (of de onbekende leeftijd) van de prijs.
+
+**Voor Windows:** `bronbestanden_inlezen.bat` scant dezelfde mappen ook buiten het dashboard. Je hoeft de drie Python-projecten niet in één omgeving te installeren.
+
+### Gecontroleerde upstream-bestandsindelingen
+
+| Fork | Export die de adapter echt ondersteunt | Beperkingen |
+|---|---|---|
+| [ProphitBet](https://github.com/henkdepotvis0180/ProphitBet-Soccer-Bets-Predictor) | **Fixture Predictions → Export** (CSV) met `Home Team`, `Away Team`, `Prob(1)`, `Prob(X)`, `Prob(2)`, eventueel `1`, `X`, `2`. Ook CSV vanuit Manual Prediction met `Date`, `Home`, `Away`. | Geen `Prob(U)`/`Prob(O)`-markten in de huidige 1X2-researchscanner. Fixture-export bevat doorgaans géén datum; zulke rijen worden alleen met de odds in diezelfde bestandsrij vergeleken. |
+| [OddsHarvester](https://github.com/henkdepotvis0180/OddsHarvester) | Native CSV/JSON-exports van voetbal `1x2` met `match_date`, `scraped_date`, `home_team`, `away_team`, `1x2_market`, per bookmaker de velden `1`, `X`, `2`. | Geen Python-import of automatische scraping; geblokkeerde odds en andere markten worden overgeslagen. `scraped_date` moet een expliciete tijdzone hebben voor een leeftijdsclaim. |
+| [Prediict](https://github.com/henkdepotvis0180/prediict) | `data/value_bets_*.csv` met `home_team`, `away_team`, `date`, `outcome`, `model_probability`, `bookmaker_odds`. Eventueel volledige 1X2-probability-CSV met `home_win_prob`, `draw_prob`, `away_win_prob`. | Native voorbeeldbestanden bevatten **oude** weddenschappen en soms zeer extreme kansen. We lezen de gegevens, maar behandelen ze niet als bewezen voorspellingen of actuele odds. Licentie voor overname van de broncode is niet vastgesteld, dus die wordt niet gekopieerd. |
+
+De parser accepteert CSV, JSON en NDJSON van maximaal 3 MB per bestand en maximaal 1000 wedstrijden. `.xlsx` importeren kan niet zonder extra afhankelijkheden; gebruik de CSV-export. Opnieuw inlezen van hetzelfde bestand veroorzaakt geen dubbele data dankzij een SHA-256-controle per bron. Bestanden mogen geen symlinks naar externe paden zijn.
+
+**Voorbeeldbestanden:** `examples/native_prophitbet_fixtures.csv`, `examples/native_oddsharvester.json` en `examples/native_prediict_value_bets.csv`. Die bestanden zijn **volledig fictief en historisch**; zet ze zelf in een bronmap als je de import wilt testen.
+
+### Onderzoeksranglijst: matchregels en beperkingen
+
+Het systeem koppelt uitsluitend exacte, genormaliseerde teamnamen, hetzelfde **kalenderdatumveld** en dezelfde uitkomst (1/X/2). Verschillende wedstrijddatums of alleen gedeeltelijk overeenkomende teamnamen worden **niet** automatisch samengevoegd. Een export zonder datum wordt uitsluitend binnen dezelfde bronbestandsrij gekoppeld om verkeerde wedstrijden te voorkomen. Dat betekent dat sommige geldige combinaties vooralsnog **niet** gevonden zullen worden; foutief koppelen is erger dan iets overslaan.
+
+De berekende EV is `modelkans × decimale odds - 1` en wordt getoond **als onderzoekswaarde**, niet als winstadvies. Naast iedere kans staan modelbron, bookmaker, bestandsnaam en prijsstatus. Gegevens van afgelopen wedstrijden zijn **historisch**. Een prijs zonder betrouwbare `scraped_date` krijgt **opnametijd onbekend**, ongeacht hoe recent je het bestand gekopieerd hebt. De filter **Alleen prijzen met gecontroleerde recente opnametijd** helpt oude odds uit de lijst te houden.
+
+**ProphitBet-waarschuwing:** zijn modellen kunnen bookmakerodds als trainings-/voorspellingsinput gebruiken. Als je die kansen vervolgens met dezelfde odds vergelijkt, is de berekende EV **niet onafhankelijk** en dus zeker geen bewijs van een voordeel. Prediict-modellen zijn evenmin onafhankelijk gevalideerd. Dit programma doet **geen echte weddenschappen**, beveelt geen inzetbedragen aan en garandeert geen rendement.
+
+Een losse odds-export (OddsHarvester) bevat nog geen voorspelling. Een losse model-export (ProphitBet/Prediict) bevat mogelijk geen recente bookmakerodds. Alleen bij een veilige overeenkomst tonen we een vergelijkingsresultaat.
+
+### Handmatig/technisch inlezen
+
+Via de terminal vanuit de uitgepakte SupahBetting-map:
+
+```powershell
+python -m supahbetting.research_cli scan
+python -m supahbetting.research_cli status
+python -m supahbetting.research_cli opportunities
+python -m supahbetting.research_cli import prophitbet "C:\pad\naar\fixture_export.csv"
+python -m supahbetting.research_cli import oddsharvester "C:\pad\naar\odds.json"
+python -m supahbetting.research_cli import prediict "C:\pad\naar\value_bets.csv"
+```
+
+Alle importgegevens komen in dezelfde lokale SQLite-database als je onderzoeksapp, maar in **aparte onderzoekstabellen**, zodat ze geen al opgeslagen odds, afgewikkelde slips of bestaande gesimuleerde inzetten overschrijven. De web-API accepteert geen willekeurige bestandspaden: de browserknop scant alleen zijn vooraf ingestelde lokale importmappen.
+
+De oorspronkelijke forks blijven afzonderlijk onderhoudbaar en houden hun eigen versies en installatievereisten. Respecteer de voorwaarden van de oorspronkelijke databronnen en OddsPortal bij het maken van exports.
+
 ## Eigen data importeren (CSV of JSON)
 
-De ingang naar ProphitBet, OddsHarvester en een eigen analyser is een **genormaliseerd gegevensformaat**. Exporteer de voorspellingen en odds, voeg die buiten het programma samen, en importeer ze. De oorspronkelijke tools worden **nog niet automatisch aangestuurd**.
+Naast de nieuwe **native exportadapters** blijft de oudere gestandaardiseerde CSV/JSON-invoer beschikbaar voor eigen modellen en zelf samengestelde bestanden. De oorspronkelijke tools draaien nog steeds zelfstandig; SupahBetting leest hun uitvoer in.
 
 Vereiste kolommen:
 
@@ -215,7 +274,7 @@ De CSV is **uitsluitend fictief**, geen actuele bookmakersdata. Onjuiste rijen w
 | [OddsHarvester](https://github.com/henkdepotvis0180/OddsHarvester) | Odds uit toegestane exports | MIT (`LICENSE.txt`); Python 3.12+, Playwright |
 | [prediict](https://github.com/henkdepotvis0180/prediict) | Analyse-inspiratie en onafhankelijke model-export | Geen licentie bevestigd; broncode niet overnemen zonder toestemming |
 
-**Waarom niet alles met één `pip install` samenvoegen?** Verschillende omgevingen kunnen versieconflicten veroorzaken. De centrale applicatie is daarom bewust afhankelijkheidsarm, met een apart gestandaardiseerd importkanaal. De drie upstream-programma's zijn nog niet rechtstreeks geïntegreerd.
+**Waarom niet alles met één `pip install` samenvoegen?** Verschillende omgevingen kunnen versieconflicten veroorzaken. De centrale applicatie is daarom bewust afhankelijkheidsarm, met een apart gestandaardiseerd importkanaal. De drie upstream-programma's zijn sinds v0.6 **via hun native CSV/JSON-uitvoer geïntegreerd**. De uitvoering van hun ML-modellen en scraper draait nog afzonderlijk, buiten de SupahBetting-backend.
 
 Controleer bij dataverzameling altijd de voorwaarden, robots-regels, rate limits en toepasselijke wetgeving van de betrokken aanbieder.
 

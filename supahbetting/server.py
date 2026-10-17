@@ -14,6 +14,8 @@ from .store import Store
 from .live_scores import LiveScores, LiveDataUnavailable, InvalidLiveRequest
 from .external_feeds import ProviderHub, FootballData
 from .provider_config import make_local_config
+from .fork_research import ResearchStore
+from .fork_bridge import BridgeError
 
 ROOT = Path(__file__).parent / "static"
 JSON_LIMIT = 24_576
@@ -49,12 +51,13 @@ def preview(store, payload):
     return {"quote": quote_slip(legs, payload.get("stake")), "legs": legs}
 
 
-def make_handler(store, live_scores=None, provider_hub=None):
+def make_handler(store, live_scores=None, provider_hub=None, research_hub=None):
     """Create a request handler with isolated store, useful for integration tests."""
     live_scores = live_scores if live_scores is not None else LiveScores()
     provider_hub = provider_hub if provider_hub is not None else ProviderHub(openliga=live_scores)
+    research_hub = research_hub if research_hub is not None else ResearchStore(store.path)
     class Handler(BaseHTTPRequestHandler):
-        server_version = "SupahBetting/0.5.1"
+        server_version = "SupahBetting/0.6"
 
         def _headers(self, code, mimetype, length):
             self.send_response(code)
@@ -117,7 +120,7 @@ def make_handler(store, live_scores=None, provider_hub=None):
                 self._check_host()
                 path = self._path()
                 if path == "/api/health":
-                    return self.reply(200, {"status": "ok", "version": "0.5.1",
+                    return self.reply(200, {"status": "ok", "version": "0.6.0",
                                             "mode": "paper_only", "live_odds": False})
                 if path == "/api/live/providers":
                     return self.reply(200, provider_hub.catalog())
@@ -158,12 +161,17 @@ def make_handler(store, live_scores=None, provider_hub=None):
                     return self.reply(200, store.stats())
                 if path == "/api/model-metrics":
                     return self.reply(200, store.model_metrics())
+                if path == "/api/research/status":
+                    return self.reply(200, research_hub.status())
+                if path == "/api/research/opportunities":
+                    return self.reply(200, research_hub.opportunities())
                 assets = {
                     "/": ("index.html", "text/html; charset=utf-8"),
                     "/index.html": ("index.html", "text/html; charset=utf-8"),
                     "/style.css": ("style.css", "text/css; charset=utf-8"),
                     "/app.js": ("app.js", "text/javascript; charset=utf-8"),
                     "/live.js": ("live.js", "text/javascript; charset=utf-8"),
+                    "/research.js": ("research.js", "text/javascript; charset=utf-8"),
                 }
                 if path in assets:
                     name, mimetype = assets[path]
@@ -171,7 +179,7 @@ def make_handler(store, live_scores=None, provider_hub=None):
                     self._headers(200, mimetype, len(data))
                     return self.wfile.write(data)
                 return self.reply(404, {"error": "Niet gevonden"})
-            except (ValidationError, InvalidLiveRequest) as exc:
+            except (ValidationError, InvalidLiveRequest, BridgeError) as exc:
                 return self.reply(400, {"error": str(exc)})
             except LiveDataUnavailable as exc:
                 return self.reply(502, {"error": str(exc)})
@@ -194,6 +202,8 @@ def make_handler(store, live_scores=None, provider_hub=None):
                     return self.reply(201, {"slip": result})
                 if path == "/api/demo":
                     return self.reply(201, store.seed_demo())
+                if path == "/api/research/imports/scan":
+                    return self.reply(200, research_hub.scan_inbox())
                 match = re.fullmatch(r"/api/matches/([1-9][0-9]*)/settle", path)
                 if match:
                     result = store.settle_match(
@@ -201,7 +211,7 @@ def make_handler(store, live_scores=None, provider_hub=None):
                     )
                     return self.reply(200, {"match": result})
                 return self.reply(404, {"error": "Niet gevonden"})
-            except ValidationError as exc:
+            except (ValidationError, BridgeError) as exc:
                 return self.reply(400, {"error": str(exc)})
             except (TypeError, ValueError) as exc:
                 return self.reply(400, {"error": "Ongeldige aanvraag"})
@@ -244,11 +254,24 @@ def main():
     provider_hub = ProviderHub(
         football_data=FootballData(config_path=config_path)
     )
+    research_hub = ResearchStore(args.db)
+    try:
+        scan_result = research_hub.scan_inbox()
+        print("Fork-export inbox: " + str(research_hub.inbox.resolve()))
+        print(
+            "Ingelezen bestanden bij opstarten: " +
+            str(scan_result["files_imported"]) +
+            ". Gebruik de knop 'Bronbestanden inlezen' om later opnieuw te scannen."
+        )
+    except OSError:
+        LOG.warning("Kan lokale bronbestanden nu niet inlezen; dashboard start door")
     server = ThreadingHTTPServer(
-        ("127.0.0.1", args.port), make_handler(store, provider_hub=provider_hub)
+        ("127.0.0.1", args.port), make_handler(
+            store, provider_hub=provider_hub, research_hub=research_hub
+        )
     )
     server.daemon_threads = True
-    print(f"SupahBetting v0.5.1: http://127.0.0.1:{args.port}", flush=True)
+    print(f"SupahBetting v0.6: http://127.0.0.1:{args.port}", flush=True)
     print("Alleen lokaal, fictieve inzetten. Druk Ctrl+C om te stoppen.", flush=True)
     try:
         server.serve_forever(poll_interval=0.2)

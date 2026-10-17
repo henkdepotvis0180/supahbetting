@@ -63,3 +63,16 @@ De tools zijn *nog niet* direct aan elkaar gekoppeld. Het importformaat in READM
 - Respecteer providervoorwaarden, vaste HTTPS-host allowlists, de status van gratis vs betaald en rate limits.
 - Na configbewerkingen moet de server opnieuw worden gestart. Geen browser-endpoint schrijven dat credentials kan aanpassen of uitlezen.
 - Test in CI offline en met fictieve sleutels via tempfile; controleer dat de andere providers beschikbaar blijven bij ongeldig JSON.
+
+## v0.6 Native fork export bridge
+- **supahbetting/fork_bridge.py** herkent native dataformaten: ProphitBet GUI fixture Prediction CSV, OddsHarvester voetbal 1x2_market JSON/CSV, Prediict value_bets CSV en 1X2-probability CSV.
+- **supahbetting/fork_research.py** bevat aparte onderzoekstabellen, dedup, strikte event- en marktmatches, stale pricing flags en theoretical EV. De bestaande Store/slips zijn onaangetast.
+- **supahbetting/research_cli.py** en browserknop importeren lokale exports. Bestanden staan in .supahbetting/imports/{prophitbet,oddsharvester,prediict}. Geen onbegrensde bestandspaden via HTTP.
+- **supahbetting/static/research.js** presenteert onderzoeksresultaten en bronvermelding, geen real-money transactie.
+- De originele ML-componenten zijn **niet uitgevoerd of gebundeld**: ProphitBet Qt/TensorFlow/scikit-learn, OddsHarvester Playwright en Prediict joblib hebben eigen uitvoeromgeving.
+- Prediict heeft geen aangetoonde licentie voor herdistributie: neem geen broncode of modelbestanden over en laad geen ongecontroleerde pickle/joblib.
+- OddsHarvester-exportdata alleen importeren na wettige, toegestane verzameling; geen automatische omzeiling van oddsprovider-inlog, CAPTCHA, rate limiting of voorwaarden.
+- Alleen volledig expliciete wedstrijd/marktmatching; géén fuzzy auto-team matching, geen eerdere kalenderdatum samenvoegen, geen ongedateerde cross-file matching.
+- Toon nooit oude of ongedateerde boekmakerquotes als live prijzen. Positive EV van niet onafhankelijk gekalibreerde modellen is geen bewezen voordeel.
+- Tests: python -m unittest discover -s tests -v; Python 3.11+; node --check supahbetting/static/research.js.
+- Bij uitbreiding ondersteunt het systeem nieuwe adapters via native exports, bronregistratie en expliciete geïsoleerde tests.

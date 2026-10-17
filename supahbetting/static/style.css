@@ -233,3 +233,37 @@ input:focus{outline:2px solid var(--mint);outline-offset:0;border-color:transpar
  .live-controls #live-provider,.live-controls #live-league{width:100%;flex:1 1 100%}
  .live-controls .btn{width:100%}
 }
+
+/* v0.6 read-only research and native fork export comparison */
+.research-section{margin:34px 0 42px}
+.research-section .section-header{align-items:center}
+.research-section .section-header h2{font-size:1.43rem}
+.research-warning{margin:10px 0 14px}
+.research-stats{display:flex;gap:10px;flex-wrap:wrap;padding:2px 0 11px}
+.research-chip{background:#1c3445;color:#a4e9cd;border:1px solid #34645c;border-radius:8px;
+padding:6px 10px;font-size:.76rem;font-weight:700}
+.research-location{font-size:.79rem;line-height:1.7}
+.research-location code{background:#18283b;color:#d1edff;border-radius:4px;padding:2px 5px}
+.research-filters{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin:14px 0}
+.research-filters label{display:inline-flex;align-items:center;gap:7px;color:#e6f2ff;font-size:.82rem}
+.research-filters input{min-height:auto;width:17px;height:17px;accent-color:#76e5bb}
+.research-scroll{max-width:100%;overflow-x:auto;border:1px solid var(--edge);border-radius:13px;
+background:#142237}
+.research-table{width:100%;border-collapse:collapse;min-width:850px;margin:0}
+.research-table th{background:#1b3046;color:#bdd3e5;font-size:.72rem;letter-spacing:.02em;
+white-space:nowrap;text-align:left}
+.research-table td{padding:12px 11px;border-top:1px solid #30445d;font-size:.8rem;vertical-align:top;
+color:#dce8f5}
+.research-table th{padding:13px 11px}
+.research-table strong{font-size:.81rem;font-weight:750}
+.research-table small{font-size:.7rem;color:var(--muted);overflow-wrap:anywhere}
+.research-table td.research-positive{color:#81eec2;font-weight:800}
+.research-table td.research-negative{color:#ffa7a1;font-weight:800}
+.research-table td.research-age{color:#ffdd9e}
+.research-footnote{font-size:.76rem;margin-top:12px;line-height:1.6}
+.research-error{color:var(--red)!important}
+#research-message{font-size:.78rem;margin:8px 0 12px}
+@media(max-width:850px){
+ .research-section .section-header{flex-direction:column;align-items:stretch}
+ .research-section #research-refresh{width:100%}
+}
