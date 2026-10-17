@@ -34,7 +34,7 @@ jobs:
       - name: Record production baseline hash
         run: sha256sum supahbetting/models/baseline.json > /tmp/prod-model.sha256
       - name: Verify model and report provenance with chronological replay
-        run: python -m unittest tests.test_experimental_model -v
+        run: python -m unittest discover -s tests -p test_experimental_model.py -v
       - name: Regenerate actual league/team ratings with selected parameters
         run: python -m supahbetting.experimental_model
       - name: Verify production unchanged and runtime compatible
