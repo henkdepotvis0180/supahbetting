@@ -129,6 +129,9 @@ def import_local_csv(*,folder=CSV_FOLDER,output=CSV_IMPORTED,now=None):
     """Only local inbox files; no URL download, no automated remote polling."""
     folder=Path(folder)
     files=sorted(folder.glob("*.csv")) if folder.is_dir() else []
+    if len(files)>20:
+        return {"status":"too_many_files","file_count":len(files),
+                "message":"Maximaal 20 losse seizoenbestanden per import."}
     if not files:
         return {
             "status":"no_files","folder":str(folder),
@@ -216,6 +219,25 @@ def main():
     args=parser.parse_args()
     args.folder.mkdir(parents=True,exist_ok=True)
     state=import_local_csv(folder=args.folder)
+    if state["status"]=="imported":
+        from .research_nl_bootstrap import bootstrap
+        bootstrap()
+        source_path=LOCAL/"inventory.json"
+        if source_path.is_file():
+            try:
+                from .research_daily_results import rebuild_augmented_if_needed
+                inventory=json.loads(source_path.read_text(encoding="utf-8"))
+                model,coverage=rebuild_augmented_if_needed(inventory,folder=LOCAL)
+                state["model_retrained"]=coverage["retrained"]
+                state["model_data_through"]=model["leagues"]["nl.1"]["last_result_date"]
+                state["model_training_matches"]=model["training_matches"]
+                state["covered_older_seasons"]=coverage["manual_seasons"]
+                state["duplicate_scores_skipped"]=coverage["duplicate_scores_skipped"]
+                state["source_conflicts"]=coverage["provider_conflicts_with_cc0"]
+            except (OSError,ValueError,RuntimeError,KeyError,TypeError) as exc:
+                state["training_error"]=type(exc).__name__
+        else:
+            state["training_warning"]="Eerst historische CC0-basismatches ophalen."
     print(json.dumps(state,indent=2,ensure_ascii=False))
     return 0 if state["status"] in ("imported","no_files") else 1
 
