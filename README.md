@@ -1,12 +1,25 @@
-# SupahBetting v0.8.0
+# SupahBetting v0.8.1
 
 **Lokaal Nederlandstalig voetbalanalyseplatform met een betrouwbare basis voor enkelvoudige én combinatie-betslips.**
 
-SupahBetting is software voor onderzoek en **fictieve weddenschappen**. Vanaf v0.8 bevat het **twee daadwerkelijk getrainde, afzonderlijke voetbalmodellen**: een Elo-/vormmodel en een zeven-competities doelpunten-/Poisson-model. Nieuw in v0.5: **meerdere voetbalgegevensbronnen**, waaronder Nederlandse en Belgische competities; de bestaande OpenLigaDB-community-doelpuntenfeed blijft aanwezig. Er zijn **geen live bookmakerquoteringen**, geen directe bookmakeraccounts en geen functie voor echt geld. Het aparte getrainde basismodel heeft een chronologische historische toets gehad, maar is niet tegen actuele bookmakers geijkt Het eerste Elo-/vormmodel gebruikt data tot 2024; het tweede model heeft nieuwe bronuitslagen uit 2025/26, maar per competitie zijn sommige bestanden onvolledig. Een positieve model-EV is **geen bewijs van winstgevendheid**.
+SupahBetting is software voor onderzoek en **fictieve weddenschappen**. Vanaf v0.8 bevat het **twee daadwerkelijk getrainde, afzonderlijke voetbalmodellen**: een Elo-/vormmodel en een zeven-competities doelpunten-/Poisson-model. Nieuw in v0.5: **meerdere voetbalgegevensbronnen**, waaronder Nederlandse en Belgische competities; de bestaande OpenLigaDB-community-doelpuntenfeed blijft aanwezig. Er zijn **geen live bookmakerquoteringen**, geen directe bookmakeraccounts en geen functie voor echt geld. Het aparte getrainde basismodel heeft een chronologische historische toets gehad, maar is niet tegen actuele bookmakers geijkt. Het eerste Elo-/vormmodel gebruikt data tot 2024; het tweede model heeft nieuwe bronuitslagen uit 2025/26, maar per competitie zijn sommige bestanden onvolledig. Een positieve model-EV is **geen bewijs van winstgevendheid**.
+
+## Extra training met seizoen 2026/27 (v0.8.1)
+
+Het meegeleverde **Poisson/doelpuntenmodel** is verder getraind met **295 extra echte eindstanden** uit seizoen 2026/27. Het heeft nu **13.467 historische wedstrijden** verdeeld over zeven competities. De nieuwe wedstrijddata komen uit de openbare **CC0**-bron [OpenFootball](https://github.com/openfootball/football.json).
+
+**Hoe betrouwbaar/actueel is dit?** De bronbestanden voor 2026/27 lopen op het moment van ophalen (17 oktober 2026) slechts tot **20 september 2026**. België heeft voor 2026/27 geen corresponderend bronbestand. Het model werkt dus **niet op uitslagen tot vandaag** en is ook niet gekoppeld aan blessures, opstellingen of bookmakerodds.
+
+De trainingshyperparameters zijn uitsluitend gekozen op de historische validatieset **2024/25**. De wedstrijden uit 2025/26 (**2.037**) en vervolgens 2026/27 (**295**) zijn strikt chronologisch **vóór het verwerken van hun uitslag** voorspeld. De huidige 2026/27-score over 295 wedstrijden is Brier **0,57990** tegenover **0,64430** voor een simpele historische frequentie-referentie, en log loss **0,97842** tegenover **1,06398**. Dit zijn foutmaten; lager is beter. De steekproef is klein en onvolledig, **niet** onafhankelijk vergeleken met marktquoteringen en **geen** bewijs voor positieve betting-ROI.
+
+Je hoeft je Windows-pc niet te gebruiken om het getrainde bestand aan te maken: de modeltraining is uitgevoerd in **GitHub Actions**, en de getrainde parameters staan in `supahbetting/models/baseline.json` (modelversie 0.9.0). Het bestaande Elo-/vormmodel `models/baseline_v1.json` is bewust ongewijzigd gebleven.
+
+Voor een volgende update kun je via `train_model.bat` opnieuw trainen **nadat je nieuwe, geverifieerde eindstanden aan `data/historical/` hebt toegevoegd**. Zonder nieuwe informatie telkens opnieuw hetzelfde model trainen levert geen nieuwe kennis op. De trainingsworkflow is reproduceerbaar via `.github/workflows/rolling-season-training.yml`, en de originele dataset-versies staan in `data/historical/provenance_2026_27.json`.
 
 ## Wat is werkend?
 
-- **Nieuw v0.8:** twee naast elkaar werkende, voorgetrainde modellen. De bestaande Elo-/vormvoorspellingen blijven, plus een nieuw doelpunten-/Poisson-model met Eredivisie en Belgische competitie uit CC0-bronuitslagen t/m de geregistreerde 2025/26-wedstrijden.
+- **Nieuw v0.8.1:** bijgewerkt Poisson-model met 295 extra echte wedstrijden uit 2026/27 en een onafhankelijke chronologische toekomstige-seizoenstoets (bron tot 20 september 2026).
+- **v0.8:** twee naast elkaar werkende, voorgetrainde modellen. De bestaande Elo-/vormvoorspellingen blijven, plus een nieuw doelpunten-/Poisson-model met Eredivisie en Belgische competitie uit CC0-bronuitslagen t/m de geregistreerde 2025/26-wedstrijden.
 - Tweede model direct in dashboard te raadplegen, met handmatige voorspelling en optionele invulling van doelpuntverwachting (NOOIT automatische bookmakerprijzen).
 
 - **Nieuw v0.5:** kies een databron en competitie in één dashboard. TheSportsDB gratis toont beperkt de Eredivisie/Eerste Divisie, België en internationale competities; football-data.org voegt vertraagde scores toe met een optionele persoonlijke API-sleutel.
