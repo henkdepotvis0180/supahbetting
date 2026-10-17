@@ -1,3 +1,19 @@
+# SupahBetting Eredivisie v0.14 — automatische NL-uitslagen
+
+**Nieuwe testbranch:** `feature/eredivisie-data-v0.14`. Geen wijzigingen in `main` of de vorige experimentele branches.
+
+- `start_supahbetting.bat` start nu met een **offline-controle van de 2016+ CC0-databasis**, opent het dashboard met de echte wedstrijden bovenaan en start de controlemonitor.
+- **`controleer_eredivisie.bat`** gebruikt jouw eigen, lokaal ingestelde football-data.org API-toegang voor **alle Eredivisie-wedstrijden van dit seizoen** (`DED`), niet alleen gisteren en vandaag. Nieuwe bevestigde eindstanden worden ontdubbeld en automatisch lokaal in het experimentele model verwerkt.
+- **`importeer_eredivisie_csv.bat`** ondersteunt handmatig en rechtmatig gedownloade `N1`-seizoens-CSV's om Nederlandse resultaten vanaf 2016 aan te vullen. Geen geautomatiseerde scraper. Bronbestanden blijven privé op je computer.
+- De startcontrole en dashboardstatus geven expliciet aan **tot welke datum het Nederlandse model is getraind**, hoeveel nieuwe uitslagen verwerkt zijn en of API-toegang ontbreekt of geweigerd wordt. Geen verzonnen 'actuele' uitslagen.
+- **`migreer_naar_git.bat`** maakt een v0.14-Git checkout zonder je bestaande instellingen, wedstrijdhistories of originele forecast-tijdstippen te verwijderen. Daarna gebruik je `update_supahbetting.bat` en hoef je geen ZIP-/modelbestanden meer handmatig over te zetten.
+
+Zonder API-toegang blijft de bestaande 2016+-trainingsbasis bruikbaar, maar **actualiteit van uitslagen is dan niet gegarandeerd**. De gratis football-data.org-limiet van 10 verzoeken per minuut zegt niet of jouw abonnement de Eredivisie bevat. En de hoogste voorspelde winstkans is geen bewezen financieel voordeel.
+
+**Handleiding:** [Eredivisie v0.14 — data, training en rechten](docs/EREDIVISIE_V014.md).
+
+---
+
 # SupahBetting Research v0.13 — serieuze onderzoeksomgeving
 
 ## Start hier (nieuwe experimentele branch)

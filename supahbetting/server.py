@@ -451,8 +451,8 @@ def main():
         )
     )
     server.daemon_threads = True
-    print(f"SupahBetting Research v0.13: http://127.0.0.1:{args.port}", flush=True)
-    print("SupahBetting Research v0.13 · lokale vooranalyse; geen demo-wedstrijden.", flush=True)
+    print(f"SupahBetting Research v0.14: http://127.0.0.1:{args.port}", flush=True)
+    print("SupahBetting Research v0.14 · lokale vooranalyse; geen demo-wedstrijden.", flush=True)
     print("Model en bronactualiteit worden in het dashboard gecontroleerd.", flush=True)
     try:
         server.serve_forever(poll_interval=0.2)

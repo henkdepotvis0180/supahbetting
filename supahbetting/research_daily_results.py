@@ -30,7 +30,7 @@ def _utc(iso):
         return None
 
 
-def _approved_final(row, model, now):
+def _approved_final(row, model, now, *, max_age_days=21):
     """A real finished match, at least 90 mins after claimed kickoff."""
     if (not isinstance(row, dict) or row.get("status") != "finished"
             or row.get("source_confirmed") is not True):
@@ -41,7 +41,7 @@ def _approved_final(row, model, now):
     if league not in LEAGUES or league == "be.1":
         return None
     kickoff = _utc(row.get("kickoff"))
-    if not kickoff or not (timedelta(hours=1,minutes=30) <= now-kickoff <= timedelta(days=21)):
+    if not kickoff or not (timedelta(hours=1,minutes=30) <= now-kickoff <= timedelta(days=max_age_days)):
         return None
     hg, ag = row.get("hg"), row.get("ag")
     if type(hg) is not int or type(ag) is not int or not (0 <= hg <= 20 and 0 <= ag <= 20):
@@ -68,7 +68,7 @@ def _approved_final(row, model, now):
     }
 
 
-def collect_verified_finals(fetched, model, *, now=None, path=LOCAL_FINALS):
+def collect_verified_finals(fetched, model, *, now=None, path=LOCAL_FINALS, max_age_days=21):
     """Quarantine conflicting scores; never overwrite evidence silently."""
     now = now or datetime.now(timezone.utc)
     path = Path(path)
@@ -77,7 +77,7 @@ def collect_verified_finals(fetched, model, *, now=None, path=LOCAL_FINALS):
     conflicts = {r["id"]:r for r in original.get("conflicts", [])}
     new, rejected = 0, 0
     for raw in fetched:
-        item = _approved_final(raw, model, now)
+        item = _approved_final(raw, model, now, max_age_days=max_age_days)
         if not item or item["id"] in conflicts:
             continue
         prior = rows.get(item["id"])
@@ -105,40 +105,93 @@ def collect_verified_finals(fetched, model, *, now=None, path=LOCAL_FINALS):
             "conflict_count":len(conflicts)}
 
 
-def merge_verified_locally(inventory, *, finals_path=LOCAL_FINALS):
-    """Deduplicate by normalized club pair/date, reject conflict with CC0."""
-    path = Path(finals_path)
-    records = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
-    sources = records.get("finished", [])
+def merge_verified_locally(inventory, *, finals_path=LOCAL_FINALS, csv_path=None):
+    """Reconcile base CC0 data, local API finals, and manual Eredivisie CSV.
+
+    Every dated, named match is included at most once.  Never silently
+    select between two different final scores.
+    """
     original = inventory.get("matches", [])
     if not isinstance(original, list) or len(original) < 1000:
-        raise ValueError("Full real historical training archive not yet available")
-    def key(r):
-        from .research_upcoming import _team_name
-        league=r["league"]
-        return (league,r["date"],norm(_team_name(league,r["home"])),
-                norm(_team_name(league,r["away"])))
-    by_key = {key(r):r for r in original}
-    extras, ambiguous = [], 0
-    for row in sources:
-        identifier = key(row)
-        existing = by_key.get(identifier)
-        if existing is None:
-            # Local overlay, never a third party score in the CC0 inventory.
-            extra = {field:row[field] for field in (
-                "league","season","date","home","away","hg","ag","id"
-            )}
-            extras.append(extra)
-            by_key[identifier] = extra
-        elif (existing["hg"],existing["ag"]) != (row["hg"],row["ag"]):
-            ambiguous += 1
-    merged = {**inventory,"matches":sorted(
-        list(original)+extras,
-        key=lambda r:(r["date"],r["league"],r["home"],r["away"])
-    )}
-    return merged, {"provider_extra_matches":len(extras),
-                    "provider_conflicts_with_cc0":ambiguous}
+        raise ValueError("Historische echte wedstrijdbasis ontbreekt")
+    finals_path = Path(finals_path)
+    csv_path = Path(csv_path) if csv_path is not None else finals_path.with_name(
+        "nl_csv_finals_local.json"
+    )
+    provider = json.loads(finals_path.read_text(encoding="utf-8")) if finals_path.exists() else {}
+    manual = json.loads(csv_path.read_text(encoding="utf-8")) if csv_path.exists() else {}
+    if not isinstance(provider.get("finished", []), list) or not isinstance(manual.get("matches", []), list):
+        raise ValueError("Ongeldige lokale bronstructuur")
 
+    def key(row):
+        from .research_upcoming import _team_name
+        league = row["league"]
+        return (league, row["date"], norm(_team_name(league, row["home"])),
+                norm(_team_name(league, row["away"])))
+
+    base = {key(row): row for row in original}
+    extras = {}
+    rejected = set()
+    conflicts = 0
+    duplicates = 0
+    csv_extras = set()
+    for provider_name, items in (
+        ("manual_csv", manual.get("matches", [])),
+        ("football_api", provider.get("finished", [])),
+    ):
+        for row in items:
+            try:
+                if provider_name == "manual_csv" and row["league"] != "nl.1":
+                    raise ValueError("CSV buiten Eredivisie")
+                if type(row["hg"]) is not int or type(row["ag"]) is not int:
+                    raise ValueError("Ongeldige score")
+                if not (0 <= row["hg"] <= 20 and 0 <= row["ag"] <= 20):
+                    raise ValueError("Onmogelijke eindstand")
+                identity = key(row)
+                if row["league"] not in LEAGUES or not (
+                    "2016-01-01" <= row["date"] <= date.today().isoformat()
+                ):
+                    raise ValueError("Ongeldige speeldatum")
+                if identity in rejected:
+                    continue
+                previous = base.get(identity)
+                if previous is not None:
+                    if (previous["hg"], previous["ag"]) != (row["hg"], row["ag"]):
+                        conflicts += 1
+                    else:
+                        duplicates += 1
+                    continue
+                previous = extras.get(identity)
+                if previous is not None:
+                    if (previous["hg"], previous["ag"]) != (row["hg"], row["ag"]):
+                        conflicts += 1
+                        rejected.add(identity)
+                        extras.pop(identity)
+                        csv_extras.discard(identity)
+                    else:
+                        duplicates += 1
+                    continue
+                extra = {field: row[field] for field in (
+                    "league", "season", "date", "home", "away", "hg", "ag", "id"
+                )}
+                extras[identity] = extra
+                if provider_name == "manual_csv":
+                    csv_extras.add(identity)
+            except (ValueError, KeyError, TypeError):
+                conflicts += 1
+                continue
+    merged = {**inventory, "matches": sorted(
+        list(original) + list(extras.values()),
+        key=lambda m: (m["date"], m["league"], m["home"], m["away"])
+    )}
+    return merged, {
+        "provider_extra_matches": len(extras),
+        "manual_csv_extra_matches": len(csv_extras),
+        "provider_conflicts_with_cc0": conflicts,
+        "duplicate_scores_skipped": duplicates,
+        "provider_quarantined_matches": len(rejected),
+        "manual_seasons": len({m["season"] for m in manual.get("matches", [])}),
+    }
 
 def rebuild_augmented_if_needed(inventory, *, folder=LOCAL):
     """Recompute all ratings only when audited local provider finals actually changed."""

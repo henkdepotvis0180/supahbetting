@@ -1,9 +1,9 @@
 @echo off
 setlocal
 cd /d "%~dp0"
-echo ===========================================================
-echo  SupahBetting v0.13 - eenmalig Git installeren/migreren
-echo ===========================================================
+echo ====================================================
+echo  SupahBetting v0.14 - eerste Git installatie
+echo ====================================================
 where git >nul 2>&1
 if errorlevel 1 (
  echo Installeer eerst Git voor Windows.
@@ -11,50 +11,46 @@ if errorlevel 1 (
  exit /b 1
 )
 if exist ".git\" (
- echo Deze map gebruikt al Git. Gebruik update_supahbetting.bat.
+ echo Deze map gebruikt al Git; gebruik update_supahbetting.bat.
  pause
  exit /b 1
 )
 set "OLD=%~1"
 if not defined OLD (
-  echo.
-  echo Voor behoud van jouw voorspellingen en API-sleutels:
-  echo Geef de VOLLEDIGE map op van je oude uitgepakte SupahBetting.
-  echo Je mag dit leeg laten als je geen oude gegevens wilt overzetten.
-  set /p "OLD=Oude programmamap (of Enter voor nieuwe installatie): "
+ echo.
+ echo Geef de VOLLEDIGE MAP van je vorige SupahBetting-installatie op.
+ echo Daaruit bewaren we .supahbetting en data\research.
+ echo Leeg laten kan alleen als je die gegevens niet nodig hebt.
+ set /p "OLD=Oude programmamap (of Enter zonder migratie): "
 )
 set "OLD=%OLD:"=%"
-set "TARGET=%~dp0..\SupahBetting-Research-v013"
+set "TARGET=%~dp0..\SupahBetting-Eredivisie-v014"
 if exist "%TARGET%" (
- echo Doelmap bestaat al; bestaande Git/gegevens worden nooit overschreven:
- echo %TARGET%
+ echo De doelmap bestaat al: %TARGET%
+ echo We overschrijven bewust GEEN bestaande bestanden.
  pause
  exit /b 1
 )
-echo.
-echo Sluit oude CMD-vensters en het oude dashboard voor migratie.
-echo Code eenmalig ophalen uit GitHub...
-git clone --single-branch --branch feature/research-v0.13-serious-dashboard "https://github.com/henkdepotvis0180/supahbetting.git" "%TARGET%"
+echo Sluit vooraf oude server- en monitorvensters.
+git clone --single-branch --branch feature/eredivisie-data-v0.14 "https://github.com/henkdepotvis0180/supahbetting.git" "%TARGET%"
 if errorlevel 1 (
- echo Installatie mislukt. Je oude ZIP is ongewijzigd.
+ echo Kon GitHub niet clonen. Oude bestanden zijn onaangeroerd.
  pause
  exit /b 1
 )
 if defined OLD (
   if exist "%OLD%\.supahbetting\" (
-    echo Instellingen en lokale paperbet database veilig overzetten...
+    echo Eerdere API-sleutels en database veilig kopieren...
     robocopy "%OLD%\.supahbetting" "%TARGET%\.supahbetting" /E /R:1 /W:1 >nul
   )
   if exist "%OLD%\data\research\" (
-    echo Historische caches en originele voorspellingslogs meenemen...
+    echo Eerdere voorspellingen, controlelijsten en trainingsmodellen bewaren...
     robocopy "%OLD%\data\research" "%TARGET%\data\research" /E /R:1 /W:1 /XD "%OLD%\data\research\verified" >nul
   )
 )
 echo.
-echo Je instellingen en historische bestanden zijn niet verwijderd.
-echo Gereed! Gebruik voortaan deze bestanden in:
-echo %TARGET%
-echo   start_supahbetting.bat
-echo   update_supahbetting.bat
-echo.
+echo Migratie gereed. Oude programmamap is NIET verwijderd.
+echo Nieuwe map: %TARGET%
+echo Start daar start_supahbetting.bat en gebruik later
+echo update_supahbetting.bat voor automatische code-updates.
 pause

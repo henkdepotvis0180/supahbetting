@@ -13,6 +13,8 @@ import json
 import logging
 import os
 import re
+import threading
+import time
 from datetime import date, datetime, timedelta, timezone
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, build_opener
@@ -35,6 +37,42 @@ class ProviderHTTPFailure(LiveDataUnavailable):
         self.provider = provider
         self.status_code = int(status_code)
         super().__init__(provider + " gaf HTTP " + str(self.status_code))
+
+# Shared process-wide HTTP-429 circuit breaker. No response bodies or secrets
+# are persisted. A temporarily blocked provider never gets request storms.
+_PROVIDER_COOLDOWN = {}
+_PROVIDER_COOLDOWN_LOCK = threading.Lock()
+
+
+def provider_cooldown_seconds(provider):
+    with _PROVIDER_COOLDOWN_LOCK:
+        state = _PROVIDER_COOLDOWN.get(provider)
+        return max(0, int(state[0] - time.monotonic())) if state else 0
+
+
+def provider_cooldown_status(provider):
+    with _PROVIDER_COOLDOWN_LOCK:
+        state = _PROVIDER_COOLDOWN.get(provider)
+        return state[1] if state and state[0] > time.monotonic() else None
+
+
+def _suspend_provider(provider, http_error):
+    # Observe numeric Retry-After headers only; bounded to an hour.
+    headers = getattr(http_error, "headers", None)
+    raw = headers.get("Retry-After") if headers else None
+    try:
+        retry_after = max(0, min(3600, int(raw)))
+    except (TypeError, ValueError):
+        retry_after = 0
+    # 429: back off at least 5min, 401/403: no rapid unauthorized retries.
+    base = 300 if http_error.code == 429 else 1800 if http_error.code in (401, 403) else 0
+    if base:
+        with _PROVIDER_COOLDOWN_LOCK:
+            existing = _PROVIDER_COOLDOWN.get(provider)
+            until = time.monotonic() + max(base, retry_after)
+            if existing is None or until >= existing[0]:
+                _PROVIDER_COOLDOWN[provider] = (until, http_error.code)
+
 
 MAX_RESPONSE = 1_100_000
 
@@ -95,7 +133,8 @@ def fetch_bounded_json(path, provider, token=""):
         valid = re.fullmatch(
             r"/v4/(?:matches/[0-9]{1,12}"
             r"|competitions/[A-Z0-9]{2,4}/matches"
-            r"\?dateFrom=[0-9]{4}-[0-9]{2}-[0-9]{2}&dateTo=[0-9]{4}-[0-9]{2}-[0-9]{2})",
+            r"\?(?:dateFrom=[0-9]{4}-[0-9]{2}-[0-9]{2}&dateTo=[0-9]{4}-[0-9]{2}-[0-9]{2}"
+            r"|season=20[0-9]{2}))",
             path,
         )
         host = "https://api.football-data.org"
@@ -110,6 +149,11 @@ def fetch_bounded_json(path, provider, token=""):
         raise InvalidLiveRequest("Databron onbekend")
     if not valid:
         raise InvalidLiveRequest("Databronroute niet toegestaan")
+    remaining = provider_cooldown_seconds(provider)
+    if remaining:
+        # A local cooldown has the same status as the throttling event that
+        # caused it. It is not an additional HTTP call to the provider.
+        raise ProviderHTTPFailure(provider, provider_cooldown_status(provider) or 429)
     request = Request(host + path, headers=headers, method="GET")
     try:
         with build_opener(_NoRedirects()).open(request, timeout=8) as response:
@@ -120,6 +164,7 @@ def fetch_bounded_json(path, provider, token=""):
                 raise LiveDataUnavailable("Antwoord van databron overschrijdt de limiet")
             return json.loads(raw.decode("utf-8-sig"))
     except HTTPError as exc:
+        _suspend_provider(provider, exc)
         LOG.warning("Request naar %s geweigerd: HTTP %d (route %s)",
                     provider, exc.code, path)
         raise ProviderHTTPFailure(provider, exc.code) from exc

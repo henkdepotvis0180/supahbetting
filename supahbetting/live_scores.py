@@ -308,15 +308,24 @@ class LiveScores:
             except (LiveDataUnavailable, ValueError, TypeError) as exc:
                 LOG.warning("Live scores refresh failed: %s", exc)
                 old = cached if cached else {"payload": None, "fetched_at": None}
+                code = getattr(exc, "status_code", None)
+                holdoff = max(RETRY_AFTER_ERROR_SECONDS, 300 if code == 429 else 0)
                 self._cache[key] = {
                     "payload": old["payload"],
                     "fetched_at": old["fetched_at"],
                     "expires_at": 0,
-                    "retry_at": now + RETRY_AFTER_ERROR_SECONDS,
+                    "retry_at": now + holdoff,
                     "error": "Bron tijdelijk niet bereikbaar",
                 }
                 if old["payload"] is None:
-                    raise LiveDataUnavailable("Livebron tijdelijk niet bereikbaar; probeer later opnieuw") from exc
+                    # Preserve the actionable 429/403 HTTP status for callers.
+                    # A generic wrapper previously erased it and caused a
+                    # second provider scan to repeat the failed request.
+                    if isinstance(code, int):
+                        raise
+                    raise LiveDataUnavailable(
+                        "Livebron tijdelijk niet bereikbaar; probeer later opnieuw"
+                    ) from exc
                 return old["payload"], old["fetched_at"], True, "Bron tijdelijk niet bereikbaar"
 
     def leagues(self):

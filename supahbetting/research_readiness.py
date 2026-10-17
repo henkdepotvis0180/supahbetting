@@ -105,6 +105,20 @@ def audit_startup(*, folder=LOCAL, now=None, model=None):
             expected_digest is None or
             model["research_provenance"].get("dataset_sha256") != expected_digest
         )
+    nl_date=(model or {}).get("leagues", {}).get("nl.1", {}).get(
+        "last_result_date"
+    )
+    try:
+        nl_age=max(0,(now.date()-date.fromisoformat(nl_date)).days) if nl_date else None
+    except (TypeError,ValueError):
+        nl_age=None
+    nl_api_path=folder/"nl_update_status.json"
+    try:
+        nl_status=json.loads(nl_api_path.read_text(encoding="utf-8"))
+        if not isinstance(nl_status,dict):
+            nl_status={}
+    except (OSError,ValueError):
+        nl_status={}
     available = model is not None
     holdout = (model or {}).get("evaluation", {}).get("test", {})
     validation = isinstance(holdout.get("model_logloss"), (float, int)) and holdout.get("matches",0) >= 1000
@@ -140,6 +154,13 @@ def audit_startup(*, folder=LOCAL, now=None, model=None):
         "model_matches": model.get("training_matches") if model else None,
         "earliest_local_date": earliest,
         "model_data_through": model_date,
+        "nl_model_data_through":nl_date,
+        "nl_model_age_days":nl_age,
+        "nl_api_status":nl_status.get("status","not_checked"),
+        "nl_api_access":nl_status.get("access","unknown"),
+        "nl_api_http_status":nl_status.get("http_status"),
+        "nl_api_recently_checked":nl_status.get("checked_at_utc"),
+        "nl_api_new_confirmed":nl_status.get("new_confirmed",0),
         "model_age_days": age_days,
         "historical_data_changed": source_drift,
         "model_version": model.get("version") if model else None,

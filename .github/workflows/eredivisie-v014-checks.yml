@@ -1,0 +1,44 @@
+name: Eredivisie v0.14 model integrity
+
+on:
+  push:
+    branches: [feature/eredivisie-data-v0.14]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  local-nl-integrity:
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ubuntu-latest, windows-latest]
+        python: ['3.11', '3.12']
+        include:
+          - runner: windows-latest
+            python: '3.14'
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Full regression tests including Dutch score and privacy safety
+        run: python -m unittest discover -s tests -v
+      - name: Validate real packaged CC0 scores without downloading or Git writes
+        run: python -m supahbetting.research_nl_bootstrap
+      - name: Check Dutch model and historical completeness honestly
+        run: python -m supahbetting.research_readiness
+      - name: Verify no-token DED route makes no external API request
+        run: python -m supahbetting.research_nl_api
+        env:
+          FOOTBALL_DATA_API_KEY: ""
+      - name: Confirm no accidental data export
+        run: |
+          python -c "from pathlib import Path; import json; p=Path('data/research/nl_update_status.json'); d=json.loads(p.read_text()); assert d['status']=='no_api_key'; assert not any(k in d for k in ('api_key','secret','token_value','authorization')); assert not Path('data/research/provider_finals_local.json').exists()"
+      - name: Check dashboard JS syntax
+        if: runner.os == 'Linux'
+        run: node --check supahbetting/static/research_fixtures.js

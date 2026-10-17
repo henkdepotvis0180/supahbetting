@@ -20,6 +20,7 @@ from .research_model import (
 from .research_sync import publish
 from .research_features import coverage_report
 from .research_upcoming import refresh_upcoming
+from .live_scores import LiveDataUnavailable
 from .research_readiness import audit_startup
 
 STATUS = LOCAL / "monitor_status.json"
@@ -129,7 +130,7 @@ def cycle(*, upload=True, full=None, delay=1.0,
                 for key in ("confirmed_schedule_count", "predicted_count",
                             "provisional_schedule_count")
             }
-        except (OSError, ValueError, RuntimeError, KeyError, TypeError) as exc:
+        except (OSError, ValueError, RuntimeError, KeyError, TypeError, LiveDataUnavailable) as exc:
             # Don't fail the historical training or GitHub sync because an
             # additional, separately licensed fixture provider is unavailable.
             future_status = "failed:" + type(exc).__name__
@@ -161,7 +162,7 @@ def main():
         parser.error("Interval moet tussen 1 en 168 uur zijn")
     with single_instance():
         health=audit_startup()
-        print("SupahBetting Research v0.13 gestart · model",health["level"])
+        print("SupahBetting Research v0.14 gestart · model",health["level"])
         print("Historische data t/m:", health["model_data_through"])
         print("Modelcheck:",health["warn"])
         # Refresh today's fixture cache concurrently with the slower 2016+
@@ -171,7 +172,7 @@ def main():
                 try:
                     refresh_upcoming()
                     print("Speelschema: eerste actuele controle klaar",flush=True)
-                except (OSError, ValueError, RuntimeError, KeyError, TypeError) as exc:
+                except (OSError, ValueError, RuntimeError, KeyError, TypeError, LiveDataUnavailable) as exc:
                     print("Speelschema: startcontrole",type(exc).__name__,
                           "oude lokale cache blijft behouden",flush=True)
             threading.Thread(target=first_schedule,daemon=True,
@@ -184,7 +185,7 @@ def main():
                                full=True if args.full else None)
                 update_status(**result, last_error=None)
                 print(json.dumps(result, ensure_ascii=False, indent=2), flush=True)
-            except (OSError, ValueError, RuntimeError, KeyError, TypeError) as exc:
+            except (OSError, ValueError, RuntimeError, KeyError, TypeError, LiveDataUnavailable) as exc:
                 # Don't leak source bodies/API credentials into shared status.
                 update_status(state="error", last_error=type(exc).__name__)
                 print("Onderzoeksrun mislukt:", type(exc).__name__, flush=True)

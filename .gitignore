@@ -42,3 +42,7 @@ data/research/provider_finals_local.json
 data/research/augmented_model_local.json
 data/research/augmented_training_state.json
 data/research/model_challengers.json
+# v0.14 NL licensed/manual personal-only source data & status
+data/research/nl_csv_inbox/
+data/research/nl_csv_finals_local.json
+data/research/nl_update_status.json

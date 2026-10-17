@@ -37,7 +37,32 @@ TEAM_NAMES = {
     "nl.1": {
         "ajax": "AFC Ajax", "feyenoord": "Feyenoord Rotterdam",
         "psv eindhoven": "PSV", "az alkmaar": "AZ",
-        "nec nijmegen": "NEC", "excelsior": "SBV Excelsior",
+        "nec nijmegen": "NEC",
+        "nec": "NEC", "n e c": "NEC",
+        "twente": "FC Twente '65",
+        "fc twente": "FC Twente '65",
+        "utrecht": "FC Utrecht",
+        "zwolle": "PEC Zwolle",
+        "groningen": "FC Groningen",
+        "den haag": "ADO Den Haag",
+        "heracles": "Heracles Almelo",
+        "cambuur": "SC Cambuur-Leeuwarden",
+        "rkc": "RKC Waalwijk",
+        "rkc waalwijk": "RKC Waalwijk",
+        "heerenveen": "SC Heerenveen",
+        "sparta": "Sparta Rotterdam",
+        "roda": "Roda JC Kerkrade",
+        "vvv venlo": "VVV-Venlo",
+        "graafschap": "De Graafschap",
+        "volendam": "FC Volendam",
+        "almere city": "Almere City FC",
+        "emmen": "FC Emmen",
+        "nac": "NAC Breda",
+        "az alkmaar": "AZ",
+        "psv eindhoven": "PSV",
+        "feyenoord": "Feyenoord Rotterdam",
+        "excelsior": "SBV Excelsior",
+        "ado": "ADO Den Haag", "excelsior": "SBV Excelsior",
         "heerenveen": "SC Heerenveen",
         "telstar": "Telstar 1963",
         "n e c": "NEC",
@@ -384,11 +409,10 @@ def build_upcoming(*, model=None, inventory=None, fetched=None, now=None,
 
 def fetch_provider_schedules(*, now=None, football_data=None,
                              sports_fetcher=None, openliga=None, pause=2.2,
-                             knvb_fetcher=None):
-    """Limited API usage: 6 authenticated competition queries, 30 paced free sports requests.
+                             knvb_fetcher=None, skip_eredivisie_football_data=False):
+    """Bounded provider discovery with free-tier pacing and 429 fast-stop.
 
-    Free TheSportsDB v1 returns at most three day events and one next game,
-    so NEVER claim these schedules are exhaustive.
+    SportsDB free v1 is partial by design. Schedules are never exhaustive.
     """
     now = now or datetime.now(timezone.utc)
     fetched, warnings = [], []
@@ -398,6 +422,11 @@ def fetch_provider_schedules(*, now=None, football_data=None,
     football_data = football_data if football_data is not None else FootballData()
     if football_data.enabled:
         for provider_code, league in PROVIDER_LEAGUES["football-data"].items():
+            if provider_code == "DED" and skip_eredivisie_football_data:
+                # The authorized full-season DED endpoint has already been
+                # checked this cycle. Avoid duplicate calls against the same
+                # scarce free-tier token; KNVB supplies independent fixtures.
+                continue
             try:
                 result = football_data.list_matches(provider_code)
                 for event in result.get("matches", []):
@@ -408,11 +437,24 @@ def fetch_provider_schedules(*, now=None, football_data=None,
                         fetched.append(row)
                 if result.get("stale") or result.get("warnings"):
                     warnings.append("football-data " + provider_code + ": bron mogelijk vertraagd")
+            except ProviderHTTPFailure as exc:
+                warnings.append(
+                    "football-data HTTP " + str(exc.status_code) +
+                    " bij " + provider_code +
+                    "; overige football-data-verzoeken zijn in deze ronde gestopt"
+                )
+                break
             except (OSError, ValueError, RuntimeError, LiveDataUnavailable) as exc:
                 warnings.append("football-data " + provider_code + ": " + type(exc).__name__)
-            # Six maximum queries per refresh, under free 10/min allowance.
-            if pause and sports_fetcher is None:
-                time.sleep(max(0.0, pause))
+                # An unavailable service must not trigger the next five
+                # network requests within a few seconds.
+                break
+            # The free football-data.org tier permits at most 10/min.
+            # Previous code accidentally bypassed ALL pacing by testing
+            # 'sports_fetcher is None' after assigning a default lambda.
+            # Fake-provider tests pass pause=0 and never sleep.
+            if pause:
+                time.sleep(max(6.5, pause))
     else:
         warnings.append("football-data.org API-token ontbreekt: beperkt gratis TheSportsDB-schema")
     # Critical Eredivisie fallback: do not depend exclusively on TheSportsDB.
@@ -540,11 +582,50 @@ def refresh_upcoming(*, inventory=None, data_dir=LOCAL, now=None,
         if inventory is None:
             path = data_dir / "inventory.json"
             inventory = json.loads(path.read_text(encoding="utf-8")) if path.is_file() else {}
-        if provider_fetcher is None:
-            fetched, errors = fetch_provider_schedules(now=now)
-        else:
-            fetched, errors = provider_fetcher(now=now)
+        fetched, errors = [], []
         base_model = model if model is not None else _load_model()
+        # v0.14: a separately authorized DED full-season results API can
+        # repair weeks of missing scores, not just the last 3 matchdays.
+        # Test-injected provider data must NEVER trigger real remote requests.
+        nl_status = {"status":"not_checked","league":"nl.1"}
+        if provider_fetcher is None:
+            from .research_nl_api import refresh_nl_api
+            try:
+                nl_status = refresh_nl_api(
+                    now=now,data_dir=data_dir,model=base_model,inventory=inventory
+                )
+                if nl_status.get("status") in (
+                    "subscription_required", "rate_limited", "api_http_error",
+                    "stale_api_cache", "provider_unavailable", "invalid_api_route",
+                    "error"
+                ):
+                    errors.append(
+                        "Eredivisie uitslagen: "+nl_status["status"]+
+                        " (bestaande gegevens blijven behouden)"
+                    )
+                if nl_status.get("model_retrained"):
+                    base_model = _load_model()
+            except (OSError, ValueError, RuntimeError, LiveDataUnavailable,
+                    KeyError, TypeError) as exc:
+                # Even a broken local status file or an unexpected provider
+                # wrapper must not kill the background fixture worker.
+                nl_status = {"status":"error", "error_type":type(exc).__name__,
+                             "league":"nl.1"}
+                errors.append(
+                    "Nederlandse uitslagencontrole mislukt ("+
+                    type(exc).__name__+"); oude modelgegevens behouden"
+                )
+        # Dutch results are the priority. Fetch them FIRST, then optionally
+        # other league schedules; this prevents a foreign-league HTTP 429
+        # from exhausting the DED budget before any NL training can occur.
+        if provider_fetcher is None:
+            extra_fixtures, provider_errors = fetch_provider_schedules(
+                now=now, skip_eredivisie_football_data=True
+            )
+        else:
+            extra_fixtures, provider_errors = provider_fetcher(now=now)
+        fetched.extend(extra_fixtures)
+        errors.extend(provider_errors)
         refresh_state = {"updated": False, "added": 0,
                          "conflicts": 0, "local_retrained": False}
         if isinstance(inventory, dict) and len(inventory.get("matches", [])) >= 1000 and base_model:
@@ -576,7 +657,27 @@ def refresh_upcoming(*, inventory=None, data_dir=LOCAL, now=None,
             forecast_log=data_dir / "provider_forecast_log.json",
             output=data_dir / "upcoming_predictions.json",
         )
-        result["local_data_update"] = refresh_state
+        result["nl_result_source"] = nl_status
+        # Summaries only: never put licensed CSV rows or personal filenames
+        # in the public browser response or on GitHub.
+        csv_file=data_dir/"nl_csv_finals_local.json"
+        if csv_file.is_file():
+            try:
+                csv_local=json.loads(csv_file.read_text(encoding="utf-8"))
+                imported=csv_local.get("matches",[])
+                result["nl_manual_history"]={
+                    "matches":len(imported),
+                    "seasons":len({m["season"] for m in imported}),
+                    "latest_result_date":max((m["date"] for m in imported),default=None),
+                    "source":"manually_supplied_csv_on_this_pc",
+                }
+            except (ValueError,OSError,KeyError,TypeError):
+                result["nl_manual_history"]={"error":"invalid_local_csv"}
+        result["local_data_update"] = {
+            **refresh_state,
+            "nl_api_added": nl_status.get("new_confirmed",0),
+            "nl_api_retrained": nl_status.get("model_retrained",False),
+        }
         result["provider_warnings"] = errors
         atomic_json(data_dir / "upcoming_predictions.json", result)
         return result
