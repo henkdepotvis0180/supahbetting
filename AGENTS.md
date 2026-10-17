@@ -52,3 +52,14 @@ De tools zijn *nog niet* direct aan elkaar gekoppeld. Het importformaat in READM
 - TheSportsDB gratis niet publiceren als mobiele appstore-app zonder betaald abonnement. Controleer bronvermelding en gebruiksvoorwaarden.
 - Houd de live-scores gescheiden van modelkansen en boekmakerquoteringen; geen verzonnen live odds.
 - Voeg voor elke integratie tests toe met fake providers die offline draaien.
+
+## Modulaire lokale API-config (v0.5.1)
+- Gebruik altijd supahbetting/provider_config.py voor lokale API-credentials. Het echte bestand staat in .supahbetting/providers.json en wordt door supahbetting.server.main bij de eerste start aangemaakt.
+- config/providers.example.json bevat nooit echte credentials en mag worden gecommit.
+- bewerk_api_config.bat opent op Windows veilig alleen het lokale JSON-bestand in Kladblok.
+- Per provider: providers > provider-id > api_key. De parser werkt met meerdere providers maar het toevoegen van JSON alleen activeert geen nieuwe API; implementeer per bron een afzonderlijke veilige adapter.
+- De ingevulde config-API-sleutel heeft voorrang op de legacy FOOTBALL_DATA_API_KEY Windows-variable. Een leeg veld valt terug op de variabele.
+- Geen sleutels in UI, API-antwoorden, foutdetails of logregels. Nooit credentials, debug dumps of echte ingevulde JSON in commits, tests, issues of screenshots.
+- Respecteer providervoorwaarden, vaste HTTPS-host allowlists, de status van gratis vs betaald en rate limits.
+- Na configbewerkingen moet de server opnieuw worden gestart. Geen browser-endpoint schrijven dat credentials kan aanpassen of uitlezen.
+- Test in CI offline en met fictieve sleutels via tempfile; controleer dat de andere providers beschikbaar blijven bij ongeldig JSON.

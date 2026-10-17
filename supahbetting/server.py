@@ -12,7 +12,8 @@ from urllib.parse import parse_qs, urlsplit
 from .domain import MARKETS, ValidationError, quote_slip
 from .store import Store
 from .live_scores import LiveScores, LiveDataUnavailable, InvalidLiveRequest
-from .external_feeds import ProviderHub
+from .external_feeds import ProviderHub, FootballData
+from .provider_config import make_local_config
 
 ROOT = Path(__file__).parent / "static"
 JSON_LIMIT = 24_576
@@ -53,7 +54,7 @@ def make_handler(store, live_scores=None, provider_hub=None):
     live_scores = live_scores if live_scores is not None else LiveScores()
     provider_hub = provider_hub if provider_hub is not None else ProviderHub(openliga=live_scores)
     class Handler(BaseHTTPRequestHandler):
-        server_version = "SupahBetting/0.5"
+        server_version = "SupahBetting/0.5.1"
 
         def _headers(self, code, mimetype, length):
             self.send_response(code)
@@ -116,7 +117,7 @@ def make_handler(store, live_scores=None, provider_hub=None):
                 self._check_host()
                 path = self._path()
                 if path == "/api/health":
-                    return self.reply(200, {"status": "ok", "version": "0.5.0",
+                    return self.reply(200, {"status": "ok", "version": "0.5.1",
                                             "mode": "paper_only", "live_odds": False})
                 if path == "/api/live/providers":
                     return self.reply(200, provider_hub.catalog())
@@ -226,9 +227,28 @@ def main():
         parser.error("Poort moet tussen 1 en 65535 zijn")
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     store = Store(args.db)
-    server = ThreadingHTTPServer(("127.0.0.1", args.port), make_handler(store))
+    config_path = args.db.parent / "providers.json"
+    try:
+        created_config = make_local_config(config_path)
+    except OSError:
+        parser.error(
+            "Kan lokaal providers.json niet maken. Controleer schrijfrechten "
+            "in de datamap."
+        )
+    if created_config:
+        print(
+            "Nieuw lokaal API-bestand: " + str(config_path.resolve()) +
+            "\nGebruik bewerk_api_config.bat om de football-data API-sleutel in te vullen."
+        )
+    # Keep one config location even when --db points to another data folder.
+    provider_hub = ProviderHub(
+        football_data=FootballData(config_path=config_path)
+    )
+    server = ThreadingHTTPServer(
+        ("127.0.0.1", args.port), make_handler(store, provider_hub=provider_hub)
+    )
     server.daemon_threads = True
-    print(f"SupahBetting v0.5: http://127.0.0.1:{args.port}", flush=True)
+    print(f"SupahBetting v0.5.1: http://127.0.0.1:{args.port}", flush=True)
     print("Alleen lokaal, fictieve inzetten. Druk Ctrl+C om te stoppen.", flush=True)
     try:
         server.serve_forever(poll_interval=0.2)

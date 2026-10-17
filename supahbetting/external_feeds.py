@@ -21,6 +21,9 @@ from .live_scores import (
     LiveDataUnavailable, InvalidLiveRequest, LiveScores, _NoRedirects,
     _clean, _identifier, _number, approved_broadcast,
 )
+from .provider_config import (
+    DEFAULT_CONFIG, ProviderConfigError, get_api_key,
+)
 
 LOG = logging.getLogger("supahbetting.providers")
 MAX_RESPONSE = 1_100_000
@@ -345,8 +348,26 @@ class SportsDB(LiveScores):
 class FootballData(LiveScores):
     """API token stays server-side; free scores are delayed and capped at 10/min."""
 
-    def __init__(self, token=None, fetcher=None, clock=None, broadcasts_path=None, today=None):
-        self.token = token if token is not None else os.environ.get("FOOTBALL_DATA_API_KEY", "").strip()
+    def __init__(
+        self, token=None, fetcher=None, clock=None, broadcasts_path=None,
+        today=None, config_path=DEFAULT_CONFIG,
+    ):
+        # Explicit token injection is only used for tests/integrations.
+        # In production, read the local JSON first; legacy env is a fallback.
+        self.config_error = None
+        if token is not None:
+            self.token = token
+        else:
+            try:
+                self.token = get_api_key(
+                    "football-data",
+                    config_path=config_path,
+                    env_var="FOOTBALL_DATA_API_KEY",
+                )
+            except ProviderConfigError as exc:
+                # Keep the rest of the dashboard working if JSON is malformed.
+                self.config_error = str(exc)
+                self.token = ""
         super().__init__(
             fetcher=fetcher or (lambda path: fetch_bounded_json(path, "football-data", self.token)),
             clock=clock, broadcasts_path=broadcasts_path,
@@ -360,10 +381,14 @@ class FootballData(LiveScores):
     def _check(self, league):
         if league not in FOOTBALL_DATA_LEAGUES:
             raise InvalidLiveRequest("Competitie niet beschikbaar bij football-data.org")
+        if self.config_error:
+            raise LiveDataUnavailable(self.config_error)
         if not self.enabled:
             raise LiveDataUnavailable(
-                "football-data.org vereist een persoonlijke gratis API-sleutel. "
-                "Stel lokaal FOOTBALL_DATA_API_KEY in."
+                "football-data.org heeft een API-sleutel nodig. Open "
+                ".supahbetting/providers.json met bewerk_api_config.bat "
+                "en vul providers > football-data > api_key in; herstart daarna. "
+                "(Oude FOOTBALL_DATA_API_KEY-omgevingsvariabele werkt ook.)"
             )
 
     def list_matches(self, league):
@@ -460,9 +485,12 @@ class ProviderHub:
                     "id": "football-data", "label": "football-data.org · vertraagde scores",
                     "enabled": self.football_data.enabled, "kind": "delayed",
                     "note": (
-                        "Gratis API-token gevonden; scores blijven vertraagd."
+                        self.football_data.config_error
+                        if self.football_data.config_error else
+                        "API-sleutel beschikbaar; gratis scores blijven vertraagd."
                         if self.football_data.enabled else
-                        "Gratis registratie en FOOTBALL_DATA_API_KEY vereist; scores vertraagd."
+                        "Vul je token in .supahbetting/providers.json in via "
+                        "bewerk_api_config.bat (dan herstarten). Gratis scores vertraagd."
                     ),
                     "leagues": [{"code": k, "name": v} for k, v in FOOTBALL_DATA_LEAGUES.items()],
                 },

@@ -1,4 +1,4 @@
-# SupahBetting v0.5.0
+# SupahBetting v0.5.1
 
 **Lokaal Nederlandstalig voetbalanalyseplatform met een betrouwbare basis voor enkelvoudige én combinatie-betslips.**
 
@@ -7,6 +7,7 @@ SupahBetting is software voor onderzoek en **fictieve weddenschappen**. Nieuw in
 ## Wat is werkend?
 
 - **Nieuw v0.5:** kies een databron en competitie in één dashboard. TheSportsDB gratis toont beperkt de Eredivisie/Eerste Divisie, België en internationale competities; football-data.org voegt vertraagde scores toe met een optionele persoonlijke API-sleutel.
+- **Nieuw v0.5.1:** lokaal centraal configuratiebestand voor je API-sleutels, met Windows Kladblok-knop en ondersteuning voor toekomstige providers.
 - Backend-cache per vaste API-route, duidelijke foutafhandeling, bron- en vertragingslabels, geen live bookmakerodds.
 
 - **Live**: acht OpenLigaDB-competities, klikbare wedstrijdkaarten, scorebord en doelpunten met minuten.
@@ -72,19 +73,52 @@ Gebruik boven in het **Live wedstrijdcentrum** de twee dropdowns voor databron e
 
 Beschikbare wedstrijden en abonnementsrechten worden bepaald door de aanbieders. De app verzint geen ontbrekende scores, doelpunten of livestreams. Bronstatus en vertragingsmeldingen staan zichtbaar in de interface.
 
-### Gratis football-data.org instellen op Windows
+### Gratis football-data.org instellen via een lokaal configuratiebestand (nieuw v0.5.1)
 
-TheSportsDB werkt direct zonder persoonlijke sleutel. Voor de grotere wedstrijdlijst via football-data.org:
+**Je hoeft geen Windows-omgevingsvariabele meer aan te maken.** Voor alle huidige en toekomstige API-koppelingen gebruikt SupahBetting één uitbreidbaar lokaal JSON-bestand.
 
-1. Registreer gratis op https://www.football-data.org/client/register en ontvang je persoonlijke token.
-2. Open Windows Start en zoek **Omgevingsvariabelen voor uw account bewerken**.
-3. Voeg bij de **gebruikersvariabelen** een nieuwe variabele toe: naam **FOOTBALL_DATA_API_KEY**, waarde jouw token.
-4. Sluit het bestaande SupahBetting-venster en start opnieuw met **start_dashboard.bat**.
-5. Kies de bron **football-data.org**, daarna bijvoorbeeld **Eredivisie**.
+1. Pak de nieuwste ZIP uit op je Windows-pc (of update je clone).
+2. Dubbelklik op **bewerk_api_config.bat**. Dit maakt het bestand automatisch aan (als het nog niet bestaat) en opent het in Kladblok.
+3. Zoek in het geopende bestand de sleutel `api_key` onder `providers` → `football-data`. Plak **uitsluitend op je eigen computer** je gratis football-data.org-token tussen de dubbele aanhalingstekens.
+4. Sla op (Ctrl+S) en sluit Kladblok.
+5. Start SupahBetting opnieuw met **start_dashboard.bat** en kies **football-data.org → Eredivisie**.
 
-De API-sleutel wordt uitsluitend door de lokale Python-server als HTTP-header gebruikt, niet naar de browser gestuurd en niet opgeslagen in GitHub. Bij deze bron staat in de interface zichtbaar: **Football data provided by the Football-Data.org API**. **Deel hem niet in chats of je repository.** Zonder sleutel werken OpenLigaDB en TheSportsDB gewoon door.
+**Locatie:** `.supahbetting/providers.json` in je uitgepakte SupahBetting-map. Het dashboard maakt dit bestand ook zelf aan bij de eerste start. Als het bestand al bestaat, wordt het **nooit automatisch overschreven**.
 
-De gratis [football-data.org](https://www.football-data.org/pricing) API omvat volgens de aanbieder 12 competities, **vertraagde scores** en 10 API-calls per minuut. SupahBetting cachet per competitie 10 minuten en vraagt nooit alle competities tegelijk op bij deze provider.
+De basisinhoud ziet er zo uit (met een lege, niet-werkende waarde):
+
+```json
+{
+  "providers": {
+    "football-data": {
+      "api_key": ""
+    }
+  }
+}
+```
+
+Je kunt later meerdere providers toevoegen, ieder met een eigen onderdeel:
+
+```json
+{
+  "providers": {
+    "football-data": { "api_key": "" },
+    "nieuwe-provider": { "api_key": "" }
+  }
+}
+```
+
+**Belangrijk:** dat een provider in dit bestand staat betekent nog niet dat zijn API automatisch wordt ondersteund; daarvoor is een bijbehorende adapter in de backend nodig. Dit bestandsformaat is daar alvast op voorbereid. Het meegeleverde `config/providers.example.json` bevat bewust geen echte sleutels.
+
+**Veiligheid:** `.supahbetting/` staat in `.gitignore`. Je token wordt lokaal als **gewone tekst** in JSON opgeslagen, niet versleuteld. Bescherm dus je Windows-account, deel het bestand niet en upload het niet naar GitHub, chats of een ZIP die je deelt. Bij het opstarten leest uitsluitend de backend de sleutel; deze wordt niet meegestuurd naar de browser. Op Windows zijn de map-/bestandsrechten gebaseerd op de rechten van jouw gebruikersaccount. Fouten in JSON leiden tot een melding zonder de sleutel te tonen; de andere providers blijven beschikbaar.
+
+Heb je de oude Windows-variabele **FOOTBALL_DATA_API_KEY** al ingesteld? Die blijft als terugvaloptie werken wanneer het JSON-veld leeg is. Een ingevulde sleutel in het JSON-bestand krijgt voorrang.
+
+De gratis [football-data.org](https://www.football-data.org/pricing)-bron levert **vertraagde scores**, geen echte gratis livescores. De bestaande servercache (10 minuten) blijft bestaan. Er worden geen bookmakerquoteringen of echte weddenschappen toegevoegd.
+
+### API-config uitbreiden voor nieuwe aanbieders
+
+De generieke module `supahbetting/provider_config.py` kan sleutels per provider ophalen zonder een nieuw bestandssysteem te introduceren. Nieuwe data-adapters kunnen dezelfde methode gebruiken, met de configuratieprovidernaam als sleutel. Een provider-specifieke toegestane HTTPS-host, routes, voorwaarden en rate limits moeten nog wel apart in de betreffende adapter worden ontwikkeld en getest.
 
 ### Klikbare wedstrijdpopup en eventueel officiële video
 
