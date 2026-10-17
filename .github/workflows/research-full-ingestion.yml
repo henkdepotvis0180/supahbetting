@@ -1,0 +1,55 @@
+name: One-time 2016-present research source audit
+
+on:
+  push:
+    branches: [feature/research-data-v0.12.0]
+    paths:
+      - '.github/workflows/research-full-ingestion.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit-real-data:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: First full 2016-present scan without any GitHub write access
+        run: python -m supahbetting.research_monitor --once --full --no-upload
+      - name: Audit actual completed years and snapshots
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          inventory=json.loads(Path('data/research/inventory.json').read_text())
+          report=json.loads(Path('data/research/research_report.json').read_text())
+          model=json.loads(Path('data/research/candidate_model.json').read_text())
+          assert inventory['season_range'][0]=='2015-16'
+          assert len(inventory['matches']) >= 10000
+          assert len(inventory['matches'])==model['training_matches']==report['training_matches']
+          assert any(x['date'].startswith('2016-') for x in inventory['matches'])
+          assert report['model_candidate']['version']=='0.12.0-research-experimental'
+          assert model['experimental'] and model['version']=='0.12.0-research-experimental'
+          assert report['source_date_is_not_today_guarantee']
+          assert all(k not in model for k in ('api_token','github_token','personal_data'))
+          print('Verified results:',len(inventory['matches']))
+          assert report['first_match_date'] >= '2016-01-01'
+          print('Earliest match:',report['first_match_date'])
+          print('Latest match:',report['last_verified_result_date'])
+          print('Missing season/league files:',len(report['missing_sources']))
+          print('Fetch failures:',len(report['retrieval_failures']))
+          print('Independent future forecasts graded:',report['shadow_forecast_evaluation']['graded_predictions'])
+          PY
+      - name: Artifact with aggregate audit metrics only (no raw source snapshots)
+        uses: actions/upload-artifact@v4
+        with:
+          name: supahbetting-research-v012-source-audit
+          path: |
+            data/research/research_report.json
+            data/research/monitor_status.json
+          retention-days: 30

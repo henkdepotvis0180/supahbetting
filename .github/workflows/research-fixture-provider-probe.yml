@@ -1,0 +1,47 @@
+name: Live fixture provider schema smoke (two free requests)
+
+on:
+  push:
+    branches: [feature/research-data-v0.12.0]
+    paths:
+      - '.github/workflows/research-fixture-provider-probe.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  limited-schedule-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check only two official free fixture source endpoints
+        shell: bash
+        run: |
+          python - <<'PY'
+          from datetime import datetime,timezone
+          from supahbetting.external_feeds import fetch_bounded_json,normalize_sportsdb
+          from supahbetting.research_upcoming import _normalize,_evaluate,_load_model
+          now=datetime.now(timezone.utc)
+          model=_load_model('supahbetting/models/research_v0.12.0_experimental.json')
+          assert model is not None
+          for provider_code,league in (('4337','nl.1'),('4328','en.1')):
+              route='/api/v1/json/123/eventsnextleague.php?id='+provider_code
+              raw=fetch_bounded_json(route,'sportsdb')
+              assert isinstance(raw,dict), 'Response JSON schema invalid'
+              print('League:',league,'events:',len(raw.get('events') or []))
+              for source in (raw.get('events') or [])[:1]:
+                  normalized=normalize_sportsdb(source,provider_code)
+                  print('raw status:',normalized['status'],
+                        'kickoff:',normalized.get('kickoff'),
+                        'home:',normalized['home_team'],'away:',normalized['away_team'])
+                  fixture=_normalize(normalized,'sportsdb',league,now)
+                  if fixture:
+                      prediction,issue=_evaluate(fixture,model,now)
+                      print('fixture eligible:',True,'predicted:',bool(prediction),
+                            'issue:',issue)
+          PY

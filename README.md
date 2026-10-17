@@ -1,5 +1,21 @@
 # SupahBetting v0.8.2
 
+## Research Lab v0.12 — 2016 t/m heden (nieuwe **testbranch**)
+
+**Nieuw — wedstrijden vandaag en komende vijftien dagen:** de onderzoeksmonitor haalt speelschema's op via een beperkte gratis TheSportsDB-verbinding, OpenLigaDB en optioneel football-data.org met je eigen sleutel. In het nieuwe dashboardgedeelte **‘Wedstrijden vandaag & binnenkort’** zie je per beschikbare wedstrijd een aftraptijd, bron, 1X2-kansen en verwachte goals. Het is nadrukkelijk een experimentele voorspelling op basis van historische uitslagen, niet van actuele blessures of opstellingen. Voor matches zonder recent geverifieerd schema, onbekende club of ernstig verouderde competitie worden géén percentages verzonnen.
+
+**Snel proberen:** `ververs_speelschema.bat` (eenmalig ophalen) of `start_research_dashboard.bat` (monitor, browser). Optioneel `configureer_speelschema_api.bat` voor het eigen football-data.org-token, lokaal opgeslagen. Behoud bij een nieuwe ZIP `.supahbetting/` én `data/research/` met de vooraf bewaarde forecast-logboeken. Actuele derdepartij-speelschema's blijven uitsluitend lokaal, niet naar de publieke GitHub-CC0-dataset geüpload.
+
+
+
+Deze testbranch bevat een **nieuw, gescheiden onderzoeksdashboard** en `start_research_dashboard.bat`. Op de eerste start worden gecontroleerde publieke CC0-resultaten uit **2015/16 (uitsluitend vanaf 1 januari 2016)** tot het huidige seizoen uit zeven competities ingelezen. De onderzoeksmonitor kan elke zes uur naar nieuwe eindstanden kijken en alleen bij gewijzigde gecontroleerde uitslagen de datasets, een nieuw experimenteel scoremodel en een samenvatting naar GitHub op deze branch publiceren. Onvolledige bestanden en bronfouten worden zichtbaar bijgehouden. De oorspronkelijke wedstrijd-, trainings- en paperbetfuncties blijven behouden.
+
+De scoremodellen analyseren nog geen persoonlijke gezondheidsinformatie, tactische event-/trackingdata of veldkwaliteit: daarvoor is eerst een betrouwbare en juridisch bruikbare bron plus tijdsbewuste modeltoets nodig. **Echte toekomsttests** worden alleen bijgehouden als de voorspelling vóór de wedstrijddag is vastgelegd. Bestaand `baseline.json` blijft ongewijzigd.
+
+**Starten:** `start_research_dashboard.bat` (monitor + dashboard), `research_refresh_once.bat` (eenmalig), of `start_research_monitor.bat` (alleen monitor).
+
+Lees [de uitgebreide Nederlandse handleiding en onderzoeksroadmap](docs/RESEARCH_LAB_V012.md). Deze researchbranch is nog niet als productie bewezen.
+
 **Lokaal Nederlandstalig voetbalanalyseplatform met een betrouwbare basis voor enkelvoudige én combinatie-betslips.**
 
 ## Experimentele v0.11.0 — naast v0.10.0 (ontwikkelbranch)
