@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "league": "nl.1",
+  "season": "2026-27",
+  "snapshot_verified_on": "2026-10-17",
+  "source_type": "official_knvb_schedule_manual_verified_excerpt",
+  "source_url": "https://www.knvb.nl/competities/eredivisie/programma",
+  "backup_url": "https://www.knvb.nl/nieuws/betaald-voetbal/competitiezaken/72177/data-en-tijden-najaar-vriendenloterij-eredivisie",
+  "usage_note": "A limited human-verified fixture list from KNVB page. Not a live feed, not match results. Timestamp Europe/Amsterdam. May change after verification date.",
+  "fixtures": [
+    {
+      "day": "2026-10-17",
+      "local_time": "16:30",
+      "home": "ADO Den Haag",
+      "away": "PSV"
+    },
+    {
+      "day": "2026-10-17",
+      "local_time": "20:00",
+      "home": "Telstar",
+      "away": "Feyenoord"
+    },
+    {
+      "day": "2026-10-17",
+      "local_time": "21:00",
+      "home": "Sparta Rotterdam",
+      "away": "Willem II"
+    },
+    {
+      "day": "2026-10-18",
+      "local_time": "12:15",
+      "home": "PEC Zwolle",
+      "away": "Go Ahead Eagles"
+    },
+    {
+      "day": "2026-10-18",
+      "local_time": "14:30",
+      "home": "SC Cambuur",
+      "away": "AZ"
+    },
+    {
+      "day": "2026-10-18",
+      "local_time": "16:45",
+      "home": "FC Groningen",
+      "away": "Ajax"
+    },
+    {
+      "day": "2026-10-18",
+      "local_time": "20:00",
+      "home": "N.E.C.",
+      "away": "Fortuna Sittard"
+    },
+    {
+      "day": "2026-10-18",
+      "local_time": "20:00",
+      "home": "FC Twente",
+      "away": "FC Utrecht"
+    },
+    {
+      "day": "2026-10-23",
+      "local_time": "20:00",
+      "home": "Go Ahead Eagles",
+      "away": "Telstar"
+    },
+    {
+      "day": "2026-10-24",
+      "local_time": "16:30",
+      "home": "FC Utrecht",
+      "away": "PEC Zwolle"
+    },
+    {
+      "day": "2026-10-24",
+      "local_time": "18:45",
+      "home": "Willem II",
+      "away": "SC Cambuur"
+    },
+    {
+      "day": "2026-10-24",
+      "local_time": "21:00",
+      "home": "ADO Den Haag",
+      "away": "sc Heerenveen"
+    },
+    {
+      "day": "2026-10-25",
+      "local_time": "12:15",
+      "home": "Fortuna Sittard",
+      "away": "Excelsior"
+    },
+    {
+      "day": "2026-10-25",
+      "local_time": "14:30",
+      "home": "N.E.C.",
+      "away": "FC Groningen"
+    },
+    {
+      "day": "2026-10-25",
+      "local_time": "14:30",
+      "home": "PSV",
+      "away": "Feyenoord"
+    },
+    {
+      "day": "2026-10-25",
+      "local_time": "16:45",
+      "home": "Sparta Rotterdam",
+      "away": "Ajax"
+    },
+    {
+      "day": "2026-10-25",
+      "local_time": "20:00",
+      "home": "AZ",
+      "away": "FC Twente"
+    },
+    {
+      "day": "2026-10-31",
+      "local_time": "16:30",
+      "home": "Feyenoord",
+      "away": "Fortuna Sittard"
+    },
+    {
+      "day": "2026-10-31",
+      "local_time": "18:45",
+      "home": "sc Heerenveen",
+      "away": "N.E.C."
+    },
+    {
+      "day": "2026-10-31",
+      "local_time": "18:45",
+      "home": "PSV",
+      "away": "Willem II"
+    },
+    {
+      "day": "2026-10-31",
+      "local_time": "21:00",
+      "home": "Ajax",
+      "away": "AZ"
+    },
+    {
+      "day": "2026-10-31",
+      "local_time": "21:00",
+      "home": "SC Cambuur",
+      "away": "Go Ahead Eagles"
+    },
+    {
+      "day": "2026-11-01",
+      "local_time": "12:15",
+      "home": "PEC Zwolle",
+      "away": "ADO Den Haag"
+    },
+    {
+      "day": "2026-11-01",
+      "local_time": "14:30",
+      "home": "Telstar",
+      "away": "FC Utrecht"
+    },
+    {
+      "day": "2026-11-01",
+      "local_time": "14:30",
+      "home": "Excelsior",
+      "away": "FC Twente"
+    },
+    {
+      "day": "2026-11-01",
+      "local_time": "16:45",
+      "home": "FC Groningen",
+      "away": "Sparta Rotterdam"
+    }
+  ]
+}

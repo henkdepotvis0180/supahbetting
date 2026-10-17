@@ -13,7 +13,7 @@ from pathlib import Path
 import time
 
 from .external_feeds import (
-    FootballData, fetch_bounded_json, normalize_sportsdb,
+    FootballData, ProviderHTTPFailure, fetch_bounded_json, normalize_sportsdb,
 )
 from .github_training_sync import SyncError
 from .live_scores import LiveScores, LiveDataUnavailable
@@ -28,8 +28,10 @@ FORECAST_LOG = LOCAL / "provider_forecast_log.json"
 FIXTURE_LOCK = LOCAL / "upcoming.lock"
 RESEARCH_MODEL = LOCAL / "candidate_model.json"
 PUBLISHED_MODEL = Path(__file__).parent / "models" / "research_v0.12.0_experimental.json"
+AUGMENTED_MODEL = LOCAL / "augmented_model_local.json"
 WINDOW_DAYS = 15
-SOURCE_PRIORITY = {"football-data": 3, "openliga": 2, "sportsdb": 1, "openfootball-archive": 0}
+SOURCE_PRIORITY = {"football-data": 4, "openliga": 3, "knvb": 2,
+                   "sportsdb": 1, "openfootball-archive": 0}
 # Stable exact-name aliases for independent fixture providers. No fuzzy guesses.
 TEAM_NAMES = {
     "nl.1": {
@@ -37,6 +39,9 @@ TEAM_NAMES = {
         "psv eindhoven": "PSV", "az alkmaar": "AZ",
         "nec nijmegen": "NEC", "excelsior": "SBV Excelsior",
         "heerenveen": "SC Heerenveen",
+        "telstar": "Telstar 1963",
+        "n e c": "NEC",
+        "nec nijmegen": "NEC",
     },
     "be.1": {
         "club brugge": "Club Brugge KV",
@@ -142,6 +147,14 @@ def _normalize(event, provider, league, now, window_days=WINDOW_DAYS):
     }
 
 
+def _source_rank(fixture):
+    # Official KNVB live HTML beats API sources, while a verified-but-dated
+    # schedule loses to a fresh licensed football-data.org fixture.
+    if fixture.get("provider") == "knvb":
+        return 5 if fixture.get("source_method") == "official_page_live" else 2
+    return SOURCE_PRIORITY.get(fixture.get("provider"), 0)
+
+
 def _merge_key(fixture):
     # Cross-source comparison by *verified league, date and both team names*.
     # Unknown aliases don't risk merging distinct clubs.
@@ -177,11 +190,13 @@ def _from_archived_fixture(fixture, now, days):
 
 
 def _load_model(path=RESEARCH_MODEL):
-    candidates = (Path(path), PUBLISHED_MODEL)
+    candidates = (AUGMENTED_MODEL, Path(path), PUBLISHED_MODEL)
     for candidate in candidates:
         try:
             model = load_pretrained(candidate)
-            if model.get("version") == "0.12.0-research-experimental":
+            if model.get("version") in (
+                "0.13.0-local-augmented", "0.12.0-research-experimental"
+            ):
                 return model
         except (TrainingError, OSError):
             pass
@@ -294,21 +309,51 @@ def build_upcoming(*, model=None, inventory=None, fetched=None, now=None,
     recent_finals = [row for row in fetched if row["status"] == "finished"]
     scheduled = {}
     for fixture in fetched:
+        if fixture.get("league") == "be.1":
+            continue  # Belgium follows after data reliability catches up.
         if fixture["status"] != "scheduled":
             continue
         key = _merge_key(fixture)
-        if key not in scheduled or SOURCE_PRIORITY[fixture["provider"]] > SOURCE_PRIORITY[scheduled[key]["provider"]]:
+        if key not in scheduled or _source_rank(fixture) > _source_rank(scheduled[key]):
             scheduled[key] = fixture
-    for raw in (inventory or {}).get("fixtures", []):
-        fixture = _from_archived_fixture(raw, now, WINDOW_DAYS)
-        if fixture:
-            scheduled.setdefault(_merge_key(fixture), fixture)
+    # Never place stale archive fixtures in the serious upcoming dashboard.
+    # They remain in the separate research archive for auditing only.
     rows = []
+    from .research_rationale import reasoning
     for row in sorted(scheduled.values(), key=lambda m:(m["date"], m["kickoff"] or "", m["league"], m["home"])):
         prediction, warning = _evaluate(row, model, now)
-        rows.append({**row, "prediction": prediction, "prediction_unavailable_reason": warning})
+        argument = reasoning(model, prediction, now=now) if prediction else None
+        rows.append({**row, "prediction": prediction,
+                     "model_preference": argument,
+                     "prediction_unavailable_reason": warning})
+    rows.sort(key=lambda item: (
+        0 if (item.get("model_preference") or {}).get("eligible_for_highlight") else 1
+        if item.get("model_preference") else 2,
+        -(item.get("model_preference") or {}).get("margin", 0),
+        item["date"], item["home"],
+    ))
     freeze = _frozen_pre_match(rows, recent_finals, forecast_log, now)
     confirmed = sum(row["source_confirmed"] for row in rows)
+    # Yesterday and today (plus a short rolling recovery window) are shown as
+    # verified provider results, never as demo or 2016 archive placeholders.
+    local_day = now.astimezone().date()
+    recent_results = sorted([
+        {k: final.get(k) for k in (
+            "provider", "source_id", "league", "league_name", "home", "away",
+            "date", "kickoff", "hg", "ag", "source_url"
+        )}
+        for final in recent_finals
+        if final.get("league") != "be.1"
+        and final.get("date", "") >= (local_day-timedelta(days=2)).isoformat()
+        and final.get("date", "") <= local_day.isoformat()
+    ], key=lambda row:(row["date"],row["league"],row["home"]),reverse=True)
+    completed_seen=set()
+    unique_results=[]
+    for final in recent_results:
+        identity=_merge_key(final)
+        if identity not in completed_seen:
+            completed_seen.add(identity)
+            unique_results.append(final)
     result = {
         "schema_version": 1,
         "updated_at_utc": now.isoformat(timespec="seconds"),
@@ -320,6 +365,11 @@ def build_upcoming(*, model=None, inventory=None, fetched=None, now=None,
         "model_version": model.get("version") if model else None,
         "model_last_data": model.get("last_observed_result_date") if model else None,
         "fixtures": rows[:150],
+        "recent_results": unique_results[:100],
+        "recent_results_count": len(unique_results),
+        "model_comparisons": {"external_models_tested": 0,
+            "automatically_fused": False,
+            "note": "Externe modelcombinaties vereisen eerlijke chronologische vergelijking."},
         "prospective_evaluation": freeze,
         "disclaimer": (
             "Provider schedules are displayed locally under their individual licenses. "
@@ -333,8 +383,9 @@ def build_upcoming(*, model=None, inventory=None, fetched=None, now=None,
 
 
 def fetch_provider_schedules(*, now=None, football_data=None,
-                             sports_fetcher=None, openliga=None, pause=2.2):
-    """Limited API usage: 6 authenticated competition queries, 35 paced free sports requests.
+                             sports_fetcher=None, openliga=None, pause=2.2,
+                             knvb_fetcher=None):
+    """Limited API usage: 6 authenticated competition queries, 30 paced free sports requests.
 
     Free TheSportsDB v1 returns at most three day events and one next game,
     so NEVER claim these schedules are exhaustive.
@@ -364,10 +415,30 @@ def fetch_provider_schedules(*, now=None, football_data=None,
                 time.sleep(max(0.0, pause))
     else:
         warnings.append("football-data.org API-token ontbreekt: beperkt gratis TheSportsDB-schema")
+    # Critical Eredivisie fallback: do not depend exclusively on TheSportsDB.
+    # Live official source is checked once; if blocked, use the explicitly
+    # dated official KNVB schedule snapshot, never fake/demo fixtures.
+    from .research_knvb import get_eredivisie
+    try:
+        official, official_warnings = (
+            knvb_fetcher(now=now) if knvb_fetcher is not None
+            else get_eredivisie(now=now)
+        )
+        fetched.extend(official)
+        warnings.extend(official_warnings)
+    except (OSError, ValueError, RuntimeError) as exc:
+        warnings.append("KNVB schema tijdelijk niet leesbaar: " + type(exc).__name__)
     sports_days = [
-        (now + timedelta(days=offset)).date().isoformat() for offset in (-1, 0, 1)
+        (now.astimezone() + timedelta(days=offset)).date().isoformat()
+        for offset in (-1, 0, 1)
     ]
+    # A single denied request is enough to suspend TheSportsDB for this
+    # refresh: 30 near-identical calls would only increase throttling and hide
+    # the useful HTTP status from the user. Independent providers still run.
+    sportsdb_failure = None
     for provider_code, league in PROVIDER_LEAGUES["sportsdb"].items():
+        if league == "be.1":
+            continue
         paths = [
             "/api/v1/json/123/eventsday.php?d=" + day + "&l=" + provider_code
             for day in sports_days
@@ -386,11 +457,30 @@ def fetch_provider_schedules(*, now=None, football_data=None,
                             fetched.append(row)
                     except (ValueError, KeyError, TypeError):
                         pass
+            except ProviderHTTPFailure as exc:
+                sportsdb_failure = (
+                    "TheSportsDB: HTTP " + str(exc.status_code) +
+                    (" (rate limit; wacht op herstel)" if exc.status_code == 429 else
+                     " (toegang geweigerd; API of netwerk controleren)"
+                     if exc.status_code in (401, 403) else
+                     " (provider tijdelijk onbereikbaar)"
+                     if exc.status_code >= 500 else
+                     " (verzoek niet toegestaan of bronroute gewijzigd)")
+                )
+                break
             except (OSError, ValueError, RuntimeError, LiveDataUnavailable) as exc:
-                warnings.append("TheSportsDB " + provider_code + ": " + type(exc).__name__)
-            # Five requests x seven leagues = 35. Pace across >75 seconds.
+                sportsdb_failure = (
+                    "TheSportsDB: " + type(exc).__name__ +
+                    " (tijdelijk uitgeschakeld voor deze ronde)"
+                )
+                break
+            # Five requests x six active leagues = at most 30 when healthy.
             if pause:
                 time.sleep(max(0.0, pause))
+        if sportsdb_failure:
+            warnings.append(sportsdb_failure +
+                            "; volgende ronde herprobeert, andere bronnen blijven actief")
+            break
     openliga = openliga if openliga is not None else LiveScores()
     for provider_code, league in PROVIDER_LEAGUES["openliga"].items():
         try:
@@ -454,11 +544,39 @@ def refresh_upcoming(*, inventory=None, data_dir=LOCAL, now=None,
             fetched, errors = fetch_provider_schedules(now=now)
         else:
             fetched, errors = provider_fetcher(now=now)
+        base_model = model if model is not None else _load_model()
+        refresh_state = {"updated": False, "added": 0,
+                         "conflicts": 0, "local_retrained": False}
+        if isinstance(inventory, dict) and len(inventory.get("matches", [])) >= 1000 and base_model:
+            # Always update from strictly verified finished events, without
+            # committing third-party records/models to the public CC0 branch.
+            try:
+                from .research_daily_results import (
+                    collect_verified_finals, rebuild_augmented_if_needed
+                )
+                newly = collect_verified_finals(
+                    fetched, base_model, now=now,
+                    path=data_dir / "provider_finals_local.json",
+                )
+                current_model, coverage = rebuild_augmented_if_needed(
+                    inventory, folder=data_dir
+                )
+                base_model = current_model
+                refresh_state = {
+                    "updated": newly["new"] > 0 or coverage["retrained"],
+                    "added": newly["new"],
+                    "conflicts": newly["conflicted"] + coverage["provider_conflicts_with_cc0"],
+                    "local_retrained": coverage["retrained"],
+                    "extra_games": coverage["provider_extra_matches"],
+                }
+            except (ValueError, OSError, RuntimeError, KeyError, TrainingError) as exc:
+                errors.append("Lokale modelaanvulling: " + type(exc).__name__)
         result = build_upcoming(
-            model=model, inventory=inventory, fetched=fetched, now=now,
+            model=base_model, inventory=inventory, fetched=fetched, now=now,
             forecast_log=data_dir / "provider_forecast_log.json",
             output=data_dir / "upcoming_predictions.json",
         )
+        result["local_data_update"] = refresh_state
         result["provider_warnings"] = errors
         atomic_json(data_dir / "upcoming_predictions.json", result)
         return result

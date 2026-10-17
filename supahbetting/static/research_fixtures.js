@@ -1,178 +1,230 @@
 "use strict";
-/* Upcoming schedules & experimental probabilities, from a LOCAL file only. */
+/* Local serious research front page. Sources/models only; no fabricated fixtures. */
 (() => {
-  const $ = id => document.getElementById(id);
-  const make = (tag, content, className) => {
-    const node = document.createElement(tag);
-    if (content !== undefined) node.textContent = String(content);
-    if (className) node.className = className;
-    return node;
+  const $=id=>document.getElementById(id);
+  const el=(tag,value,klass)=>{
+    const n=document.createElement(tag);
+    if(value!==undefined)n.textContent=String(value);
+    if(klass)n.className=klass;
+    return n;
   };
-  let responseCache = null;
-  const LEAGUES = {
-    "nl.1":"Eredivisie","be.1":"Belgische Pro League",
-    "en.1":"Premier League","de.1":"Bundesliga","es.1":"La Liga",
-    "it.1":"Serie A","fr.1":"Ligue 1"
-  };
-  const percent = v => typeof v === "number"
-    ? new Intl.NumberFormat("nl-BE",{minimumFractionDigits:1,maximumFractionDigits:1}).format(v*100)+"%"
-    : "—";
-  const goals = v => typeof v === "number"
-    ? new Intl.NumberFormat("nl-BE",{minimumFractionDigits:2,maximumFractionDigits:2}).format(v)
-    : "—";
-  const shortTime = iso => {
-    if (!iso) return "Aftraptijd niet bevestigd";
-    const value = new Date(iso);
-    return Number.isNaN(value.getTime()) ? "Aftraptijd onbekend" :
-      new Intl.DateTimeFormat("nl-BE",{timeZone:"Europe/Brussels",
-        day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}).format(value);
-  };
-  const longTime = iso => {
-    if (!iso) return "Nog niet gesynchroniseerd";
-    const value = new Date(iso);
-    return Number.isNaN(value.getTime()) ? "Onbekende tijd" :
-      new Intl.DateTimeFormat("nl-BE",{timeZone:"Europe/Brussels",
-        dateStyle:"medium",timeStyle:"short"}).format(value);
-  };
-  const dateLocal = fixture => {
-    if (fixture.kickoff) {
-      const value = new Date(fixture.kickoff);
-      if (!Number.isNaN(value.getTime())) {
-        return new Intl.DateTimeFormat("sv-SE",{timeZone:"Europe/Brussels",
-          year:"numeric",month:"2-digit",day:"2-digit"}).format(value);
-      }
-    }
-    return fixture.date;
-  };
-  const localToday = () => new Intl.DateTimeFormat("sv-SE",{
-    timeZone:"Europe/Brussels",year:"numeric",month:"2-digit",day:"2-digit"
-  }).format(new Date());
-  const offset = (date, base) => Math.round(
-    (Date.parse(date+"T12:00:00Z") - Date.parse(base+"T12:00:00Z"))/86400000
-  );
-  function metric(label, value, cls) {
-    const field=make("div",undefined,"fixture-metric "+(cls||""));
-    field.append(make("span",label),make("strong",value));
-    return field;
+  const nameOf={"nl.1":"Eredivisie","en.1":"Premier League",
+    "de.1":"Bundesliga","es.1":"La Liga","it.1":"Serie A",
+    "fr.1":"Ligue 1"};
+  const providerLabel={"football-data":"football-data.org",
+    "sportsdb":"TheSportsDB","openliga":"OpenLigaDB",
+    "knvb":"KNVB – officieel Eredivisie-programma"};
+  let dataset=null;
+  const pct=v=>typeof v==="number" && Number.isFinite(v)
+    ?new Intl.NumberFormat("nl-BE",{style:"percent",minimumFractionDigits:1,
+      maximumFractionDigits:1}).format(v):"—";
+  const number=v=>typeof v==="number" && Number.isFinite(v)
+    ?new Intl.NumberFormat("nl-BE",{maximumFractionDigits:2}).format(v):"—";
+  function dateLabel(iso){
+    if(!iso)return "Tijdstip onbekend";
+    const dt=new Date(iso);
+    return Number.isFinite(dt.getTime())
+      ?new Intl.DateTimeFormat("nl-BE",{timeZone:"Europe/Brussels",
+         day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}).format(dt)
+      :"Tijdstip onbekend";
   }
-  function draw() {
-    const holder=$("research-fixture-list");
-    if (!holder) return;
-    if (!responseCache || !responseCache.available) {
-      holder.replaceChildren(make("p",
-        responseCache?.message ||
-        "Start eerst de onderzoeksmonitor om het actuele speelschema op te halen.",
+  function dayInBrussels(iso){
+    const dt=new Date(iso);
+    return Number.isFinite(dt.getTime())?new Intl.DateTimeFormat("sv-SE",{
+      timeZone:"Europe/Brussels",year:"numeric",month:"2-digit",day:"2-digit"
+    }).format(dt):null;
+  }
+  const today=()=>dayInBrussels(new Date().toISOString());
+  const spanDays=(date,base)=>Math.round(
+    (Date.parse(date+"T12:00:00Z")-Date.parse(base+"T12:00:00Z"))/86400000
+  );
+  function fact(label,value){
+    const n=el("div",undefined,"fixture-metric");
+    n.append(el("span",label),el("strong",value));
+    return n;
+  }
+  function historyResults(rows){
+    const target=$("research-recent-results");
+    const count=$("research-recent-count");
+    if(!target)return;
+    const dedup=Array.isArray(rows)?rows.filter(x=>x.league in nameOf):[];
+    if(count) count.textContent="("+dedup.length+")";
+    if(!dedup.length){
+      target.replaceChildren(el("p",
+        "Er zijn geen recente eindstanden door de actieve bronnen bevestigd. "+
+        "Dit betekent niet dat er gisteren geen wedstrijden gespeeld zijn.","fixture-empty"));
+      return;
+    }
+    const table=el("div",undefined,"fixture-recent-list");
+    for(const row of dedup.slice(0,30)){
+      const item=el("div",undefined,"fixture-recent-row");
+      item.append(
+        el("small",row.date+" · "+(nameOf[row.league]||row.league)),
+        el("span",row.home+" – "+row.away),
+        el("strong",row.hg+" – "+row.ag)
+      );
+      table.append(item);
+    }
+    target.replaceChildren(table);
+  }
+  function decoratePrediction(card,match){
+    const prediction=match.prediction;
+    if(!prediction){
+      card.append(el("p",match.prediction_unavailable_reason||
+         "Deze wedstrijd is niet betrouwbaar genoeg gekoppeld aan het model.",
+         "fixture-warning"));
+      return;
+    }
+    const preference=match.model_preference;
+    const tag=el("div",undefined,"fixture-model-choice");
+    tag.append(el("strong",preference?.label||"Experimentele modelkansen"));
+    tag.append(el("span",preference?.category||"Researchmodel; nog niet prospectief gevalideerd"));
+    if(preference?.eligible_for_highlight)tag.classList.add("fixture-model-choice-selected");
+    card.append(tag);
+    const probs=el("div",undefined,"fixture-chances");
+    probs.append(
+      fact("Thuiswinst",pct(prediction.probabilities.home)),
+      fact("Gelijk",pct(prediction.probabilities.draw)),
+      fact("Uitwinst",pct(prediction.probabilities.away))
+    );
+    card.append(probs);
+    card.append(el("p",
+      "Goalschatting: "+number(prediction.expected_goals_home)+" – "+
+      number(prediction.expected_goals_away)+
+      " · model "+prediction.model_version+
+      " · uitslagen t/m "+prediction.data_through,
+      "fixture-details"));
+    const details=el("details",undefined,"fixture-why");
+    details.append(el("summary","Waarom kiest het model hiervoor?"));
+    const list=el("ul");
+    for(const reason of preference?.reasons||[])list.append(el("li",reason));
+    details.append(list);
+    details.append(el("p",preference?.risk_note||prediction.data_warning,"fixture-warning"));
+    card.append(details);
+    if(prediction.data_warning && !preference?.eligible_for_highlight){
+      card.append(el("p",prediction.data_warning,"fixture-warning"));
+    }
+  }
+  function draw(){
+    const target=$("research-fixture-list");
+    if(!target)return;
+    if(!dataset?.available){
+      target.replaceChildren(el("p",
+        dataset?.message||
+        "De monitor heeft nog geen actuele wedstrijden opgehaald. Controleer het bronvenster.",
         "fixture-empty"));
       return;
     }
-    const data=responseCache;
-    const selectedLeague=$("research-fixture-league").value;
-    const range=Number($("research-fixture-range").value);
-    const mode=$("research-fixture-filter").value;
-    const today=localToday();
-    const choices=(data.fixtures||[]).filter(f=>{
-      const day=offset(dateLocal(f),today);
-      return Number.isFinite(day) && day >= 0 && day <= range
-        && (selectedLeague==="all" || f.league===selectedLeague)
-        && (mode==="all" || (mode==="predicted" && f.prediction)
-          || (mode==="confirmed" && f.source_confirmed));
-    });
+    const league=$("research-fixture-league").value;
+    const days=Number($("research-fixture-range").value);
+    const type=$("research-fixture-filter").value;
+    const baseline=today();
+    const selected=(dataset.fixtures||[])
+      .filter(m=>{
+        if(!(m.league in nameOf)||!(m.provider in providerLabel)||
+           !m.source_confirmed||m.status!=="scheduled")return false;
+        const local=m.kickoff?dayInBrussels(m.kickoff):m.date;
+        if(!local)return false;
+        const d=spanDays(local,baseline);
+        return d>=0 && d<=days &&
+          (league==="all"||m.league===league) &&
+          (type!=="predicted"||Boolean(m.prediction)) &&
+          (type!=="confirmed"||m.source_confirmed);
+      });
     const cards=[];
-    for(const f of choices.slice(0,100)) {
-      const card=make("article",undefined,"panel fixture-card");
-      const top=make("div",undefined,"fixture-card-top");
-      top.append(make("span",LEAGUES[f.league]||f.league),
-                 make("span",shortTime(f.kickoff)||f.date));
-      const teams=make("h3",f.home+" – "+f.away);
-      const status=make("p",undefined,"fixture-provider");
-      const providerName={
-        "football-data":"football-data.org","sportsdb":"TheSportsDB",
-        "openliga":"OpenLigaDB","openfootball-archive":"OpenFootball (archief)"
-      }[f.provider]||"Onbekend";
-      status.textContent=providerName+" · "+
-        (f.source_confirmed?"Schema onlangs opgehaald":"VOORLOPIG schema · niet recent bevestigd");
-      const source=make("a","Bron / informatie");
-      source.href=f.source_url;
-      source.target="_blank";
-      source.rel="noopener noreferrer";
-      status.append(" · ",source);
-      card.append(top,teams,status);
-      if(f.prediction) {
-        const model=f.prediction;
-        const grid=make("div",undefined,"fixture-chances");
-        grid.append(metric("Thuiswinst",percent(model.probabilities.home)),
-                    metric("Gelijkspel",percent(model.probabilities.draw)),
-                    metric("Uitwinst",percent(model.probabilities.away)));
-        const info=make("p",
-          "Verwachte goals: thuis "+goals(model.expected_goals_home)+
-          " · uit "+goals(model.expected_goals_away)+
-          " · model v"+model.model_version+
-          " · data t/m "+model.data_through,
-          "fixture-details");
-        const caution=make("p",model.data_warning,"fixture-warning");
-        card.append(grid,info,caution);
-      } else {
-        const why=make("p",f.prediction_unavailable_reason||
-          "Niet genoeg geverifieerde informatie voor een voorspelling",
-          "fixture-warning");
-        card.append(why);
+    for(const match of selected.slice(0,80)){
+      const card=el("article",undefined,"panel fixture-card");
+      const header=el("div",undefined,"fixture-card-top");
+      header.append(el("span",nameOf[match.league]||match.league),
+                    el("span",dateLabel(match.kickoff)));
+      card.append(header,el("h3",match.home+" – "+match.away));
+      const source=el("p",undefined,"fixture-provider");
+      source.append("Bron: "+(providerLabel[match.provider]||match.provider)+" · ");
+      const anchor=el("a","Bron bekijken");
+      anchor.href=match.source_url;
+      anchor.target="_blank";anchor.rel="noopener noreferrer";
+      source.append(anchor);
+      if(match.provider==="knvb" && match.source_method==="dated_official_snapshot"){
+        source.append(" · Officieel programma, laatst gecontroleerd 17 oktober 2026");
       }
+      card.append(source);
+      decoratePrediction(card,match);
       cards.push(card);
     }
-    if(!choices.length) {
-      holder.replaceChildren(make("p",
-        "Geen bevestigde wedstrijden gevonden voor deze selectie. "+
-        "De gratis bron geeft slechts een beperkt deel van het speelschema; "+
-        "probeer alle competities of een langere periode.",
-        "fixture-empty"));
-    } else {
-      holder.replaceChildren(...cards);
-      if(choices.length>100) {
-        holder.append(make("p",
-          "Alleen de eerste 100 wedstrijden getoond; gebruik de filters.","fixture-empty"));
-      }
-    }
+    if(!cards.length)target.replaceChildren(el("p",
+      "Geen geverifieerde toekomstige wedstrijden voor dit filter. "+
+      "De gratis bronnen tonen mogelijk niet het hele speelschema; "+
+      "controleer de bronstatus of gebruik een API-abonnement met ruimere dekking.",
+      "fixture-empty"));
+    else target.replaceChildren(...cards);
     const stats=$("research-fixture-summary");
     stats.replaceChildren(
-      metric("Wedstrijden (0–15 dagen)",data.schedule_count||0),
-      metric("Recent bevestigd",data.confirmed_schedule_count||0),
-      metric("Modelvoorspellingen",data.predicted_count||0),
-      metric("Niet bevestigd",data.provisional_schedule_count||0)
+      fact("Bevestigde komende duels",selected.length),
+      fact("Met experimentele kans",selected.filter(f=>Boolean(f.prediction)).length),
+      fact("Modelvoorkeur met voldoende actuele data",
+        selected.filter(f=>f.model_preference?.eligible_for_highlight).length)
     );
-    const msgs=[];
-    if(data.model_last_data) msgs.push("Modeluitslagen t/m "+data.model_last_data);
-    msgs.push("Laatste schema-ophaling: "+longTime(data.updated_at_utc));
-    msgs.push("Prognoses vastgelegd vóór aftrap: "+
-      (data.prospective_evaluation?.total_pre_match_snapshots ?? 0));
-    msgs.push("Echt beoordeeld: "+(data.prospective_evaluation?.graded_total ?? 0));
-    const warnings=(data.provider_warnings||[]);
     const note=$("research-fixture-status");
-    note.replaceChildren(make("strong",msgs.join(" · ")));
-    if(warnings.length) note.append(make("p",
-      "Bronwaarschuwingen: "+warnings.slice(0,4).join(" · ")+
-      (warnings.length>4?" · en "+(warnings.length-4)+" meer":""),
-      "fixture-warning"));
+    const last=dataset.updated_at_utc?dateLabel(dataset.updated_at_utc):"onbekend";
+    const registered=dataset.prospective_evaluation?.total_pre_match_snapshots??0;
+    const graded=dataset.prospective_evaluation?.graded_total??0;
+    note.replaceChildren(
+      el("strong","Laatste broncontrole: "+last),
+      el("span"," · Vooraf opgeslagen voorspellingen: "+registered),
+      el("span"," · Echt beoordeeld: "+graded)
+    );
+    const update=dataset.local_data_update;
+    if(update?.added)note.append(el("p",
+      update.added+" nieuw bevestigde uitslagen zijn lokaal verwerkt."+
+      (update.local_retrained?" Het model is opnieuw berekend.":""),
+      "fixture-info"));
+    if(dataset.provider_warnings?.length)note.append(el("p",
+      "Bronbeperkingen: "+dataset.provider_warnings.slice(0,3).join(" · ")+
+      (dataset.provider_warnings.length>3?" (meer in monitor)":""),"fixture-warning"));
+    historyResults(dataset.recent_results);
   }
-  async function refresh() {
-    const holder=$("research-fixture-list");
-    try {
-      const response=await fetch("/api/research/upcoming",{cache:"no-store"});
-      if(!response.ok) throw new Error("HTTP "+response.status);
-      responseCache=await response.json();
-      draw();
-    } catch(error) {
-      if(holder) holder.replaceChildren(
-        make("p","Geen verbinding met lokaal speelschema: "+error.message,"fixture-empty"));
+  async function readiness(){
+    const host=$("research-readiness");
+    try{
+      const resp=await fetch("/api/research/readiness",{cache:"no-store"});
+      if(!resp.ok)throw Error("HTTP "+resp.status);
+      const m=await resp.json();
+      host.classList.toggle("research-readiness-degraded",m.level!=="ready");
+      const missingTen=Object.entries(m.league_history||{})
+        .filter(([,info])=>!info.at_least_10_seasons)
+        .map(([code,info])=>(nameOf[code]||code)+": "+info.season_count+" seizoenen");
+      host.replaceChildren(
+        el("strong","Modelstatus: "+m.level.toUpperCase()+" · "+(m.model_version||"ontbreekt")),
+        el("span"," · Historische dekking: "+(m.leagues_with_10_seasons??0)+"/"+
+          (m.active_league_count??6)+" competities met 10+ seizoenen"),
+        el("span"," · Laatste uitslag: "+(m.model_data_through||"onbekend")),
+        el("p",m.warn+" · Geen aangetoonde winst tegen bookmakers."),
+        ...(missingTen.length?[el("p","Nog geen 10 seizoenen voor: "+missingTen.join("; "),
+          "fixture-warning")]:[])
+      );
+    }catch(err){
+      host.replaceChildren(el("p","Modelcontrole niet bereikbaar: "+err.message,"fixture-warning"));
     }
+  }
+  async function refresh(){
+    try{
+      const resp=await fetch("/api/research/upcoming",{cache:"no-store"});
+      if(!resp.ok)throw Error("HTTP "+resp.status);
+      dataset=await resp.json();
+      draw();
+    }catch(err){
+      $("research-fixture-list").replaceChildren(el("p",
+        "Lokale wedstrijdgegevens niet beschikbaar: "+err.message,"fixture-warning"));
+    }
+    await readiness();
   }
   document.addEventListener("DOMContentLoaded",()=>{
-    if (!$("research-fixture-list")) return;
-    for(const [code,name] of Object.entries(LEAGUES)) {
-      const option=make("option",name);
-      option.value=code;
+    if(!$("research-fixture-list"))return;
+    for(const [key,label] of Object.entries(nameOf)){
+      const option=el("option",label); option.value=key;
       $("research-fixture-league").append(option);
     }
-    for(const id of ["research-fixture-league","research-fixture-range","research-fixture-filter"]) {
+    for(const id of ["research-fixture-league","research-fixture-range","research-fixture-filter"]){
       $(id).addEventListener("change",draw);
     }
     $("research-fixture-refresh").addEventListener("click",refresh);

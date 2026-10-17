@@ -5,6 +5,8 @@ import unittest
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+from supahbetting.external_feeds import ProviderHTTPFailure
+
 from supahbetting.research_upcoming import (
     _normalize, _evaluate, _from_archived_fixture, _merge_key, build_upcoming,
     fetch_provider_schedules, refresh_upcoming, _load_model,
@@ -128,7 +130,7 @@ class UpcomingTests(unittest.TestCase):
             self.assertEqual(state["prospective_evaluation"]["graded_total"],0)
             self.assertEqual(state["prospective_evaluation"]["new_void"],1)
 
-    def test_provider_scan_respects_throttled_five_requests_per_league(self):
+    def test_provider_scan_respects_throttled_five_requests_per_active_league(self):
         requests=[]
         class DisabledFootball:
             enabled=False
@@ -140,19 +142,79 @@ class UpcomingTests(unittest.TestCase):
             return {"events":[]}
         items,warnings=fetch_provider_schedules(
             now=NOW,football_data=DisabledFootball(),
-            sports_fetcher=source,openliga=EmptyOpenliga(),pause=0)
+            sports_fetcher=source,openliga=EmptyOpenliga(),pause=0,knvb_fetcher=lambda **kw:([],[]))
         self.assertEqual(items,[])
-        self.assertEqual(len(requests),35)
+        self.assertEqual(len(requests),30)
         self.assertTrue(any("API-token" in warning for warning in warnings))
 
-    def test_no_provider_data_results_in_provisional_archived_only(self):
+    def test_sportsdb_403_stops_immediately_but_openliga_fallback_continues(self):
+        called=[]
+        class DisabledFootball:
+            enabled=False
+        class StubOpenliga:
+            def __init__(self):
+                self.called=[]
+            def list_matches(self,league):
+                self.called.append(league)
+                return {"matches":[]}
+        independent=StubOpenliga()
+        def block(route):
+            called.append(route)
+            raise ProviderHTTPFailure("sportsdb", 403)
+        items,warnings=fetch_provider_schedules(
+            now=NOW, football_data=DisabledFootball(),sports_fetcher=block,
+            openliga=independent,pause=0,knvb_fetcher=lambda **kw:([],[])
+        )
+        self.assertEqual(items,[])
+        self.assertEqual(len(called),1,"No 30-request storm after HTTP denial")
+        self.assertGreater(len(independent.called),0,
+                           "Independent provider must still be queried")
+        self.assertTrue(any("HTTP 403" in value for value in warnings))
+        self.assertTrue(any("volgende ronde" in value for value in warnings))
+
+    def test_sportsdb_429_is_rate_limited_without_extra_calls(self):
+        called=[]
+        class DisabledFootball:
+            enabled=False
+        class StubOpenliga:
+            def list_matches(self,league):
+                return {"matches":[]}
+        def throttle(route):
+            called.append(route)
+            raise ProviderHTTPFailure("sportsdb",429)
+        _, warnings=fetch_provider_schedules(
+            now=NOW, football_data=DisabledFootball(),
+            sports_fetcher=throttle,openliga=StubOpenliga(),pause=0,knvb_fetcher=lambda **kw:([],[])
+        )
+        self.assertEqual(len(called),1)
+        self.assertTrue(any("HTTP 429" in value for value in warnings))
+        self.assertTrue(any("rate limit" in value for value in warnings))
+
+    def test_sportsdb_offline_network_error_stops_quickly(self):
+        called=[]
+        class DisabledFootball:
+            enabled=False
+        class StubOpenliga:
+            def list_matches(self,league):
+                return {"matches":[]}
+        def offline(route):
+            called.append(route)
+            raise OSError("network unavailable")
+        _,warnings=fetch_provider_schedules(
+            now=NOW,football_data=DisabledFootball(),
+            sports_fetcher=offline,openliga=StubOpenliga(),pause=0,knvb_fetcher=lambda **kw:([],[])
+        )
+        self.assertEqual(len(called),1)
+        self.assertTrue(any("TheSportsDB" in value for value in warnings))
+
+    def test_archive_fixtures_are_not_misrepresented_as_real_upcoming_games(self):
         with tempfile.TemporaryDirectory() as d:
             data={"fixtures":[{"id":"archive-1","league":"nl.1",
                "date":"2026-10-20","season":"2026-27","home":"Ajax","away":"PSV"}]}
             result=refresh_upcoming(
                 inventory=data,data_dir=d,now=NOW,model=RAW_MODEL,
                 provider_fetcher=lambda **kw:([],["provider not available"]))
-            self.assertEqual(result["schedule_count"],1)
+            self.assertEqual(result["schedule_count"],0)
             self.assertEqual(result["predicted_count"],0)
             self.assertEqual(result["provider_warnings"],["provider not available"])
             self.assertTrue((Path(d)/"upcoming_predictions.json").is_file())
