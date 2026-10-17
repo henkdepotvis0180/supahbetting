@@ -76,7 +76,7 @@ class GoalBaselineTests(unittest.TestCase):
 
     def test_real_public_domain_scores_and_seasons(self):
         data=load_matches()
-        self.assertEqual(len(data),13467)
+        self.assertEqual(len(data),19884)
         self.assertEqual({m["league"] for m in data},set(LEAGUES))
         self.assertTrue(all(m["date"]<=date(2026,10,17).isoformat() for m in data))
         self.assertTrue(all(m["hg"]>=0 and m["ag"]>=0 for m in data))
@@ -87,6 +87,16 @@ class GoalBaselineTests(unittest.TestCase):
             sum(x["season"]=="2026-27" for x in data),295
         )
         self.assertEqual(max(x["date"] for x in data), "2026-09-20")
+        # Older seasons extend the training context but never today's data.
+        older = [r for r in data if r["season"] in ("2017-18","2018-19","2019-20")]
+        self.assertEqual(len(older), 6417)
+        self.assertEqual(sum(r["season"]=="2017-18" for r in older),1826)
+        provenance=json.loads(Path("data/historical/provenance_pre2020.json").read_text())
+        self.assertEqual(provenance["additional_rows"],len(older))
+        self.assertEqual(provenance["expected_total_rows"],len(data))
+        self.assertEqual(len(provenance["source_files"]),19)
+        self.assertTrue(all(m["date"]<="2020-08-31" for m in older))
+
         self.assertEqual(
             sum(x["season"]=="2026-27" and x["league"]=="nl.1" for x in data),62
         )
@@ -94,7 +104,10 @@ class GoalBaselineTests(unittest.TestCase):
 
     def test_trained_model_contains_real_scores_and_diagnostics(self):
         model=load_pretrained()
-        self.assertEqual(model["training_matches"],13467)
+        self.assertEqual(model["training_matches"],19884)
+        self.assertEqual(model["added_older_results"],6417)
+        self.assertEqual(model["source"]["older_season_provenance_file"],
+                         "data/historical/provenance_pre2020.json")
         self.assertEqual(model["source"]["license"],"CC0 1.0 Universal")
         self.assertFalse(model["source"]["uses_shot_xg"])
         self.assertEqual(model["parameters"]["holdout_season"],"2025-26")
@@ -173,7 +186,7 @@ class ModelApiTests(unittest.TestCase):
         status,response=self.query("/api/trained/status")
         self.assertEqual(status,200)
         self.assertTrue(response["available"])
-        self.assertEqual(response["training_matches"],13467)
+        self.assertEqual(response["training_matches"],19884)
         self.assertNotIn("team_records",response["leagues"]["nl.1"])
         self.assertGreater(response["leagues"]["nl.1"]["teams"],10)
 
