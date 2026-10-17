@@ -1,0 +1,93 @@
+name: Rolling 2026-27 model training
+
+on:
+  push:
+    branches: [feature/rolling-2026-season-training]
+    paths:
+      - 'data/historical/**'
+      - 'supahbetting/trained_model.py'
+      - 'tests/test_trained_model.py'
+      - '.github/workflows/rolling-season-training.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: rolling-2026-27-model
+  cancel-in-progress: false
+
+jobs:
+  train-and-evaluate:
+    if: github.repository == 'henkdepotvis0180/supahbetting'
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - name: Checkout model and historical data
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Chronological model retraining
+        run: |
+          python -m supahbetting.trained_model \
+            --data-dir data/historical \
+            --output supahbetting/models/baseline.json
+
+      - name: Assert data provenance and recent season integrity
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from supahbetting.trained_model import load_pretrained, load_matches
+          model = load_pretrained()
+          source = json.loads(Path("data/historical/provenance_2026_27.json").read_text())
+          matches = load_matches()
+          assert model["training_matches"] == len(matches) == 13467
+          assert model["prospective_matches"] == source["total_new_completed_matches"] == 295
+          assert model["last_observed_result_date"] == "2026-09-20"
+          assert model["parameters"]["prospective_not_used_in_selection"]
+          assert model["evaluation"]["test"]["matches"] == 2037
+          assert model["evaluation"]["prospective_2026_27"]["matches"] == 295
+          print("VALIDATION:", model["evaluation"]["validation"])
+          print("2025/26 HOLDOUT:", model["evaluation"]["test"])
+          print("2026/27 PROSPECTIVE:", model["evaluation"]["prospective_2026_27"])
+          print("DATA THRU:", model["last_observed_result_date"])
+          PY
+
+      - name: Run all Python and JavaScript regression tests
+        run: |
+          python -m unittest discover -s tests -v
+          python -m compileall -q supahbetting
+          node --check supahbetting/static/app.js
+          node --check supahbetting/static/live.js
+          node --check supahbetting/static/research.js
+          node --check supahbetting/static/trained.js
+
+      - name: Publish audited model artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: supahbetting-2026-27-experimental-model
+          path: |
+            supahbetting/models/baseline.json
+            data/historical/provenance_2026_27.json
+          retention-days: 30
+
+      - name: Commit trained JSON only to research branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add supahbetting/models/baseline.json
+          if git diff --cached --quiet; then
+            echo "Model artifact already matches."
+          else
+            git commit -m "model: fit 2026-27 rolling sample and report prospective holdout [skip ci]"
+            git fetch origin "refs/heads/${GITHUB_REF_NAME}"
+            git rebase FETCH_HEAD
+            git push origin "HEAD:refs/heads/${GITHUB_REF_NAME}"
+          fi

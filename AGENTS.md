@@ -99,3 +99,12 @@ De tools zijn sinds v0.6 gekoppeld via hun native CSV/JSON-exportbestanden. De e
 - Voor model 2: hyperparameterkeuze op 2024/25, chronologische scoretest op 2025/26 (alle matches op dezelfde dag voorspellen voordat die dag wordt geleerd). Als het uiteindelijke model op de testperiode is verder gefit, de oude testscore NOOIT als onafhankelijke evaluatie van die bijgewerkte parameters presenteren.
 - Bij nieuwe seizoenen: voeg rechtmatige historische CSV's toe, behoud gelijke labels en chronologische tests; dezelfde kalenderdag niet lekken.
 - Prediict/ProphitBet upstream trainen is nog separaat en niet identiek aan deze twee modelconstructies. Geen broncode van Prediict kopiëren of user/secure credentials meesturen.
+
+## Extra chronologische training v0.8.1
+- Scoremodel: supahbetting/trained_model.py, getraind JSON: supahbetting/models/baseline.json. Onafhankelijk Elo-model: models/baseline_v1.json. Verwijder/overschrijf Elo NIET tijdens scoremodelupdates.
+- Gebruikte CC0-gegevens in data/historical/*.csv; recente 2026/27 bron-SHA's en lacunes in data/historical/provenance_2026_27.json.
+- 2026/27 levert 295 eindstanden t/m 20 september 2026, GEEN volledige of actuele seizoenregistratie. België heeft geen 2026/27 data uit deze bron.
+- Hyperparameterkeuze uitsluitend op 2024/25; 2025/26 en 2026/27 chronologisch vooraf voorspellen, NIET gebruiken om achteraf een winnaar uit veel modellen te selecteren.
+- Iedere update moet de training, holdoutdata (Brier/log loss), brondekking, Python tests en JavaScript-syntaxchecks publiceren.
+- Voor updates: gebruik .github/workflows/rolling-season-training.yml; PR naar main pas wanneer artifacts en CI slagen.
+- Behoud veiligheid: geen geheime tokens in modellen/logs en geen echte gokacties of onbewezen ROI-claims.

@@ -71,7 +71,7 @@ def make_handler(store, live_scores=None, provider_hub=None, research_hub=None, 
         except TrainingError:
             trained = None
     class Handler(BaseHTTPRequestHandler):
-        server_version = "SupahBetting/0.8"
+        server_version = "SupahBetting/0.8.1"
 
         def _headers(self, code, mimetype, length):
             self.send_response(code)
@@ -134,7 +134,7 @@ def make_handler(store, live_scores=None, provider_hub=None, research_hub=None, 
                 self._check_host()
                 path = self._path()
                 if path == "/api/health":
-                    return self.reply(200, {"status": "ok", "version": "0.8.0",
+                    return self.reply(200, {"status": "ok", "version": "0.8.1",
                                             "mode": "paper_only", "live_odds": False})
                 if path == "/api/live/providers":
                     return self.reply(200, provider_hub.catalog())
@@ -189,6 +189,8 @@ def make_handler(store, live_scores=None, provider_hub=None, research_hub=None, 
                         "available": True,
                         "version": trained["version"],
                         "training_matches": trained["training_matches"],
+                        "last_observed_result_date": trained.get("last_observed_result_date"),
+                        "prospective_matches": trained.get("prospective_matches", 0),
                         "source": trained["source"],
                         "parameters": trained["parameters"],
                         "evaluation": trained["evaluation"],
@@ -344,7 +346,7 @@ def main():
         )
     )
     server.daemon_threads = True
-    print(f"SupahBetting v0.8: http://127.0.0.1:{args.port}", flush=True)
+    print(f"SupahBetting v0.8.1: http://127.0.0.1:{args.port}", flush=True)
     print("Alleen lokaal, fictieve inzetten. Druk Ctrl+C om te stoppen.", flush=True)
     try:
         server.serve_forever(poll_interval=0.2)

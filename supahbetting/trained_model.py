@@ -6,8 +6,8 @@ Training data: real completed league results from openfootball/football.json
 Algorithm: online exponential-smoothing estimates of team attack/defence, a
 league-specific empirically estimated home advantage, Bayesian shrinkage and an
 independent Poisson goal process. Hyperparameters selected ONLY on 2024-25.
-2025-26 is held out for chronological pre-match evaluation and then used to
-update the deliverable model. Matches on the same date are predicted BEFORE
+2025-26 and 2026-27 are chronologically scored before updating ratings;
+2026-27 is never used for hyperparameter selection. Matches on the same date are predicted BEFORE
 any scores from that date update the model (reduces intraday leakage).
 
 This is an experimental score-based model, NOT trained shot-level xG, and it
@@ -28,7 +28,8 @@ from typing import Any
 
 DATA_DIR = Path("data/historical")
 MODEL_FILE = Path(__file__).parent / "models" / "baseline.json"
-TRAINING_VERSION = "0.7.0"
+TRAINING_VERSION = "0.9.0"
+CURRENT_SEASON = "2026-27"
 VALIDATION_SEASON = "2024-25"
 TEST_SEASON = "2025-26"
 LEAGUES = {
@@ -384,15 +385,17 @@ def train(data_dir=DATA_DIR, output=MODEL_FILE):
             candidates.append((metrics[VALIDATION_SEASON]["log_sum"] /
                                metrics[VALIDATION_SEASON]["n"], alpha, prior))
     best_loss, alpha, prior = min(candidates)
+    # 2026/27 is a prospective continuation: no parameter is selected on it.
+    current_count = sum(r["season"] == CURRENT_SEASON for r in matches)
     states, pooled, league_scores = run_sequential(
-        matches, alpha, prior, {VALIDATION_SEASON, TEST_SEASON}
+        matches, alpha, prior, {VALIDATION_SEASON, TEST_SEASON, CURRENT_SEASON}
     )
     seasons_count = {
         league: {
             season: sum(r["league"] == league and r["season"] == season
                         for r in matches)
             for season in ("2020-21","2021-22","2022-23","2023-24",
-                           "2024-25","2025-26")
+                           "2024-25","2025-26","2026-27")
         }
         for league in LEAGUES
     }
@@ -406,6 +409,8 @@ def train(data_dir=DATA_DIR, output=MODEL_FILE):
             "season_matches": counts,
             "validation": summarize(league_scores[(VALIDATION_SEASON, league)]),
             "test": summarize(league_scores[(TEST_SEASON, league)]),
+            "prospective_2026_27": summarize(league_scores[(CURRENT_SEASON, league)]),
+            "prospective_partial": counts[CURRENT_SEASON] < 100,
             "test_coverage_vs_previous_season": round(latest / prev, 3) if prev else None,
             "test_incomplete_or_stale": not bool(
                 prev and latest / prev >= .97 and
@@ -430,10 +435,18 @@ def train(data_dir=DATA_DIR, output=MODEL_FILE):
             "goal_model": "independent Poisson",
             "parameter_selection": "2024-25 log-loss only",
             "holdout_season": TEST_SEASON,
+            "prospective_season": CURRENT_SEASON,
+            "prospective_not_used_in_selection": True,
         },
         "evaluation": {
             "validation": summarize(pooled[VALIDATION_SEASON]),
             "test": summarize(pooled[TEST_SEASON]),
+            "prospective_2026_27": summarize(pooled[CURRENT_SEASON]),
+            "prospective_coverage_note": (
+                "2026/27 bevat alleen geregistreerde eindstanden tot de jongste "
+                "ingelezen datum; België heeft nog geen 2026/27 dataset. "
+                "De parameters zijn NIET op 2026/27 gekozen."
+            ),
             "by_league": diagnostics,
             "test_warning": (
                 "Chronologische pre-match evaluatie van gedateerde "
@@ -443,6 +456,8 @@ def train(data_dir=DATA_DIR, output=MODEL_FILE):
             ),
         },
         "training_matches": len(matches),
+        "last_observed_result_date": max(match["date"] for match in matches),
+        "prospective_matches": current_count,
         "leagues": {league: state.serialize() for league, state in states.items()},
     }
     output = Path(output)
@@ -550,6 +565,8 @@ def main():
     print("Geselecteerde parameters:", result["parameters"])
     print("2024-25 VALIDATIE:", result["evaluation"]["validation"])
     print("2025-26 TEST:", result["evaluation"]["test"])
+    print("2026-27 PROSPECTIEVE TEST:", result["evaluation"]["prospective_2026_27"])
+    print("LAATSTE WERKELIJKE UITSLAG:", result["last_observed_result_date"])
     for league, report in result["evaluation"]["by_league"].items():
         print(league, report["league_name"],
               "| test:", report["test"]["matches"],

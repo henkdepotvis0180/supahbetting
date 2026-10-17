@@ -76,17 +76,25 @@ class GoalBaselineTests(unittest.TestCase):
 
     def test_real_public_domain_scores_and_seasons(self):
         data=load_matches()
-        self.assertEqual(len(data),13172)
+        self.assertEqual(len(data),13467)
         self.assertEqual({m["league"] for m in data},set(LEAGUES))
         self.assertTrue(all(m["date"]<=date(2026,10,17).isoformat() for m in data))
         self.assertTrue(all(m["hg"]>=0 and m["ag"]>=0 for m in data))
         self.assertEqual(
             sum(x["season"]=="2025-26" for x in data),2037
         )
+        self.assertEqual(
+            sum(x["season"]=="2026-27" for x in data),295
+        )
+        self.assertEqual(max(x["date"] for x in data), "2026-09-20")
+        self.assertEqual(
+            sum(x["season"]=="2026-27" and x["league"]=="nl.1" for x in data),62
+        )
+
 
     def test_trained_model_contains_real_scores_and_diagnostics(self):
         model=load_pretrained()
-        self.assertEqual(model["training_matches"],13172)
+        self.assertEqual(model["training_matches"],13467)
         self.assertEqual(model["source"]["license"],"CC0 1.0 Universal")
         self.assertFalse(model["source"]["uses_shot_xg"])
         self.assertEqual(model["parameters"]["holdout_season"],"2025-26")
@@ -94,6 +102,15 @@ class GoalBaselineTests(unittest.TestCase):
         self.assertLess(model["evaluation"]["test"]["model_logloss"],1.2)
         self.assertEqual(set(model["leagues"]),set(LEAGUES))
         self.assertTrue(model["evaluation"]["by_league"]["be.1"]["test_incomplete_or_stale"])
+        # Never select alpha or shrinkage based on the prospective current season.
+        self.assertTrue(model["parameters"]["prospective_not_used_in_selection"])
+        self.assertEqual(model["parameters"]["prospective_season"], "2026-27")
+        self.assertEqual(model["prospective_matches"], 295)
+        self.assertEqual(model["last_observed_result_date"], "2026-09-20")
+        self.assertEqual(model["evaluation"]["prospective_2026_27"]["matches"], 295)
+        self.assertEqual(
+            model["evaluation"]["by_league"]["be.1"]["prospective_2026_27"]["matches"],0
+        )
 
     def test_eredivisie_predictions_and_aliases(self):
         model=load_pretrained()
@@ -156,7 +173,7 @@ class ModelApiTests(unittest.TestCase):
         status,response=self.query("/api/trained/status")
         self.assertEqual(status,200)
         self.assertTrue(response["available"])
-        self.assertEqual(response["training_matches"],13172)
+        self.assertEqual(response["training_matches"],13467)
         self.assertNotIn("team_records",response["leagues"]["nl.1"])
         self.assertGreater(response["leagues"]["nl.1"]["teams"],10)
 
