@@ -36,3 +36,4 @@ data/research/monitor.lock
 # Afzonderlijke licentiegebonden bronagenda's en echte lokale voorspelsnapshots
 data/research/upcoming_predictions.json
 data/research/provider_forecast_log.json
+data/research/upcoming.lock
