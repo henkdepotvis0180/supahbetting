@@ -313,7 +313,7 @@ def build_upcoming(*, model=None, inventory=None, fetched=None, now=None,
                      "model_preference": argument,
                      "prediction_unavailable_reason": warning})
     rows.sort(key=lambda item: (
-        0 if item.get("model_preference", {}).get("eligible_for_highlight") else 1
+        0 if (item.get("model_preference") or {}).get("eligible_for_highlight") else 1
         if item.get("model_preference") else 2,
         -(item.get("model_preference") or {}).get("margin", 0),
         item["date"], item["home"],
