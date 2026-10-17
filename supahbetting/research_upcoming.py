@@ -193,7 +193,9 @@ def _evaluate(fixture, model, now):
     if fixture["status"] != "scheduled":
         return None, "Wedstrijd is niet meer gepland"
     if not fixture["source_confirmed"]:
-        return None, "Voorlopig archiefschema: aftrap niet recent bevestigd"
+        if fixture["provider"] == "openfootball-archive":
+            return None, "Voorlopig archiefschema: aftrap niet recent bevestigd"
+        return None, "Schema uit verouderde of onbetrouwbare broncache; eerst opnieuw verifiëren"
     if not fixture["kickoff"]:
         return None, "Geen geverifieerd tijdstip vóór aftrap"
     kickoff = _utc(fixture["kickoff"])
@@ -348,6 +350,8 @@ def fetch_provider_schedules(*, now=None, football_data=None,
                 for event in result.get("matches", []):
                     row = _normalize(event, "football-data", league, now)
                     if row:
+                        if result.get("stale") or result.get("warnings"):
+                            row["source_confirmed"] = False
                         fetched.append(row)
                 if result.get("stale") or result.get("warnings"):
                     warnings.append("football-data " + provider_code + ": bron mogelijk vertraagd")
@@ -392,6 +396,8 @@ def fetch_provider_schedules(*, now=None, football_data=None,
             for event in result.get("matches", []):
                 row = _normalize(event, "openliga", league, now)
                 if row:
+                    if result.get("stale") or result.get("warning"):
+                        row["source_confirmed"] = False
                     fetched.append(row)
         except (OSError, ValueError, RuntimeError, LiveDataUnavailable) as exc:
             warnings.append("OpenLigaDB " + provider_code + ": " + type(exc).__name__)
