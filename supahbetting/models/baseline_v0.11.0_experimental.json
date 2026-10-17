@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model_type": "online_empirical_bayes_poisson",
   "version": "0.11.0-experimental",
-  "trained_at": "2026-10-17T13:01:25+00:00",
+  "trained_at": "2026-10-17T13:01:46+00:00",
   "source": {
     "project": "openfootball/football.json",
     "older_season_provenance_file": "data/historical/provenance_pre2020.json",
