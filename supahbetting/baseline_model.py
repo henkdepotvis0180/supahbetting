@@ -29,6 +29,43 @@ FEATURES = (
 )
 CLASS_NAMES = ("home", "draw", "away")
 MAX_MODEL_BYTES = 4_000_000
+# Verified naming differences between fixture APIs and the historical CSV.
+# No approximate/fuzzy matching; the alias target must still exist in the league.
+TEAM_ALIASES = {
+    "arsenal fc": "arsenal",
+    "chelsea fc": "chelsea",
+    "liverpool fc": "liverpool",
+    "everton fc": "everton",
+    "manchester city fc": "man city",
+    "manchester united fc": "man united",
+    "tottenham hotspur fc": "tottenham",
+    "newcastle united fc": "newcastle",
+    "west ham united fc": "west ham",
+    "aston villa fc": "aston villa",
+    "crystal palace fc": "crystal palace",
+    "leicester city fc": "leicester",
+    "southampton fc": "southampton",
+    "bournemouth afc": "bournemouth",
+    "wolverhampton wanderers fc": "wolves",
+    "brighton hove albion fc": "brighton",
+    "fc bayern munchen": "bayern munich",
+    "bayern munchen": "bayern munich",
+    "borussia dortmund": "dortmund",
+    "bayer 04 leverkusen": "leverkusen",
+    "eintracht frankfurt": "ein frankfurt",
+    "1 fc koln": "fc koln",
+    "fc barcelona": "barcelona",
+    "real madrid cf": "real madrid",
+    "atletico de madrid": "ath madrid",
+    "athletic club": "ath bilbao",
+    "ac milan": "milan",
+    "inter milan": "inter",
+    "ssc napoli": "napoli",
+    "paris saint germain fc": "paris sg",
+    "olympique lyonnais": "lyon",
+    "olympique de marseille": "marseille",
+}
+
 LEAGUE_ALIASES = {
     "bl1": "D1", "bl2": "D2", "bl3": "D3",
     "pl": "E0", "la1": "SP1", "ffb1": "D-F",
@@ -159,6 +196,7 @@ def load_baseline(path=MODEL_FILE):
 def _find_teams(model, home, away, league):
     teams = model["teams"]
     hk, ak = team_key(home), team_key(away)
+    hk, ak = TEAM_ALIASES.get(hk, hk), TEAM_ALIASES.get(ak, ak)
     if not hk or not ak or hk == ak:
         raise BaselineError("Geef twee verschillende, geldige teamnamen op")
     code = LEAGUE_ALIASES.get(str(league), str(league or "")).upper()
