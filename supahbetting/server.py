@@ -22,6 +22,7 @@ from .trained_model import (TrainingError, load_pretrained, predict_trained,
 from .experimental_model import EXPERIMENTAL_FILE
 from .research_data import LOCAL as RESEARCH_LOCAL
 from .research_features import coverage_report as research_context_coverage
+from .research_readiness import audit_startup
 
 ROOT = Path(__file__).parent / "static"
 JSON_LIMIT = 24_576
@@ -143,6 +144,8 @@ def make_handler(store, live_scores=None, provider_hub=None, research_hub=None, 
             try:
                 self._check_host()
                 path = self._path()
+                if path == "/api/research/readiness":
+                    return self.reply(200, audit_startup())
                 if path == "/api/health":
                     return self.reply(200, {"status": "ok", "version": "0.8.2",
                                             "mode": "paper_only", "live_odds": False})
@@ -178,7 +181,14 @@ def make_handler(store, live_scores=None, provider_hub=None, research_hub=None, 
                         )
                     )
                 if path == "/api/matches":
-                    return self.reply(200, {"matches": store.list_matches()})
+                    # Older local SQLite files may still contain sample fixtures.
+                    # Never surface these as real games in the research interface.
+                    rows = store.list_matches()
+                    return self.reply(200, {"matches": [
+                        m for m in rows if "demo" not in str(m.get("source", "")).casefold()
+                        and not str(m.get("home_team", "")).casefold().startswith("demo ")
+                        and not str(m.get("away_team", "")).casefold().startswith("demo ")
+                    ]})
                 if path == "/api/slips":
                     return self.reply(200, {"slips": store.list_slips()})
                 if path == "/api/stats":
@@ -327,7 +337,9 @@ def make_handler(store, live_scores=None, provider_hub=None, research_hub=None, 
                     result = store.create_slip(payload.get("legs"), payload.get("stake"))
                     return self.reply(201, {"slip": result})
                 if path == "/api/demo":
-                    return self.reply(201, store.seed_demo())
+                    return self.reply(404, {
+                        "error": "Demo-wedstrijden zijn uitgeschakeld in Research v0.13"
+                    })
                 if path == "/api/model/predict":
                     if baseline is None:
                         return self.reply(503, {"error": "Geen voorgetraind model beschikbaar"})
@@ -441,7 +453,8 @@ def main():
     )
     server.daemon_threads = True
     print(f"SupahBetting v0.8.2: http://127.0.0.1:{args.port}", flush=True)
-    print("Alleen lokaal, fictieve inzetten. Druk Ctrl+C om te stoppen.", flush=True)
+    print("SupahBetting Research v0.13 · lokale vooranalyse; geen demo-wedstrijden.", flush=True)
+    print("Model en bronactualiteit worden in het dashboard gecontroleerd.", flush=True)
     try:
         server.serve_forever(poll_interval=0.2)
     except KeyboardInterrupt:
