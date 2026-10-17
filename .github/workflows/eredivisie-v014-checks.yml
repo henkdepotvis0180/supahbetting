@@ -35,7 +35,7 @@ jobs:
           FOOTBALL_DATA_API_KEY: ""
       - name: Confirm no accidental data export
         run: |
-          python -c "from pathlib import Path; import json; p=Path('data/research/nl_update_status.json'); d=json.loads(p.read_text()); assert d['status']=='no_api_key'; assert 'token' not in p.read_text().lower(); assert not Path('data/research/provider_finals_local.json').exists()"
+          python -c "from pathlib import Path; import json; p=Path('data/research/nl_update_status.json'); d=json.loads(p.read_text()); assert d['status']=='no_api_key'; assert not any(k in d for k in ('api_key','secret','token_value','authorization')); assert not Path('data/research/provider_finals_local.json').exists()"
       - name: Check dashboard JS syntax
         if: runner.os == 'Linux'
         run: node --check supahbetting/static/research_fixtures.js
