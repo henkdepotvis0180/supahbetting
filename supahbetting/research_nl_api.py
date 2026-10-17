@@ -11,6 +11,7 @@ import json
 from pathlib import Path
 
 from .external_feeds import FootballData, ProviderHTTPFailure
+from .live_scores import LiveDataUnavailable, InvalidLiveRequest
 from .research_data import LOCAL, atomic_json
 from .research_daily_results import (
     collect_verified_finals, rebuild_augmented_if_needed,
@@ -196,6 +197,18 @@ def refresh_nl_api(*, now=None, data_dir=LOCAL, provider=None, model=None,
                "rate_limited" if exc.status_code==429 else "api_http_error")
         result.update(status=state,access="denied",http_status=exc.status_code,
                       note="API-toegang geweigerd of tijdelijk beperkt; bestaande lokale modellen blijven intact.")
+    except LiveDataUnavailable:
+        result.update(
+            status="provider_unavailable",access="temporarily_unavailable",
+            note="API tijdelijk onbereikbaar of verzoek in veilige wachttijd; "
+                 "bestaande uitslagen en model blijven behouden."
+        )
+    except InvalidLiveRequest:
+        result.update(
+            status="invalid_api_route",access="local_configuration_error",
+            note="Lokale DED API-route werd niet toegestaan; "
+                 "raadpleeg de nieuwste reparatie."
+        )
     except (OSError,ValueError,RuntimeError,TrainingError,KeyError,TypeError) as exc:
         result.update(status="error",access="unknown",
                       error_type=type(exc).__name__,
@@ -218,7 +231,8 @@ def main():
         print("Eredivisie-toegang is beperkt bij dit API-abonnement; geen omzeiling.")
     return 0 if state["status"] in ("loaded","loaded_but_lagging",
                                    "no_api_key","subscription_required",
-                                   "rate_limited","stale_api_cache") else 1
+                                   "rate_limited","stale_api_cache",
+                                   "provider_unavailable") else 1
 
 
 if __name__=="__main__":
