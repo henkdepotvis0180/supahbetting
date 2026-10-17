@@ -18,6 +18,7 @@ from .research_model import (
 )
 from .research_sync import publish
 from .research_features import coverage_report
+from .research_upcoming import refresh_upcoming
 
 STATUS = LOCAL / "monitor_status.json"
 STATE = LOCAL / "monitor_state.json"
@@ -66,8 +67,12 @@ def update_status(**updates):
 
 
 def cycle(*, upload=True, full=None, delay=1.0,
-          data_dir=LOCAL, publish_fn=None, refresh_fn=None, research_fn=None):
+          data_dir=LOCAL, publish_fn=None, refresh_fn=None, research_fn=None,
+          upcoming_fn=None):
     """Testable cycle; no upload of failed/incomplete calculations."""
+    # Unit tests that inject fake historical data do not trigger real API calls.
+    should_check_fixtures = (upcoming_fn is not None or
+                             (refresh_fn is None and research_fn is None))
     data_dir = Path(data_dir)
     state_path = data_dir / "monitor_state.json"
     inventory = (refresh_fn or refresh)(
@@ -99,8 +104,28 @@ def cycle(*, upload=True, full=None, delay=1.0,
         except (OSError, ValueError, RuntimeError) as exc:
             # Auth/network failure must never discard a completed local training.
             sync_state = "failed:" + type(exc).__name__
+    future_status = "not_requested"
+    future_stats = {"confirmed_schedule_count": 0, "predicted_count": 0,
+                    "provisional_schedule_count": 0}
+    if should_check_fixtures:
+        try:
+            model = json.loads((data_dir / "candidate_model.json").read_text(encoding="utf-8"))
+            latest = (upcoming_fn or refresh_upcoming)(
+                inventory=inventory, data_dir=data_dir, model=model
+            )
+            future_stats = {
+                key: latest.get(key, 0)
+                for key in ("confirmed_schedule_count", "predicted_count",
+                            "provisional_schedule_count")
+            }
+            future_status = "updated"
+        except (OSError, ValueError, RuntimeError, KeyError, TypeError) as exc:
+            # Don't fail the historical training or GitHub sync because an
+            # additional, separately licensed fixture provider is unavailable.
+            future_status = "failed:" + type(exc).__name__
     status = {
         "state": "idle", "sync_state": sync_state,
+        "upcoming_state": future_status, **future_stats,
         "historical_matches": len(matches),
         "new_final_matches": len(inventory["new_final_match_ids"]),
         "latest_result_date": inventory["latest_result_date"],
