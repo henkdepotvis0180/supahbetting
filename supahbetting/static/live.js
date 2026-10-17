@@ -205,7 +205,7 @@ function liveRenderDetail(detail) {
     (detail.video_embed_url ? '<div class="live-detail-actions"><button id="live-load-video" class="btn btn-quiet" type="button">▶ Officiële video tonen</button></div>' +
       '<div class="live-video" id="live-video-box"></div>' : '') +
     '<div class="live-detail-actions">' +
-    (detail.status === 'scheduled' ? '<button id="live-use-analysis" type="button" class="btn btn-primary">Gebruik wedstrijd voor analyse</button>' : '') +
+    (detail.status === 'scheduled' ? '<button id="live-use-analysis" type="button" class="btn btn-primary">Gebruik wedstrijd + getraind model</button>' : '') +
     '<button id="live-reload-detail" type="button" class="btn btn-quiet">↻ Feed verversen</button></div>' +
     '<div class="live-mini-foot">Data: <a href="https://www.openligadb.de/" target="_blank" rel="noopener noreferrer">OpenLigaDB</a> · ' +
     '<a href="https://www.openligadb.de/lizenz" target="_blank" rel="noopener noreferrer">ODbL 1.0</a>. ' +
@@ -272,7 +272,7 @@ function liveClose() {
   if (liveEl('live-dialog').open) liveEl('live-dialog').close();
 }
 
-function liveUseForAnalysis(match) {
+async function liveUseForAnalysis(match) {
   const editor = liveEl('match-editor');
   const form = liveEl('match-form');
   editor.open = true;
@@ -291,6 +291,23 @@ function liveUseForAnalysis(match) {
   liveClose();
   editor.scrollIntoView({behavior:'smooth',block:'start'});
   form.elements.namedItem('home_xg').focus({preventScroll:true});
+  // Model predictions use only past scores; no odds or shot-xG are invented.
+  if (window.SupahTrained && window.SupahTrained.applyFromLive) {
+    try {
+      const result = await window.SupahTrained.applyFromLive(
+        match, liveUi.provider, match.league
+      );
+      if (typeof notify === 'function') {
+        notify('Getrainde doelpuntverwachting ingevuld (' +
+          result.confidence + '). Vul de bookmakerodds zelf in.');
+      }
+    } catch (error) {
+      if (typeof notify === 'function') {
+        notify('Team niet te koppelen aan het getrainde model: ' +
+          error.message + '. Vul de doelpuntverwachting zelf in.', true);
+      }
+    }
+  }
 }
 
 function liveInit() {
