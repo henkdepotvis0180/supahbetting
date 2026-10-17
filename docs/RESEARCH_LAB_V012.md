@@ -10,7 +10,7 @@
 4. Houd het monitorvenster geopend; de broncontrole draait iedere **6 uur**. Ctrl+C of de machine uitschakelen stopt de monitor. Er draait géén verborgen taak in de cloud.
 5. Liever één controle? Gebruik `research_refresh_once.bat`. Alleen lokaal zonder upload? `python -m supahbetting.research_monitor --once --no-upload`.
 
-De eerste start vraagt tot **11 seizoenen × 7 competities** op (maximaal 77 seizoensbestanden, inclusief 2016/17). Er is een vertraging tussen verzoeken om de open bron niet onnodig te belasten. Daarna worden normaal alleen het huidige en vorige seizoen gecontroleerd. Periodieke hercontrole van alle seizoenen kan met `python -m supahbetting.research_monitor --once --full`.
+De eerste start vraagt tot **11 seizoenen × 7 competities** op (maximaal 77 seizoensbestanden, inclusief 2016/17). Er is een vertraging tussen verzoeken om de open bron niet onnodig te belasten. Daarna worden normaal alleen het huidige en vorige seizoen gecontroleerd; **minimaal wekelijks** worden alle seizoenen opnieuw bekeken om eerder ontbrekende bestanden te vinden. Handmatige hercontrole van alle seizoenen kan met `python -m supahbetting.research_monitor --once --full`.
 
 ### Opgeslagen bestanden
 
