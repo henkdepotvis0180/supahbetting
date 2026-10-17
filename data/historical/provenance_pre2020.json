@@ -1,0 +1,153 @@
+{
+  "snapshot_date": "2026-10-17",
+  "data_license": "CC0 1.0 Universal",
+  "source_repository": "https://github.com/openfootball/football.json",
+  "reason": "Increase historical training depth, without reusing validation or test outcomes for hyperparameter selection",
+  "additional_rows": 6417,
+  "prior_rows": 13467,
+  "expected_total_rows": 19884,
+  "source_files": [
+    {
+      "league": "nl.1",
+      "season": "2018-19",
+      "accepted_final_results": 306,
+      "source_path": "2018-19/nl.1.json",
+      "source_blob_sha": "c02324489917ed33ee6b99363a3dd1cdd3fb523d"
+    },
+    {
+      "league": "nl.1",
+      "season": "2019-20",
+      "accepted_final_results": 232,
+      "source_path": "2019-20/nl.1.json",
+      "source_blob_sha": "b6fd3adf745bb11176064901afaa099033b1b28d"
+    },
+    {
+      "league": "be.1",
+      "season": "2018-19",
+      "accepted_final_results": 270,
+      "source_path": "2018-19/be.1.json",
+      "source_blob_sha": "5b88ea5ac73b548994bed17928cd365d398ef03b"
+    },
+    {
+      "league": "be.1",
+      "season": "2019-20",
+      "accepted_final_results": 232,
+      "source_path": "2019-20/be.1.json",
+      "source_blob_sha": "f0540d3653fb4c92f5c3be2c8d349c635f67f4cd"
+    },
+    {
+      "league": "en.1",
+      "season": "2017-18",
+      "accepted_final_results": 380,
+      "source_path": "2017-18/en.1.json",
+      "source_blob_sha": "c0ccb9c85503d1e24482be7c5117f6277c5a0e2f"
+    },
+    {
+      "league": "en.1",
+      "season": "2018-19",
+      "accepted_final_results": 380,
+      "source_path": "2018-19/en.1.json",
+      "source_blob_sha": "334909dfb533959f15a6d2bf08a096adcfa7d21f"
+    },
+    {
+      "league": "en.1",
+      "season": "2019-20",
+      "accepted_final_results": 380,
+      "source_path": "2019-20/en.1.json",
+      "source_blob_sha": "f1af09cf49fb2ac69d17acfe76c030c67ae9c1dc"
+    },
+    {
+      "league": "de.1",
+      "season": "2017-18",
+      "accepted_final_results": 306,
+      "source_path": "2017-18/de.1.json",
+      "source_blob_sha": "c867ab7e8bb9f09cdcb9791e2483259b2c766d70"
+    },
+    {
+      "league": "de.1",
+      "season": "2018-19",
+      "accepted_final_results": 306,
+      "source_path": "2018-19/de.1.json",
+      "source_blob_sha": "1d54f5ab4e9aa24e9b1f92b9cfaaec03f54cc54a"
+    },
+    {
+      "league": "de.1",
+      "season": "2019-20",
+      "accepted_final_results": 306,
+      "source_path": "2019-20/de.1.json",
+      "source_blob_sha": "d47c58202cbcd4eff7e8898a5b426c80be567b02"
+    },
+    {
+      "league": "es.1",
+      "season": "2017-18",
+      "accepted_final_results": 380,
+      "source_path": "2017-18/es.1.json",
+      "source_blob_sha": "cbb7495f5edc5bf830de3a23a8994f90d57ebb0c"
+    },
+    {
+      "league": "es.1",
+      "season": "2018-19",
+      "accepted_final_results": 380,
+      "source_path": "2018-19/es.1.json",
+      "source_blob_sha": "16fc0602a202a7757e1cb3dbfa47008d0aaa27af"
+    },
+    {
+      "league": "es.1",
+      "season": "2019-20",
+      "accepted_final_results": 380,
+      "source_path": "2019-20/es.1.json",
+      "source_blob_sha": "64307d5017689bbe5e099e2f1162a05a56bc47c5"
+    },
+    {
+      "league": "it.1",
+      "season": "2017-18",
+      "accepted_final_results": 380,
+      "source_path": "2017-18/it.1.json",
+      "source_blob_sha": "edd6929e64ea400c89ce81375e7fddc32fae5e0c"
+    },
+    {
+      "league": "it.1",
+      "season": "2018-19",
+      "accepted_final_results": 380,
+      "source_path": "2018-19/it.1.json",
+      "source_blob_sha": "b064ae0c6aa7bc5cc6b1732934a5549bb858e565"
+    },
+    {
+      "league": "it.1",
+      "season": "2019-20",
+      "accepted_final_results": 380,
+      "source_path": "2019-20/it.1.json",
+      "source_blob_sha": "5858e492e536affca47beb6182dea468b5ac7aff"
+    },
+    {
+      "league": "fr.1",
+      "season": "2017-18",
+      "accepted_final_results": 380,
+      "source_path": "2017-18/fr.1.json",
+      "source_blob_sha": "34a6ea823257202842e64cb45a220403a0b7a4c0"
+    },
+    {
+      "league": "fr.1",
+      "season": "2018-19",
+      "accepted_final_results": 380,
+      "source_path": "2018-19/fr.1.json",
+      "source_blob_sha": "35d23884ffc7468eafd832e54e7c2958decf0633"
+    },
+    {
+      "league": "fr.1",
+      "season": "2019-20",
+      "accepted_final_results": 279,
+      "source_path": "2019-20/fr.1.json",
+      "source_blob_sha": "bdf6dde0982880d1c51bb28e4340f325f84e8e09"
+    }
+  ],
+  "unavailable_source_files": [
+    "2017-18/nl.1.json",
+    "2017-18/be.1.json"
+  ],
+  "caveats": [
+    "These are older seasons, not fresh 2026/27 results.",
+    "Data can contain league transitions/relegations and COVID-shortened seasons.",
+    "Evaluate performance against pre-existing 2025/26 and 2026/27 holdout before promotion to main."
+  ]
+}
