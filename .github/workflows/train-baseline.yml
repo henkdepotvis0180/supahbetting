@@ -1,0 +1,94 @@
+name: Train historical baseline
+on:
+  push:
+    branches: [feature/pretrained-baseline-v0.7]
+    paths:
+      - supahbetting/baseline_model.py
+      - supahbetting/train_baseline.py
+      - .github/workflows/train-baseline.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: supahbetting-baseline-training
+  cancel-in-progress: false
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout SupahBetting
+        uses: actions/checkout@v4
+        with:
+          path: app
+          persist-credentials: true
+      - name: Checkout user's upstream historical data (no extra downloads)
+        uses: actions/checkout@v4
+        with:
+          repository: henkdepotvis0180/prediict
+          ref: main
+          path: data-source
+          sparse-checkout: |
+            data/football_matches_historical.csv
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install training-only dependencies
+        working-directory: app
+        run: python -m pip install "scikit-learn>=1.4,<2" "numpy>=1.26,<3"
+      - name: Inspect data schema and run reproducible training
+        working-directory: app
+        run: |
+          python - <<'PY'
+          import csv
+          from pathlib import Path
+          path=Path("../data-source/data/football_matches_historical.csv")
+          with path.open(encoding="utf-8-sig", newline="") as f:
+              reader=csv.reader(f)
+              print("Historische CSV-kolommen:",next(reader))
+          PY
+          python -m supahbetting.train_baseline \
+            --input ../data-source/data/football_matches_historical.csv \
+            --output models/baseline_v1.json
+      - name: Validate saved JSON model with zero-runtime-dependency scorer
+        working-directory: app
+        run: |
+          python - <<'PY'
+          import json
+          from supahbetting.baseline_model import load_baseline, predict, public_status
+          model=load_baseline()
+          state=public_status(model)
+          print(json.dumps(state, indent=2, ensure_ascii=False))
+          league,next_state=next(iter(model["teams"].items()))
+          names=list(next_state)
+          if len(names) < 2:
+              raise AssertionError("Model has fewer than 2 teams")
+          sample=predict(model,names[0],names[1],league)
+          assert abs(sum(sample["probabilities"].values())-1)<0.00001
+          assert state["metrics"]["holdout"]["games"]>=50
+          assert state["training_matches"]>=500
+          print("Sample research model probabilities",sample["probabilities"])
+          PY
+      - name: Upload versioned fitted model as CI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: supahbetting-trained-baseline-v0-7
+          path: app/models/baseline_v1.json
+          retention-days: 30
+      - name: Commit fitted model to development branch
+        working-directory: app
+        run: |
+          git config user.name "SupahBetting Model Trainer"
+          git config user.email "model-trainer@users.noreply.github.com"
+          git add models/baseline_v1.json
+          if ! git diff --cached --quiet; then
+            git commit -m "model: publish trained and chronologically evaluated v0.7 baseline"
+            git push origin HEAD:feature/pretrained-baseline-v0.7
+          else
+            echo "No trained parameter changes"
+          fi
