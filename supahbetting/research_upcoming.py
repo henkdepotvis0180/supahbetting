@@ -297,6 +297,8 @@ def build_upcoming(*, model=None, inventory=None, fetched=None, now=None,
     recent_finals = [row for row in fetched if row["status"] == "finished"]
     scheduled = {}
     for fixture in fetched:
+        if fixture.get("league") == "be.1":
+            continue  # Belgium follows after data reliability catches up.
         if fixture["status"] != "scheduled":
             continue
         key = _merge_key(fixture)
@@ -370,7 +372,7 @@ def build_upcoming(*, model=None, inventory=None, fetched=None, now=None,
 
 def fetch_provider_schedules(*, now=None, football_data=None,
                              sports_fetcher=None, openliga=None, pause=2.2):
-    """Limited API usage: 6 authenticated competition queries, 35 paced free sports requests.
+    """Limited API usage: 6 authenticated competition queries, 30 paced free sports requests.
 
     Free TheSportsDB v1 returns at most three day events and one next game,
     so NEVER claim these schedules are exhaustive.
@@ -405,6 +407,8 @@ def fetch_provider_schedules(*, now=None, football_data=None,
         for offset in (-1, 0, 1)
     ]
     for provider_code, league in PROVIDER_LEAGUES["sportsdb"].items():
+        if league == "be.1":
+            continue
         paths = [
             "/api/v1/json/123/eventsday.php?d=" + day + "&l=" + provider_code
             for day in sports_days
@@ -425,7 +429,7 @@ def fetch_provider_schedules(*, now=None, football_data=None,
                         pass
             except (OSError, ValueError, RuntimeError, LiveDataUnavailable) as exc:
                 warnings.append("TheSportsDB " + provider_code + ": " + type(exc).__name__)
-            # Five requests x seven leagues = 35. Pace across >75 seconds.
+            # Five requests x six active leagues = 30. Pace provider calls responsibly.
             if pause:
                 time.sleep(max(0.0, pause))
     openliga = openliga if openliga is not None else LiveScores()
