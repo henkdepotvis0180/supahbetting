@@ -19,6 +19,7 @@ from .fork_bridge import BridgeError
 from .baseline_model import BaselineError, load_baseline, predict as baseline_predict, public_status
 from .trained_model import (TrainingError, load_pretrained, predict_trained,
                             PROVIDER_LEAGUES)
+from .experimental_model import EXPERIMENTAL_FILE
 
 ROOT = Path(__file__).parent / "static"
 JSON_LIMIT = 24_576
@@ -54,7 +55,7 @@ def preview(store, payload):
     return {"quote": quote_slip(legs, payload.get("stake")), "legs": legs}
 
 
-def make_handler(store, live_scores=None, provider_hub=None, research_hub=None, baseline=None, trained=None):
+def make_handler(store, live_scores=None, provider_hub=None, research_hub=None, baseline=None, trained=None, experimental=None):
     """Create a request handler with isolated store, useful for integration tests."""
     live_scores = live_scores if live_scores is not None else LiveScores()
     provider_hub = provider_hub if provider_hub is not None else ProviderHub(openliga=live_scores)
@@ -70,6 +71,13 @@ def make_handler(store, live_scores=None, provider_hub=None, research_hub=None, 
             trained = load_pretrained()
         except TrainingError:
             trained = None
+    if experimental is None and EXPERIMENTAL_FILE.is_file():
+        try:
+            experimental = load_pretrained(EXPERIMENTAL_FILE)
+            if experimental.get("version") != "0.11.0-experimental":
+                experimental = None
+        except TrainingError:
+            experimental = None
     class Handler(BaseHTTPRequestHandler):
         server_version = "SupahBetting/0.8.2"
 
@@ -209,6 +217,26 @@ def make_handler(store, live_scores=None, provider_hub=None, research_hub=None, 
                             "geen actuele bookmakerprijzen en geen bewezen betvoordeel."
                         ),
                     })
+                if path == "/api/trained/experimental/status":
+                    if experimental is None:
+                        return self.reply(200, {
+                            "available": False,
+                            "message": "Experimenteel v0.11.0-model niet meegeleverd",
+                        })
+                    return self.reply(200, {
+                        "available": True,
+                        "version": experimental["version"],
+                        "training_matches": experimental["training_matches"],
+                        "last_observed_result_date": experimental["last_observed_result_date"],
+                        "parameters": experimental["parameters"],
+                        "evaluation": {
+                            "validation": experimental["evaluation"]["validation"],
+                            "test": experimental["evaluation"]["test"],
+                            "prospective_2026_27": experimental["evaluation"]["prospective_2026_27"],
+                        },
+                        "production_unchanged": True,
+                        "warning": "Retrospectieve metingen; geen bewezen bettingvoordeel.",
+                    })
                 if path == "/api/research/status":
                     return self.reply(200, research_hub.status())
                 if path == "/api/research/opportunities":
@@ -263,10 +291,14 @@ def make_handler(store, live_scores=None, provider_hub=None, research_hub=None, 
                     if len(home) > 100 or len(away) > 100 or len(league) > 30:
                         raise BaselineError("Wedstrijdgegevens zijn te lang")
                     return self.reply(200, baseline_predict(baseline, home, away, league))
-                if path == "/api/trained/predict":
+                if path in ("/api/trained/predict", "/api/trained/compare"):
                     if trained is None:
                         return self.reply(503, {
                             "error": "Historisch doelpuntenmodel ontbreekt; start train_model.bat"
+                        })
+                    if path == "/api/trained/compare" and experimental is None:
+                        return self.reply(503, {
+                            "error": "Experimenteel model ontbreekt; download de nieuwste v0.11 ZIP"
                         })
                     provider = payload.get("provider")
                     league = payload.get("league")
@@ -276,9 +308,21 @@ def make_handler(store, live_scores=None, provider_hub=None, research_hub=None, 
                         league = PROVIDER_LEAGUES[provider].get(league)
                     if not isinstance(league,str):
                         raise TrainingError("Geen getrainde competitie beschikbaar")
-                    return self.reply(200, predict_trained(
-                        trained,league,payload.get("home_team"),payload.get("away_team")
-                    ))
+                    home = payload.get("home_team")
+                    away = payload.get("away_team")
+                    original = predict_trained(trained, league, home, away)
+                    if path == "/api/trained/predict":
+                        return self.reply(200, original)
+                    challenger = predict_trained(experimental, league, home, away)
+                    return self.reply(200, {
+                        "baseline": original,
+                        "experimental": challenger,
+                        "probability_difference": {
+                            k: round(challenger["probabilities"][k] - original["probabilities"][k], 6)
+                            for k in ("home", "draw", "away")
+                        },
+                        "note": "Onderzoeksvergelijking. Productiemodel en livevoorspellingen blijven ongewijzigd.",
+                    })
                 if path == "/api/research/imports/scan":
                     return self.reply(200, research_hub.scan_inbox())
                 match = re.fullmatch(r"/api/matches/([1-9][0-9]*)/settle", path)
