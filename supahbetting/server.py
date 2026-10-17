@@ -239,6 +239,28 @@ def make_handler(store, live_scores=None, provider_hub=None, research_hub=None, 
                         "production_unchanged": True,
                         "warning": "Retrospectieve metingen; geen bewezen bettingvoordeel.",
                     })
+                if path == "/api/research/upcoming":
+                    fixture_path = RESEARCH_LOCAL / "upcoming_predictions.json"
+                    if not fixture_path.exists():
+                        return self.reply(200, {
+                            "available": False,
+                            "message": (
+                                "Nog geen speelschema geladen. Start start_research_dashboard.bat "
+                                "of voer ververs_speelschema.bat uit."
+                            ),
+                        })
+                    if fixture_path.stat().st_size > 1_500_000:
+                        return self.reply(503, {
+                            "available": False,
+                            "message": "Speelschema-bestand is ongewoon groot; controle nodig",
+                        })
+                    payload = json.loads(fixture_path.read_text(encoding="utf-8"))
+                    if not isinstance(payload, dict) or payload.get("schema_version") != 1:
+                        return self.reply(503, {
+                            "available": False,
+                            "message": "Ongeldige gegevensstructuur van speelschema",
+                        })
+                    return self.reply(200, {"available": True, **payload})
                 if path == "/api/research/data/status":
                     report_path = RESEARCH_LOCAL / "research_report.json"
                     monitor_path = RESEARCH_LOCAL / "monitor_status.json"
@@ -273,6 +295,7 @@ def make_handler(store, live_scores=None, provider_hub=None, research_hub=None, 
                     "/live.js": ("live.js", "text/javascript; charset=utf-8"),
                     "/research.js": ("research.js", "text/javascript; charset=utf-8"),
                     "/research_data.js": ("research_data.js", "text/javascript; charset=utf-8"),
+                    "/research_fixtures.js": ("research_fixtures.js", "text/javascript; charset=utf-8"),
                     "/model.js": ("model.js", "text/javascript; charset=utf-8"),
                     "/trained.js": ("trained.js", "text/javascript; charset=utf-8"),
                 }
