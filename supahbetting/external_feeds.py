@@ -28,7 +28,17 @@ MAX_RESPONSE = 1_100_000
 SPORTSDB_LEAGUES = {
     "4337": "Eredivisie",
     "4641": "Eerste Divisie",
+    "4338": "Belgische Pro League",
     "4328": "Premier League",
+    "4329": "Championship",
+    "4330": "Scottish Premiership",
+    "4331": "Bundesliga",
+    "4332": "Serie A",
+    "4334": "Ligue 1",
+    "4335": "La Liga",
+    "4346": "MLS",
+    "4351": "Braziliaanse Série A",
+    "4621": "Oostenrijkse Bundesliga",
 }
 FOOTBALL_DATA_LEAGUES = {
     "DED": "Eredivisie",
