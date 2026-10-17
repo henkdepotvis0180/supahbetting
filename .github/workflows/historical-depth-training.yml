@@ -1,0 +1,121 @@
+name: Historical-depth model training
+
+on:
+  push:
+    branches: [feature/historical-depth-v0.8.2]
+    paths:
+      - 'data/historical/**'
+      - 'supahbetting/trained_model.py'
+      - 'tests/test_trained_model.py'
+      - '.github/workflows/historical-depth-training.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: historical-depth-v0.8.2
+  cancel-in-progress: false
+
+jobs:
+  train:
+    if: github.repository == 'henkdepotvis0180/supahbetting'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Train model on audited CC0 results
+        run: |
+          python -m supahbetting.trained_model \
+            --data-dir data/historical \
+            --output supahbetting/models/baseline.json
+      - name: Produce actual versus existing model evaluation
+        run: |
+          python - <<'PY'
+          import json
+          import subprocess
+          from pathlib import Path
+          from supahbetting.trained_model import load_matches, load_pretrained
+          candidate=load_pretrained()
+          original=json.loads(subprocess.check_output(
+              ["git","show","origin/main:supahbetting/models/baseline.json"],
+              text=True
+          ))
+          assert candidate["training_matches"] == 19884
+          assert candidate["added_older_results"] == 6417
+          assert candidate["prospective_matches"] == original["prospective_matches"] == 295
+          assert candidate["evaluation"]["test"]["matches"] == 2037
+          assert candidate["last_observed_result_date"] == original["last_observed_result_date"]
+          assert candidate["parameters"]["parameter_selection"] == original["parameters"]["parameter_selection"]
+          comparisons={}
+          for part in ("validation","test","prospective_2026_27"):
+              before=original["evaluation"][part]
+              after=candidate["evaluation"][part]
+              assert before["matches"] == after["matches"]
+              comparisons[part]={
+                  "matches":after["matches"],
+                  "before_brier":before["model_brier"],
+                  "after_brier":after["model_brier"],
+                  "brier_delta":round(after["model_brier"]-before["model_brier"],6),
+                  "before_logloss":before["model_logloss"],
+                  "after_logloss":after["model_logloss"],
+                  "logloss_delta":round(after["model_logloss"]-before["model_logloss"],6),
+                  "simple_frequency_logloss":after["reference_logloss"]
+              }
+          report={
+              "source":"OpenFootball CC0-1.0",
+              "retraining_compared_to":"SupahBetting v0.8.1 Poisson score model",
+              "previous_training_matches":original["training_matches"],
+              "candidate_training_matches":candidate["training_matches"],
+              "added_older_results":candidate["added_older_results"],
+              "training_start_date":candidate["training_start_date"],
+              "last_result_date":candidate["last_observed_result_date"],
+              "parameter_selection":"2024-25 validation, not 2025/26 or 2026/27",
+              "comparison_warning":(
+                  "This is a retrospective comparison. Choosing a model based on "
+                  "holdout scores makes those holdouts selection-influenced. "
+                  "No evidence of profitability against historical bookmaker prices."
+              ),
+              "scores":comparisons,
+          }
+          out=Path("training_reports/historical_depth_2026-10-17.json")
+          out.parent.mkdir(exist_ok=True)
+          out.write_text(json.dumps(report,indent=2,ensure_ascii=False)+"\n")
+          print(json.dumps(report,indent=2))
+          PY
+      - name: Python and JS regression checks
+        run: |
+          python -m unittest discover -s tests -v
+          python -m compileall -q supahbetting
+          node --check supahbetting/static/app.js
+          node --check supahbetting/static/live.js
+          node --check supahbetting/static/research.js
+          node --check supahbetting/static/trained.js
+      - name: Publish inspectable trained model and audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: supahbetting-19884-historical-model
+          path: |
+            supahbetting/models/baseline.json
+            training_reports/historical_depth_2026-10-17.json
+            data/historical/provenance_pre2020.json
+          retention-days: 30
+      - name: Commit verified output to experimental branch only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add supahbetting/models/baseline.json training_reports/historical_depth_2026-10-17.json
+          if git diff --cached --quiet; then
+            echo "Model is unchanged."
+          else
+            git commit -m "model: train 19,884 results and audit holdout metrics [skip ci]"
+            git fetch origin "refs/heads/${GITHUB_REF_NAME}"
+            git rebase FETCH_HEAD
+            git push origin "HEAD:refs/heads/${GITHUB_REF_NAME}"
+          fi
