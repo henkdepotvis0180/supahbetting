@@ -79,12 +79,16 @@ class ResearchDataTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             first = refresh(directory=temp, full=True, fetcher=fake_fetch, delay=0, today=today)
             self.assertEqual(len(first["matches"]), 2)
-            self.assertEqual(len(first["new_final_match_ids"]), 2)
+            self.assertEqual(len(first["new_final_match_ids"]), 0)
+            self.assertTrue(first["is_initial_import"])
+            self.assertEqual(first["initial_backfill_matches"], 2)
             self.assertEqual(len(calls), 12 * len(LEAGUES))
             calls.clear()
             second = refresh(directory=temp, fetcher=fake_fetch, delay=0, today=today)
             self.assertEqual(len(calls), 2 * len(LEAGUES))
             self.assertEqual(len(second["new_final_match_ids"]), 0)
+            self.assertFalse(second["is_initial_import"])
+            self.assertEqual(second["initial_backfill_matches"], 2)
             self.assertEqual(len(second["matches"]), 2)
             self.assertEqual(second["season_range"], ["2015-16", "2026-27"])
             self.assertEqual(
