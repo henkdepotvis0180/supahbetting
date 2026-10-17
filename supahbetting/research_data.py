@@ -195,10 +195,10 @@ def refresh(*, directory=LOCAL, full=None, delay=1.0, fetcher=None, today=None):
         "is_initial_import": is_first_import,
         "first_import_at_utc": (
             datetime.now(timezone.utc).isoformat() if is_first_import
-            else old.get("first_import_at_utc")
+            else old.get("first_import_at_utc", old.get("fetched_at_utc"))
         ),
         "initial_backfill_matches": (
-            len(matches) if is_first_import else old.get("initial_backfill_matches")
+            len(matches) if is_first_import else old.get("initial_backfill_matches", len(old.get("matches", [])))
         ),
         "latest_result_date": max(m["date"] for m in matches),
         "warning": "Upstream kan achterlopen; geen bewijs van volledige dekking of actualiteit.",
