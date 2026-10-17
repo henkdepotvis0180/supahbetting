@@ -189,8 +189,10 @@ def import_local_csv(*,folder=CSV_FOLDER,output=CSV_IMPORTED,now=None):
             "last_imported_at_utc":now.isoformat(timespec="seconds"),
         }
     if not merged:
-        return {"status":"no_valid_matches","imported_matches":0,
-                "invalid_files":unreadable}
+        return {"status":"conflicts_only" if collisions else "no_valid_matches",
+                "imported_matches":0,"conflicts":len(collisions),
+                "invalid_files":unreadable,
+                "warning":"Geen betrouwbare overeenkomende eindstanden opgeslagen."}
     all_rows=sorted(merged.values(),key=lambda r:(r["date"],r["home"],r["away"]))
     payload={
         "schema_version":1,"league":"nl.1",
