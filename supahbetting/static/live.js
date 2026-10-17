@@ -49,11 +49,16 @@ function liveDisplayProviderMeta(result) {
   liveEl('live-license-link').textContent = p[2];
   liveEl('live-license-link').href = p[3];
   if (result && result.coverage_note) {
-    liveEl('live-source-note').textContent = result.coverage_note;
+    liveEl('live-source-note').textContent =
+      (liveUi.provider === 'football-data'
+        ? 'Football data provided by the Football-Data.org API. ' : '') +
+      result.coverage_note;
   } else {
     const selected = liveUi.catalog.find(item => item.id === liveUi.provider);
     liveEl('live-source-note').textContent =
-      (selected && selected.note) || 'Controleer de beschikbaarheid en vertraging bij deze databron.';
+      (liveUi.provider === 'football-data'
+        ? 'Football data provided by the Football-Data.org API. ' : '') +
+      ((selected && selected.note) || 'Controleer de beschikbaarheid en vertraging bij deze databron.');
   }
 }
 
