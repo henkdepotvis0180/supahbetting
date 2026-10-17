@@ -27,7 +27,7 @@
     <div class="notice info" role="note">
       <span aria-hidden="true">ⓘ</span>
       <div><strong>Onderzoeksomgeving — geen echte inzetten.</strong>
-        Kansen zijn gebaseerd op handmatig ingevoerde xG-waarden en een eenvoudig Poisson-model; niet op gevalideerde live voorspellingen. Quoteringen zijn handmatig en geen actuele bookmakersprijzen.
+        Het historische doelpuntenmodel is echt getraind, maar niet bewezen winstgevend. De Poisson-kansen gebruiken door jou ingevulde of door het basismodel geschatte doelpuntverwachtingen (geen officiële schot-xG). Quoteringen zijn handmatig en geen actuele bookmakersprijzen.
       </div>
     </div>
 
@@ -190,14 +190,14 @@
         </div>
 
         <details class="panel add-panel" id="match-editor">
-          <summary><span>＋ Nieuwe wedstrijd invoeren</span><span class="summary-hint">xG + quoteringen</span></summary>
+          <summary><span>＋ Nieuwe wedstrijd invoeren</span><span class="summary-hint">Goals + quoteringen</span></summary>
           <form id="match-form" class="form-grid">
             <label>Thuisteam <input name="home_team" required maxlength="70" placeholder="Bijv. Ajax" autocomplete="off"></label>
             <label>Uitteam <input name="away_team" required maxlength="70" placeholder="Bijv. PSV" autocomplete="off"></label>
             <label>Aftrap (optioneel) <input name="kickoff" type="datetime-local"></label>
             <label>Bron <input name="source" value="Handmatig" required maxlength="80"></label>
-            <label>xG thuis <input name="home_xg" type="number" min="0" max="8" step=".01" value="1.50" required></label>
-            <label>xG uit <input name="away_xg" type="number" min="0" max="8" step=".01" value="1.10" required></label>
+            <label>Verwachte goals thuis <input name="home_xg" type="number" min="0" max="8" step=".01" value="1.50" required></label>
+            <label>Verwachte goals uit <input name="away_xg" type="number" min="0" max="8" step=".01" value="1.10" required></label>
             <label>Odds thuis (1) <input name="odds_home" type="number" min="1.01" max="100" step=".01" value="2.15" required></label>
             <label>Odds gelijk (X) <input name="odds_draw" type="number" min="1.01" max="100" step=".01" value="3.35" required></label>
             <label>Odds uit (2) <input name="odds_away" type="number" min="1.01" max="100" step=".01" value="3.55" required></label>
@@ -272,7 +272,7 @@
     <section class="explain" aria-labelledby="faq-title">
       <h2 id="faq-title">Hoe lees je deze cijfers?</h2>
       <div class="explain-grid">
-        <div><strong>Modelkans</strong><p>Geschatte kans op de uitslag, berekend met een Poisson-model op basis van jouw xG-invoer.</p></div>
+        <div><strong>Modelkans</strong><p>Geschatte kans op de uitslag, berekend met een Poisson-model op basis van verwachte doelpunten.</p></div>
         <div><strong>Fair odds</strong><p>1 gedeeld door de modelkans. Een theoretische neutrale quotering, geen bookmakersaanbod.</p></div>
         <div><strong>Model-EV</strong><p>Verwacht rendement volgens het model: (kans × odds) − 1. Positief betekent niet bewezen winst.</p></div>
         <div><strong>Combinatie</strong><p>De quoteringen worden vermenigvuldigd. Je moet alle selecties goed hebben; het risico neemt doorgaans sterk toe.</p></div>
