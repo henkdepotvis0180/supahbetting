@@ -10,7 +10,7 @@
 4. Houd het monitorvenster geopend; de broncontrole draait iedere **6 uur**. Ctrl+C of de machine uitschakelen stopt de monitor. Er draait géén verborgen taak in de cloud.
 5. Liever één controle? Gebruik `research_refresh_once.bat`. Alleen lokaal zonder upload? `python -m supahbetting.research_monitor --once --no-upload`.
 
-De eerste start vraagt tot **11 seizoenen × 7 competities** op (maximaal 77 seizoensbestanden, inclusief 2016/17). Er is een vertraging tussen verzoeken om de open bron niet onnodig te belasten. Daarna worden normaal alleen het huidige en vorige seizoen gecontroleerd; **minimaal wekelijks** worden alle seizoenen opnieuw bekeken om eerder ontbrekende bestanden te vinden. Handmatige hercontrole van alle seizoenen kan met `python -m supahbetting.research_monitor --once --full`.
+Voor de complete kalenderperiode vanaf januari 2016 wordt ook de tweede helft van seizoen 2015/16 meegenomen. De eerste start vraagt tot **12 seizoenen × 7 competities** op (maximaal 84 seizoensbestanden, inclusief 2015/16 voor januari–juni 2016). Er is een vertraging tussen verzoeken om de open bron niet onnodig te belasten. Daarna worden normaal alleen het huidige en vorige seizoen gecontroleerd; **minimaal wekelijks** worden alle seizoenen opnieuw bekeken om eerder ontbrekende bestanden te vinden. Handmatige hercontrole van alle seizoenen kan met `python -m supahbetting.research_monitor --once --full`.
 
 ### Opgeslagen bestanden
 
@@ -26,7 +26,7 @@ Deze lokale bestanden en tokens worden door `.gitignore` beschermd. Bij verander
 
 De monitor bewaart data ook als GitHub tijdelijk niet bereikbaar is. Bij de volgende cyclus wordt een nog niet gepubliceerde dataset opnieuw geprobeerd. Bronfouten mogen bestaande scores niet ongemerkt verwijderen.
 
-**Dataverversing ≠ data-actualiteit.** [OpenFootball football.json](https://github.com/openfootball/football.json) genereert in 2026 wel dagelijks bronkopieën, maar schrijft expliciet dat onderliggende bronnen niet gegarandeerd dagelijks bijgewerkt worden. Het dashboard toont daarom de **daadwerkelijke nieuwste eindstand**, ontbrekende competitie-/seizoensbestanden en laatst gecontroleerde datum. De tool verzint geen ontbrekende uitslagen. Ook betekent 2016–heden uitsluitend de seizoensperiode die we proberen op te halen; het betekent niet 'alle wedstrijden ter wereld'. De eerste scope is zeven grote competities.
+**Dataverversing ≠ data-actualiteit.** [OpenFootball football.json](https://github.com/openfootball/football.json) genereert in 2026 wel dagelijks bronkopieën, maar schrijft expliciet dat onderliggende bronnen niet gegarandeerd dagelijks bijgewerkt worden. Het dashboard toont daarom de **daadwerkelijke nieuwste eindstand**, ontbrekende competitie-/seizoensbestanden en laatst gecontroleerde datum. De tool verzint geen ontbrekende uitslagen. Ook betekent 2016–heden de kalenderperiode die we proberen op te halen; het betekent niet 'alle wedstrijden ter wereld'. De eerste scope is zeven grote competities.
 
 ## Speleranalyse en veldinvloeden: wat kan wel?
 
