@@ -13,7 +13,7 @@ from pathlib import Path
 import time
 
 from .external_feeds import (
-    FootballData, fetch_bounded_json, normalize_sportsdb,
+    FootballData, ProviderHTTPFailure, fetch_bounded_json, normalize_sportsdb,
 )
 from .github_training_sync import SyncError
 from .live_scores import LiveScores, LiveDataUnavailable
@@ -406,6 +406,10 @@ def fetch_provider_schedules(*, now=None, football_data=None,
         (now.astimezone() + timedelta(days=offset)).date().isoformat()
         for offset in (-1, 0, 1)
     ]
+    # A single denied request is enough to suspend TheSportsDB for this
+    # refresh: 30 near-identical calls would only increase throttling and hide
+    # the useful HTTP status from the user. Independent providers still run.
+    sportsdb_failure = None
     for provider_code, league in PROVIDER_LEAGUES["sportsdb"].items():
         if league == "be.1":
             continue
@@ -427,11 +431,30 @@ def fetch_provider_schedules(*, now=None, football_data=None,
                             fetched.append(row)
                     except (ValueError, KeyError, TypeError):
                         pass
+            except ProviderHTTPFailure as exc:
+                sportsdb_failure = (
+                    "TheSportsDB: HTTP " + str(exc.status_code) +
+                    (" (rate limit; wacht op herstel)" if exc.status_code == 429 else
+                     " (toegang geweigerd; API of netwerk controleren)"
+                     if exc.status_code in (401, 403) else
+                     " (provider tijdelijk onbereikbaar)"
+                     if exc.status_code >= 500 else
+                     " (verzoek niet toegestaan of bronroute gewijzigd)")
+                )
+                break
             except (OSError, ValueError, RuntimeError, LiveDataUnavailable) as exc:
-                warnings.append("TheSportsDB " + provider_code + ": " + type(exc).__name__)
-            # Five requests x six active leagues = 30. Pace provider calls responsibly.
+                sportsdb_failure = (
+                    "TheSportsDB: " + type(exc).__name__ +
+                    " (tijdelijk uitgeschakeld voor deze ronde)"
+                )
+                break
+            # Five requests x six active leagues = at most 30 when healthy.
             if pause:
                 time.sleep(max(0.0, pause))
+        if sportsdb_failure:
+            warnings.append(sportsdb_failure +
+                            "; volgende ronde herprobeert, andere bronnen blijven actief")
+            break
     openliga = openliga if openliga is not None else LiveScores()
     for provider_code, league in PROVIDER_LEAGUES["openliga"].items():
         try:
