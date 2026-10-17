@@ -410,10 +410,9 @@ def build_upcoming(*, model=None, inventory=None, fetched=None, now=None,
 def fetch_provider_schedules(*, now=None, football_data=None,
                              sports_fetcher=None, openliga=None, pause=2.2,
                              knvb_fetcher=None):
-    """Limited API usage: 6 authenticated competition queries, 30 paced free sports requests.
+    """Bounded provider discovery with free-tier pacing and 429 fast-stop.
 
-    Free TheSportsDB v1 returns at most three day events and one next game,
-    so NEVER claim these schedules are exhaustive.
+    SportsDB free v1 is partial by design. Schedules are never exhaustive.
     """
     now = now or datetime.now(timezone.utc)
     fetched, warnings = [], []
@@ -433,11 +432,24 @@ def fetch_provider_schedules(*, now=None, football_data=None,
                         fetched.append(row)
                 if result.get("stale") or result.get("warnings"):
                     warnings.append("football-data " + provider_code + ": bron mogelijk vertraagd")
+            except ProviderHTTPFailure as exc:
+                warnings.append(
+                    "football-data HTTP " + str(exc.status_code) +
+                    " bij " + provider_code +
+                    "; overige football-data-verzoeken zijn in deze ronde gestopt"
+                )
+                break
             except (OSError, ValueError, RuntimeError, LiveDataUnavailable) as exc:
                 warnings.append("football-data " + provider_code + ": " + type(exc).__name__)
-            # Six maximum queries per refresh, under free 10/min allowance.
-            if pause and sports_fetcher is None:
-                time.sleep(max(0.0, pause))
+                # An unavailable service must not trigger the next five
+                # network requests within a few seconds.
+                break
+            # The free football-data.org tier permits at most 10/min.
+            # Previous code accidentally bypassed ALL pacing by testing
+            # 'sports_fetcher is None' after assigning a default lambda.
+            # Fake-provider tests pass pause=0 and never sleep.
+            if pause:
+                time.sleep(max(6.5, pause))
     else:
         warnings.append("football-data.org API-token ontbreekt: beperkt gratis TheSportsDB-schema")
     # Critical Eredivisie fallback: do not depend exclusively on TheSportsDB.
