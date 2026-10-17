@@ -16,14 +16,14 @@
   <script src="/research_fixtures.js" defer></script>
 </head>
 <body>
-  <a class="skip-link" href="#wedstrijden">Naar wedstrijden</a>
+  <a class="skip-link" href="#research-upcoming">Naar echte wedstrijden</a>
   <header class="topbar">
     <div class="topbar-inner">
       <div class="brand" aria-label="SupahBetting">
         <span class="logo" aria-hidden="true">S</span>
-        <div><strong>Supah<span>Betting</span></strong><small>Voetbalanalyse &amp; combinaties</small></div>
+        <div><strong>Supah<span>Betting</span></strong><small>Research Lab · echte wedstrijden &amp; modellen</small></div>
       </div>
-      <div class="header-right"><span class="mode-badge"><span class="status-dot"></span> PAPER MODE</span><span class="version">v0.8.2</span></div>
+      <div class="header-right"><span class="mode-badge"><span class="status-dot"></span> ONDERZOEK · GEEN DEMO</span><span class="version">v0.13</span></div>
     </div>
   </header>
   <main class="container">
@@ -34,138 +34,18 @@
       </div>
     </div>
 
-    <section class="hero" aria-labelledby="intro-title">
-      <div>
-        <div class="eyebrow">Één plek voor jouw wedstrijdanalyse</div>
-        <h1 id="intro-title">Slimmer vergelijken. <span>Helder rekenen.</span></h1>
-        <p>Bekijk per wedstrijd de modelkansen en bookmakersquoteringen. Bouw een enkelvoudige of combinatie-betslip en test fictief wat jouw strategie oplevert.</p>
-      </div>
-      <button type="button" id="demo-button" class="btn btn-quiet">Voorbeeldwedstrijden laden</button>
-    </section>
-
-    <section class="trained-model-status" aria-labelledby="baseline-heading">
-      <div class="eyebrow">EERSTE GETRAINDE 1X2 BASISMODEL · ELO/VORM</div>
-      <h2 id="baseline-heading">Historische voorspellingen</h2>
-      <div id="baseline-status" class="baseline-status" aria-live="polite">
-        Modelstatus ophalen…
-      </div>
-      <p class="muted">Open een geplande wedstrijd in het wedstrijdcentrum en klik op
-      <strong>Bereken modelkansen</strong>. Er wordt niets ingezet of automatisch
-      gecombineerd met bookmakerquoteringen.</p>
-    </section>
-
-    <section class="live-section" id="live" aria-labelledby="live-title">
-      <div class="section-header live-header">
-        <div>
-          <div class="eyebrow"><span class="live-pulse" aria-hidden="true"></span> OPENBARE WEDSTRIJDGEGEVENS</div>
-          <h2 id="live-title">Live &amp; internationale wedstrijden</h2>
-          <p>Selecteer een databron en competitie. Klik op een wedstrijd voor de stand en beschikbare gebeurtenissen. Niet elke gratis bron levert echte livegegevens.</p>
-        </div>
-        <div class="live-controls">
-          <label for="live-provider" class="sr-only">Selecteer databron</label>
-          <select id="live-provider" aria-label="Databron">
-            <option value="openliga">OpenLigaDB · scores</option>
-            <option value="sportsdb">TheSportsDB · beperkt gratis</option>
-            <option value="football-data">football-data.org · vertraagd (API-key)</option>
-          </select>
-          <label for="live-league" class="sr-only">Selecteer competitie</label>
-          <select id="live-league">
-            <option value="all">Alle beschikbare competities</option>
-            <option value="bl1">Bundesliga</option>
-            <option value="bl2">2. Bundesliga</option>
-            <option value="bl3">3. Liga</option>
-            <option value="ucl">Champions League</option>
-            <option value="dfb">DFB-Pokal</option>
-            <option value="ffb1">Frauen-Bundesliga</option>
-            <option value="la1">La Liga (community)</option>
-            <option value="pl">Premier League (community)</option>
-          </select>
-          <button type="button" id="live-refresh" class="btn btn-quiet">↻ Verversen</button>
-        </div>
-      </div>
-      <div class="live-status-row">
-        <span id="live-updated" class="muted" aria-live="polite">Livebron laden…</span>
-        <span id="live-warning" class="live-warning hidden" role="status"></span>
-      </div>
-      <p id="live-source-note" class="muted live-source-note" aria-live="polite">OpenLigaDB: gratis communitystanden en doelpunten. Andere bronnen kunnen vertraagd of beperkt zijn.</p>
-      <div id="live-list" class="live-grid" aria-live="polite">
-        <div class="empty">Wedstrijdgegevens worden opgehaald…</div>
-      </div>
-      <div class="live-foot">
-        <span>⚠ OpenLigaDB-status kan geschat zijn; TheSportsDB is beperkt en football-data.org gratis is vertraagd. Geen live bookmakerodds.</span>
-        <span>Bron: <a id="live-source-link" href="https://www.openligadb.de/" target="_blank" rel="noopener noreferrer">OpenLigaDB</a> · <a id="live-license-link" href="https://www.openligadb.de/lizenz" target="_blank" rel="noopener noreferrer">ODbL 1.0</a></span>
-      </div>
-    </section>
-
-    <dialog id="live-dialog" class="live-dialog" aria-labelledby="live-detail-title">
-      <div class="live-dialog-shell">
-        <div class="live-dialog-top">
-          <div><div class="eyebrow">WEDSTRIJDDETAILS</div><h2 id="live-detail-title">Wedstrijd</h2></div>
-          <button id="live-close" class="close-dialog" type="button" aria-label="Sluit wedstrijd">✕</button>
-        </div>
-        <div id="live-detail" aria-live="polite">
-          <p class="muted">Wedstrijd laden…</p>
-        </div>
-      </div>
-    </dialog>
-
-    <section class="stats-grid" aria-label="Overzicht resultaten">
-      <div class="stat"><span class="stat-label">Openstaande slips</span><strong id="stat-open">—</strong><small>Alleen gesimuleerd</small></div>
-      <div class="stat"><span class="stat-label">Fictieve inzet open</span><strong id="stat-exposure">—</strong><small>Nog niet afgerekend</small></div>
-      <div class="stat"><span class="stat-label">Gerealiseerd resultaat</span><strong id="stat-profit">—</strong><small>Alleen afgehandelde slips</small></div>
-      <div class="stat"><span class="stat-label">Gerealiseerde ROI</span><strong id="stat-roi">—</strong><small>Niet de verwachte model-EV</small></div>
-    </section>
-
-    <div id="message" class="toast hidden" aria-live="polite"></div>
-
-    <section class="trained-section" id="trained" aria-labelledby="trained-title">
-      <div class="section-header">
-        <div>
-          <div class="eyebrow">ECHT GETRAIND · HISTORISCHE WEDSTRIJDUITSLAGEN</div>
-          <h2 id="trained-title">Voorspellingen van ons basismodel</h2>
-          <p>Getraind op echte uitslagen van zeven Europese competities. Bekijk verwachte doelpunten en kansen op thuiswinst, gelijkspel en uitwinst, zonder bookmakerodds te verzinnen.</p>
-        </div>
-        <span class="trained-tag">Poisson · experimenteel</span>
-      </div>
-      <div id="trained-stats" class="trained-stat-grid" aria-live="polite">
-        <div class="panel trained-stat"><span>Training</span><strong>Model laden…</strong></div>
-      </div>
-      <div class="panel trained-form-panel">
-        <h3>Bereken een wedstrijd met het getrainde model</h3>
-        <p>Alleen teams die in de historische dataset voorkomen worden herkend. Er wordt geen onzekere clubmatch gegokt.</p>
-        <form id="trained-form" class="trained-form">
-          <label>Competitie
-            <select id="trained-league" required>
-              <option value="nl.1">Eredivisie</option>
-              <option value="be.1">Belgische Pro League</option>
-              <option value="en.1">Premier League</option>
-              <option value="de.1">Bundesliga</option>
-              <option value="es.1">La Liga</option>
-              <option value="it.1">Serie A</option>
-              <option value="fr.1">Ligue 1</option>
-            </select>
-          </label>
-          <label>Thuisploeg <input id="trained-home" maxlength="100" required placeholder="Bijv. Ajax" autocomplete="off"></label>
-          <label>Uitploeg <input id="trained-away" maxlength="100" required placeholder="Bijv. PSV" autocomplete="off"></label>
-          <button type="submit" class="btn btn-primary">Bereken modelkansen</button>
-        </form>
-        <div id="trained-result" class="trained-result" aria-live="polite">
-          <p>Voer een competitie en twee teams in of kies een geplande wedstrijd in het livecentrum.</p>
-        </div>
-      </div>
-      <p class="trained-note">Het model kent geen actuele opstellingen, blessures, live wedstrijdverloop of bookmakerprijzen. De geschatte doelpunten zijn **geen schotgebaseerde xG**. Het testresultaat is een nauwkeurigheidsmeting, geen bewijs voor winstgevend wedden.</p>
-    </section>
-
     <section id="research-upcoming" class="research-data-section" aria-labelledby="research-upcoming-title">
       <div class="section-header">
         <div>
           <div class="eyebrow">V0.12 ONDERZOEK · ACTUEEL SPEELSCHEMA · EXPERIMENTELE 1X2-KANSEN</div>
-          <h2 id="research-upcoming-title">Wedstrijden vandaag &amp; binnenkort</h2>
+          <h2 id="research-upcoming-title">Wedstrijden &amp; modelvoorkeuren</h2>
           <p>De bevestigde wedstrijden uit voetbal-API's worden met het aparte onderzoeksmodel doorgerekend. Niet-geverifieerde archiefschema's en onbekende clubs krijgen geen fictieve voorspelling.</p>
         </div>
         <button id="research-fixture-refresh" type="button" class="btn btn-quiet">Dashboard bijwerken</button>
       </div>
       <p class="trained-warning">Let op: de getoonde kansen zijn experimenteel, niet gebaseerd op actuele blessures of opstellingen. De huidige historische wedstrijddataset loopt achter; de API's leveren het speelschema afzonderlijk aan.</p>
+      <div id="research-readiness" class="research-data-toolbar" role="status" aria-live="polite">Model- en gegevenskwaliteit controleren…</div>
+      <p class="fixture-intro">Echte wedstrijden en de hoogste berekende modelkansen staan bovenaan. Open de onderbouwing per wedstrijd; geen verzonnen kansen.</p>
       <div class="research-fixture-filters" aria-label="Filter toekomstige wedstrijden">
         <label>Competitie
           <select id="research-fixture-league">
@@ -192,9 +72,16 @@
       <div id="research-fixture-list" class="research-fixture-list" aria-live="polite">
         <div class="panel fixture-card">Wedstrijden laden…</div>
       </div>
-      <p class="trained-note">‘Dashboard bijwerken’ leest de laatst verzamelde gegevens van je computer. Voor een nieuwe API-controle kun je <code>ververs_speelschema.bat</code> starten. De gratis speelschemabron kan wedstrijden missen; archiefwedstrijden zijn nadrukkelijk voorlopig.</p>
+      <details class="fixture-history-compact">
+        <summary><strong>Echte uitslagen gisteren en vandaag</strong> <span id="research-recent-count"></span></summary>
+        <div id="research-recent-results">Recent gespeelde wedstrijden laden…</div>
+      </details>
+      <p class="trained-note">‘Dashboard bijwerken’ leest de laatst verzamelde gegevens van je computer. Voor een nieuwe API-controle kun je <code>ververs_speelschema.bat</code> starten. Gratis sportbronnen kunnen wedstrijden missen. Er worden geen demo- of oude archiefwedstrijden als actuele wedstrijden getoond.</p>
     </section>
 
+    <details class="research-advanced-panel" id="research-technical">
+      <summary>Verdieping: datakwaliteit, modeltests en historie</summary>
+      <div class="research-advanced-content">
     <section id="research-data" class="research-data-section" aria-labelledby="research-data-title">
       <div class="section-header">
         <div>
@@ -366,6 +253,135 @@
         <div><strong>Combinatie</strong><p>De quoteringen worden vermenigvuldigd. Je moet alle selecties goed hebben; het risico neemt doorgaans sterk toe.</p></div>
       </div>
     </section>
+      </div>
+    </details>
+    <details class="research-advanced-panel" id="research-legacy">
+      <summary>Overige tools: livebron, losse berekening en paperbets</summary>
+      <div class="research-advanced-content">
+    <section class="hero" aria-labelledby="intro-title">
+      <div>
+        <div class="eyebrow">Één plek voor jouw wedstrijdanalyse</div>
+        <h1 id="intro-title">Slimmer vergelijken. <span>Helder rekenen.</span></h1>
+        <p>Bekijk per wedstrijd de modelkansen en bookmakersquoteringen. Bouw een enkelvoudige of combinatie-betslip en test fictief wat jouw strategie oplevert.</p>
+      </div>
+      
+    </section>
+
+    <section class="trained-model-status" aria-labelledby="baseline-heading">
+      <div class="eyebrow">EERSTE GETRAINDE 1X2 BASISMODEL · ELO/VORM</div>
+      <h2 id="baseline-heading">Historische voorspellingen</h2>
+      <div id="baseline-status" class="baseline-status" aria-live="polite">
+        Modelstatus ophalen…
+      </div>
+      <p class="muted">Open een geplande wedstrijd in het wedstrijdcentrum en klik op
+      <strong>Bereken modelkansen</strong>. Er wordt niets ingezet of automatisch
+      gecombineerd met bookmakerquoteringen.</p>
+    </section>
+
+    <section class="live-section" id="live" aria-labelledby="live-title">
+      <div class="section-header live-header">
+        <div>
+          <div class="eyebrow"><span class="live-pulse" aria-hidden="true"></span> OPENBARE WEDSTRIJDGEGEVENS</div>
+          <h2 id="live-title">Live &amp; internationale wedstrijden</h2>
+          <p>Selecteer een databron en competitie. Klik op een wedstrijd voor de stand en beschikbare gebeurtenissen. Niet elke gratis bron levert echte livegegevens.</p>
+        </div>
+        <div class="live-controls">
+          <label for="live-provider" class="sr-only">Selecteer databron</label>
+          <select id="live-provider" aria-label="Databron">
+            <option value="openliga">OpenLigaDB · scores</option>
+            <option value="sportsdb">TheSportsDB · beperkt gratis</option>
+            <option value="football-data">football-data.org · vertraagd (API-key)</option>
+          </select>
+          <label for="live-league" class="sr-only">Selecteer competitie</label>
+          <select id="live-league">
+            <option value="all">Alle beschikbare competities</option>
+            <option value="bl1">Bundesliga</option>
+            <option value="bl2">2. Bundesliga</option>
+            <option value="bl3">3. Liga</option>
+            <option value="ucl">Champions League</option>
+            <option value="dfb">DFB-Pokal</option>
+            <option value="ffb1">Frauen-Bundesliga</option>
+            <option value="la1">La Liga (community)</option>
+            <option value="pl">Premier League (community)</option>
+          </select>
+          <button type="button" id="live-refresh" class="btn btn-quiet">↻ Verversen</button>
+        </div>
+      </div>
+      <div class="live-status-row">
+        <span id="live-updated" class="muted" aria-live="polite">Livebron laden…</span>
+        <span id="live-warning" class="live-warning hidden" role="status"></span>
+      </div>
+      <p id="live-source-note" class="muted live-source-note" aria-live="polite">OpenLigaDB: gratis communitystanden en doelpunten. Andere bronnen kunnen vertraagd of beperkt zijn.</p>
+      <div id="live-list" class="live-grid" aria-live="polite">
+        <div class="empty">Wedstrijdgegevens worden opgehaald…</div>
+      </div>
+      <div class="live-foot">
+        <span>⚠ OpenLigaDB-status kan geschat zijn; TheSportsDB is beperkt en football-data.org gratis is vertraagd. Geen live bookmakerodds.</span>
+        <span>Bron: <a id="live-source-link" href="https://www.openligadb.de/" target="_blank" rel="noopener noreferrer">OpenLigaDB</a> · <a id="live-license-link" href="https://www.openligadb.de/lizenz" target="_blank" rel="noopener noreferrer">ODbL 1.0</a></span>
+      </div>
+    </section>
+
+    <dialog id="live-dialog" class="live-dialog" aria-labelledby="live-detail-title">
+      <div class="live-dialog-shell">
+        <div class="live-dialog-top">
+          <div><div class="eyebrow">WEDSTRIJDDETAILS</div><h2 id="live-detail-title">Wedstrijd</h2></div>
+          <button id="live-close" class="close-dialog" type="button" aria-label="Sluit wedstrijd">✕</button>
+        </div>
+        <div id="live-detail" aria-live="polite">
+          <p class="muted">Wedstrijd laden…</p>
+        </div>
+      </div>
+    </dialog>
+
+    <section class="stats-grid" aria-label="Overzicht resultaten">
+      <div class="stat"><span class="stat-label">Openstaande slips</span><strong id="stat-open">—</strong><small>Alleen gesimuleerd</small></div>
+      <div class="stat"><span class="stat-label">Fictieve inzet open</span><strong id="stat-exposure">—</strong><small>Nog niet afgerekend</small></div>
+      <div class="stat"><span class="stat-label">Gerealiseerd resultaat</span><strong id="stat-profit">—</strong><small>Alleen afgehandelde slips</small></div>
+      <div class="stat"><span class="stat-label">Gerealiseerde ROI</span><strong id="stat-roi">—</strong><small>Niet de verwachte model-EV</small></div>
+    </section>
+
+    <div id="message" class="toast hidden" aria-live="polite"></div>
+
+    <section class="trained-section" id="trained" aria-labelledby="trained-title">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">ECHT GETRAIND · HISTORISCHE WEDSTRIJDUITSLAGEN</div>
+          <h2 id="trained-title">Voorspellingen van ons basismodel</h2>
+          <p>Getraind op echte uitslagen van zeven Europese competities. Bekijk verwachte doelpunten en kansen op thuiswinst, gelijkspel en uitwinst, zonder bookmakerodds te verzinnen.</p>
+        </div>
+        <span class="trained-tag">Poisson · experimenteel</span>
+      </div>
+      <div id="trained-stats" class="trained-stat-grid" aria-live="polite">
+        <div class="panel trained-stat"><span>Training</span><strong>Model laden…</strong></div>
+      </div>
+      <div class="panel trained-form-panel">
+        <h3>Bereken een wedstrijd met het getrainde model</h3>
+        <p>Alleen teams die in de historische dataset voorkomen worden herkend. Er wordt geen onzekere clubmatch gegokt.</p>
+        <form id="trained-form" class="trained-form">
+          <label>Competitie
+            <select id="trained-league" required>
+              <option value="nl.1">Eredivisie</option>
+              <option value="be.1">Belgische Pro League</option>
+              <option value="en.1">Premier League</option>
+              <option value="de.1">Bundesliga</option>
+              <option value="es.1">La Liga</option>
+              <option value="it.1">Serie A</option>
+              <option value="fr.1">Ligue 1</option>
+            </select>
+          </label>
+          <label>Thuisploeg <input id="trained-home" maxlength="100" required placeholder="Bijv. Ajax" autocomplete="off"></label>
+          <label>Uitploeg <input id="trained-away" maxlength="100" required placeholder="Bijv. PSV" autocomplete="off"></label>
+          <button type="submit" class="btn btn-primary">Bereken modelkansen</button>
+        </form>
+        <div id="trained-result" class="trained-result" aria-live="polite">
+          <p>Voer een competitie en twee teams in of kies een geplande wedstrijd in het livecentrum.</p>
+        </div>
+      </div>
+      <p class="trained-note">Het model kent geen actuele opstellingen, blessures, live wedstrijdverloop of bookmakerprijzen. De geschatte doelpunten zijn **geen schotgebaseerde xG**. Het testresultaat is een nauwkeurigheidsmeting, geen bewijs voor winstgevend wedden.</p>
+    </section>
+
+      </div>
+    </details>
   </main>
   <footer class="footer">SupahBetting · Lokale onderzoekssoftware · Geen gokadvies · Geen account- of bookmakerkoppeling</footer>
 </body>
