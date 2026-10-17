@@ -1,0 +1,34 @@
+{
+  "experiment": "dixon_coles_low_score_correlation_vs_independent_poisson",
+  "alpha": 0.04,
+  "prior_matches": 3,
+  "rho": -0.13,
+  "evaluated_utc": "2026-10-17T15:06:33+00:00",
+  "periods": {
+    "2024-25": {
+      "matches": 2351,
+      "poisson_logloss": 0.997855,
+      "dixon_coles_logloss": 0.994326,
+      "poisson_brier": 0.595414,
+      "dixon_coles_brier": 0.593864
+    },
+    "2025-26": {
+      "matches": 2037,
+      "poisson_logloss": 0.97697,
+      "dixon_coles_logloss": 0.979837,
+      "poisson_brier": 0.579549,
+      "dixon_coles_brier": 0.581539
+    },
+    "2026-27": {
+      "matches": 295,
+      "poisson_logloss": 0.977366,
+      "dixon_coles_logloss": 0.980568,
+      "poisson_brier": 0.579891,
+      "dixon_coles_brier": 0.582234
+    }
+  },
+  "selection_policy": "NO_MODEL_FUSION_OR_PROMOTION",
+  "external_candidate_reference": "https://github.com/Hicruben/theopenmodel",
+  "license_note": "External repository MIT code / CC BY 4.0 forecast data; not imported as training truth.",
+  "decision": "Uitsluitend retrospectieve vergelijking. Ongezien toekomstige voorspellingen en verantwoord bron-/licentieonderzoek zijn nog nodig."
+}
