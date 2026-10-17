@@ -46,7 +46,14 @@ _PROVIDER_COOLDOWN_LOCK = threading.Lock()
 
 def provider_cooldown_seconds(provider):
     with _PROVIDER_COOLDOWN_LOCK:
-        return max(0, int(_PROVIDER_COOLDOWN.get(provider, 0) - time.monotonic()))
+        state = _PROVIDER_COOLDOWN.get(provider)
+        return max(0, int(state[0] - time.monotonic())) if state else 0
+
+
+def provider_cooldown_status(provider):
+    with _PROVIDER_COOLDOWN_LOCK:
+        state = _PROVIDER_COOLDOWN.get(provider)
+        return state[1] if state and state[0] > time.monotonic() else None
 
 
 def _suspend_provider(provider, http_error):
@@ -61,10 +68,10 @@ def _suspend_provider(provider, http_error):
     base = 300 if http_error.code == 429 else 1800 if http_error.code in (401, 403) else 0
     if base:
         with _PROVIDER_COOLDOWN_LOCK:
-            _PROVIDER_COOLDOWN[provider] = max(
-                _PROVIDER_COOLDOWN.get(provider, 0),
-                time.monotonic() + max(base, retry_after),
-            )
+            existing = _PROVIDER_COOLDOWN.get(provider)
+            until = time.monotonic() + max(base, retry_after)
+            if existing is None or until >= existing[0]:
+                _PROVIDER_COOLDOWN[provider] = (until, http_error.code)
 
 
 MAX_RESPONSE = 1_100_000
@@ -146,7 +153,7 @@ def fetch_bounded_json(path, provider, token=""):
     if remaining:
         # A local cooldown has the same status as the throttling event that
         # caused it. It is not an additional HTTP call to the provider.
-        raise ProviderHTTPFailure(provider, 429 if remaining < 1000 else 403)
+        raise ProviderHTTPFailure(provider, provider_cooldown_status(provider) or 429)
     request = Request(host + path, headers=headers, method="GET")
     try:
         with build_opener(_NoRedirects()).open(request, timeout=8) as response:
