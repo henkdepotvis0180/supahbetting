@@ -1,0 +1,1498 @@
+{
+  "schema_version": 1,
+  "model_type": "online_empirical_bayes_poisson",
+  "version": "0.7.0",
+  "trained_at": "2026-10-17T09:38:40+00:00",
+  "source": {
+    "project": "openfootball/football.json",
+    "homepage": "https://github.com/openfootball/football.json",
+    "license": "CC0 1.0 Universal",
+    "source_is_real_historical_results": true,
+    "uses_bookmaker_odds": false,
+    "uses_shot_xg": false
+  },
+  "parameters": {
+    "alpha": 0.07,
+    "prior_matches": 9,
+    "goal_model": "independent Poisson",
+    "parameter_selection": "2024-25 log-loss only",
+    "holdout_season": "2025-26"
+  },
+  "evaluation": {
+    "validation": {
+      "matches": 2351,
+      "model_brier": 0.5983,
+      "model_logloss": 1.00188,
+      "reference_brier": 0.6527,
+      "reference_logloss": 1.07789,
+      "beats_reference_logloss": true
+    },
+    "test": {
+      "matches": 2037,
+      "model_brier": 0.58474,
+      "model_logloss": 0.98432,
+      "reference_brier": 0.63649,
+      "reference_logloss": 1.05357,
+      "beats_reference_logloss": true
+    },
+    "by_league": {
+      "nl.1": {
+        "league_name": "Eredivisie",
+        "season_matches": {
+          "2020-21": 306,
+          "2021-22": 306,
+          "2022-23": 306,
+          "2023-24": 306,
+          "2024-25": 306,
+          "2025-26": 295
+        },
+        "validation": {
+          "matches": 306,
+          "model_brier": 0.58598,
+          "model_logloss": 0.98494,
+          "reference_brier": 0.64601,
+          "reference_logloss": 1.06887,
+          "beats_reference_logloss": true
+        },
+        "test": {
+          "matches": 295,
+          "model_brier": 0.58411,
+          "model_logloss": 0.98485,
+          "reference_brier": 0.64229,
+          "reference_logloss": 1.06278,
+          "beats_reference_logloss": true
+        },
+        "test_coverage_vs_previous_season": 0.964,
+        "test_incomplete_or_stale": true
+      },
+      "be.1": {
+        "league_name": "Belgische Pro League",
+        "season_matches": {
+          "2020-21": 330,
+          "2021-22": 0,
+          "2022-23": 0,
+          "2023-24": 0,
+          "2024-25": 313,
+          "2025-26": 104
+        },
+        "validation": {
+          "matches": 313,
+          "model_brier": 0.61732,
+          "model_logloss": 1.03081,
+          "reference_brier": 0.65776,
+          "reference_logloss": 1.08697,
+          "beats_reference_logloss": true
+        },
+        "test": {
+          "matches": 104,
+          "model_brier": 0.61291,
+          "model_logloss": 1.02126,
+          "reference_brier": 0.65108,
+          "reference_logloss": 1.07628,
+          "beats_reference_logloss": true
+        },
+        "test_coverage_vs_previous_season": 0.332,
+        "test_incomplete_or_stale": true
+      },
+      "en.1": {
+        "league_name": "Premier League",
+        "season_matches": {
+          "2020-21": 380,
+          "2021-22": 380,
+          "2022-23": 380,
+          "2023-24": 380,
+          "2024-25": 380,
+          "2025-26": 353
+        },
+        "validation": {
+          "matches": 380,
+          "model_brier": 0.59631,
+          "model_logloss": 0.99728,
+          "reference_brier": 0.65461,
+          "reference_logloss": 1.07988,
+          "beats_reference_logloss": true
+        },
+        "test": {
+          "matches": 353,
+          "model_brier": 0.60093,
+          "model_logloss": 1.00485,
+          "reference_brier": 0.63876,
+          "reference_logloss": 1.05631,
+          "beats_reference_logloss": true
+        },
+        "test_coverage_vs_previous_season": 0.929,
+        "test_incomplete_or_stale": true
+      },
+      "de.1": {
+        "league_name": "Bundesliga",
+        "season_matches": {
+          "2020-21": 306,
+          "2021-22": 306,
+          "2022-23": 306,
+          "2023-24": 306,
+          "2024-25": 306,
+          "2025-26": 294
+        },
+        "validation": {
+          "matches": 306,
+          "model_brier": 0.63801,
+          "model_logloss": 1.06217,
+          "reference_brier": 0.66378,
+          "reference_logloss": 1.09271,
+          "beats_reference_logloss": true
+        },
+        "test": {
+          "matches": 294,
+          "model_brier": 0.57192,
+          "model_logloss": 0.97031,
+          "reference_brier": 0.63974,
+          "reference_logloss": 1.05814,
+          "beats_reference_logloss": true
+        },
+        "test_coverage_vs_previous_season": 0.961,
+        "test_incomplete_or_stale": true
+      },
+      "es.1": {
+        "league_name": "La Liga",
+        "season_matches": {
+          "2020-21": 380,
+          "2021-22": 380,
+          "2022-23": 380,
+          "2023-24": 380,
+          "2024-25": 370,
+          "2025-26": 365
+        },
+        "validation": {
+          "matches": 370,
+          "model_brier": 0.58881,
+          "model_logloss": 0.98876,
+          "reference_brier": 0.64752,
+          "reference_logloss": 1.071,
+          "beats_reference_logloss": true
+        },
+        "test": {
+          "matches": 365,
+          "model_brier": 0.58529,
+          "model_logloss": 0.98694,
+          "reference_brier": 0.62486,
+          "reference_logloss": 1.03879,
+          "beats_reference_logloss": true
+        },
+        "test_coverage_vs_previous_season": 0.986,
+        "test_incomplete_or_stale": false
+      },
+      "it.1": {
+        "league_name": "Serie A",
+        "season_matches": {
+          "2020-21": 380,
+          "2021-22": 380,
+          "2022-23": 380,
+          "2023-24": 380,
+          "2024-25": 370,
+          "2025-26": 344
+        },
+        "validation": {
+          "matches": 370,
+          "model_brier": 0.5889,
+          "model_logloss": 0.9849,
+          "reference_brier": 0.66053,
+          "reference_logloss": 1.08989,
+          "beats_reference_logloss": true
+        },
+        "test": {
+          "matches": 344,
+          "model_brier": 0.5766,
+          "model_logloss": 0.97225,
+          "reference_brier": 0.64312,
+          "reference_logloss": 1.06186,
+          "beats_reference_logloss": true
+        },
+        "test_coverage_vs_previous_season": 0.93,
+        "test_incomplete_or_stale": true
+      },
+      "fr.1": {
+        "league_name": "Ligue 1",
+        "season_matches": {
+          "2020-21": 380,
+          "2021-22": 380,
+          "2022-23": 380,
+          "2023-24": 306,
+          "2024-25": 306,
+          "2025-26": 282
+        },
+        "validation": {
+          "matches": 306,
+          "model_brier": 0.57678,
+          "model_logloss": 0.97105,
+          "reference_brier": 0.63753,
+          "reference_logloss": 1.05416,
+          "beats_reference_logloss": true
+        },
+        "test": {
+          "matches": 282,
+          "model_brier": 0.57731,
+          "model_logloss": 0.97038,
+          "reference_brier": 0.62575,
+          "reference_logloss": 1.03639,
+          "beats_reference_logloss": true
+        },
+        "test_coverage_vs_previous_season": 0.922,
+        "test_incomplete_or_stale": true
+      }
+    },
+    "test_warning": "Chronologische pre-match evaluatie van gedateerde wedstrijden uit 2025-26; sommige competities hebben onvolledige resultaten. Geen onafhankelijk bewijs van rendement ten opzichte van bookmakerprijzen."
+  },
+  "training_matches": 13172,
+  "leagues": {
+    "nl.1": {
+      "home_goal_mean": 1.695538,
+      "away_goal_mean": 1.359265,
+      "training_matches": 1825,
+      "last_result_date": "2026-05-17",
+      "teams": {
+        "ADO Den Haag": {
+          "attack": 1.26453119,
+          "defence": 1.4704735,
+          "appearances": 5.71438,
+          "matches_total": 34
+        },
+        "AFC Ajax": {
+          "attack": 1.895702,
+          "defence": 1.25389866,
+          "appearances": 97.99978,
+          "matches_total": 202
+        },
+        "AZ": {
+          "attack": 1.74429135,
+          "defence": 1.48605059,
+          "appearances": 73.46,
+          "matches_total": 101
+        },
+        "AZ Alkmaar": {
+          "attack": 1.55793574,
+          "defence": 1.20308751,
+          "appearances": 25.53978,
+          "matches_total": 102
+        },
+        "Almere City FC": {
+          "attack": 0.94452166,
+          "defence": 1.59066532,
+          "appearances": 40.46,
+          "matches_total": 68
+        },
+        "FC Emmen": {
+          "attack": 1.2551492,
+          "defence": 1.5790789,
+          "appearances": 17.37638,
+          "matches_total": 68
+        },
+        "FC Groningen": {
+          "attack": 1.60289961,
+          "defence": 1.44462838,
+          "appearances": 81.33978,
+          "matches_total": 168
+        },
+        "FC Twente": {
+          "attack": 1.64183891,
+          "defence": 1.16745215,
+          "appearances": 25.53978,
+          "matches_total": 102
+        },
+        "FC Twente '65": {
+          "attack": 1.90422281,
+          "defence": 1.34703708,
+          "appearances": 72.46,
+          "matches_total": 100
+        },
+        "FC Utrecht": {
+          "attack": 1.73251799,
+          "defence": 1.248291,
+          "appearances": 98.99978,
+          "matches_total": 203
+        },
+        "FC Volendam": {
+          "attack": 1.0084677,
+          "defence": 1.65906931,
+          "appearances": 61.322,
+          "matches_total": 101
+        },
+        "Feyenoord": {
+          "attack": 1.67943549,
+          "defence": 1.16503469,
+          "appearances": 25.53978,
+          "matches_total": 102
+        },
+        "Feyenoord Rotterdam": {
+          "attack": 1.89770973,
+          "defence": 1.27467522,
+          "appearances": 73.46,
+          "matches_total": 101
+        },
+        "Fortuna Sittard": {
+          "attack": 1.33813817,
+          "defence": 1.88916242,
+          "appearances": 99.99978,
+          "matches_total": 204
+        },
+        "Go Ahead Eagles": {
+          "attack": 1.76809841,
+          "defence": 1.67251953,
+          "appearances": 92.2854,
+          "matches_total": 168
+        },
+        "Heracles Almelo": {
+          "attack": 0.84108888,
+          "defence": 2.44647507,
+          "appearances": 87.33778,
+          "matches_total": 169
+        },
+        "NAC Breda": {
+          "attack": 1.06114526,
+          "defence": 2.00500763,
+          "appearances": 54.8,
+          "matches_total": 65
+        },
+        "NEC": {
+          "attack": 1.92450317,
+          "defence": 1.41291566,
+          "appearances": 74.46,
+          "matches_total": 102
+        },
+        "NEC Nijmegen": {
+          "attack": 1.27310686,
+          "defence": 1.4300442,
+          "appearances": 19.8254,
+          "matches_total": 68
+        },
+        "PEC Zwolle": {
+          "attack": 1.31416788,
+          "defence": 2.1623881,
+          "appearances": 87.33778,
+          "matches_total": 169
+        },
+        "PSV": {
+          "attack": 2.99118199,
+          "defence": 1.36928671,
+          "appearances": 74.46,
+          "matches_total": 102
+        },
+        "PSV Eindhoven": {
+          "attack": 1.72352081,
+          "defence": 1.26354805,
+          "appearances": 25.53978,
+          "matches_total": 102
+        },
+        "RKC Waalwijk": {
+          "attack": 1.42544823,
+          "defence": 1.89878605,
+          "appearances": 65.99978,
+          "matches_total": 170
+        },
+        "SBV Excelsior": {
+          "attack": 1.57766472,
+          "defence": 1.60250329,
+          "appearances": 61.322,
+          "matches_total": 101
+        },
+        "SBV Vitesse": {
+          "attack": 1.20317123,
+          "defence": 1.73933189,
+          "appearances": 16.66,
+          "matches_total": 34
+        },
+        "SC Cambuur": {
+          "attack": 1.19932192,
+          "defence": 1.63803531,
+          "appearances": 19.8254,
+          "matches_total": 68
+        },
+        "SC Heerenveen": {
+          "attack": 1.84293738,
+          "defence": 1.4935421,
+          "appearances": 72.46,
+          "matches_total": 100
+        },
+        "Sparta Rotterdam": {
+          "attack": 1.19749252,
+          "defence": 1.97664392,
+          "appearances": 98.99978,
+          "matches_total": 203
+        },
+        "Telstar 1963": {
+          "attack": 1.66588411,
+          "defence": 1.51918968,
+          "appearances": 33.0,
+          "matches_total": 33
+        },
+        "VVV-Venlo": {
+          "attack": 1.27901814,
+          "defence": 1.54638398,
+          "appearances": 5.71438,
+          "matches_total": 34
+        },
+        "Vitesse": {
+          "attack": 1.39236273,
+          "defence": 1.24712617,
+          "appearances": 25.53978,
+          "matches_total": 102
+        },
+        "Willem II": {
+          "attack": 1.25865627,
+          "defence": 1.38179068,
+          "appearances": 13.87778,
+          "matches_total": 68
+        },
+        "Willem II Tilburg": {
+          "attack": 1.04774161,
+          "defence": 1.63364692,
+          "appearances": 23.8,
+          "matches_total": 34
+        },
+        "sc Heerenveen": {
+          "attack": 1.38231173,
+          "defence": 1.44832281,
+          "appearances": 25.53978,
+          "matches_total": 102
+        }
+      }
+    },
+    "be.1": {
+      "home_goal_mean": 1.562273,
+      "away_goal_mean": 1.276179,
+      "training_matches": 747,
+      "last_result_date": "2025-11-02",
+      "teams": {
+        "Cercle Brugge": {
+          "attack": 1.28546467,
+          "defence": 1.55087871,
+          "appearances": 43.91438,
+          "matches_total": 83
+        },
+        "Club Brugge KV": {
+          "attack": 1.72845341,
+          "defence": 0.95136745,
+          "appearances": 47.7228,
+          "matches_total": 93
+        },
+        "FCV Dender EH": {
+          "attack": 0.89674953,
+          "defence": 1.69735124,
+          "appearances": 41.0,
+          "matches_total": 53
+        },
+        "K Beerschot VA": {
+          "attack": 1.24496262,
+          "defence": 1.61431295,
+          "appearances": 30.91438,
+          "matches_total": 70
+        },
+        "KAA Gent": {
+          "attack": 1.45592472,
+          "defence": 1.79487778,
+          "appearances": 47.7228,
+          "matches_total": 93
+        },
+        "KAS Eupen": {
+          "attack": 1.34217115,
+          "defence": 1.38575625,
+          "appearances": 5.71438,
+          "matches_total": 34
+        },
+        "KRC Genk": {
+          "attack": 1.41764979,
+          "defence": 1.19474281,
+          "appearances": 47.7228,
+          "matches_total": 93
+        },
+        "KV Kortrijk": {
+          "attack": 1.39181037,
+          "defence": 1.51961229,
+          "appearances": 30.91438,
+          "matches_total": 70
+        },
+        "KV Mechelen": {
+          "attack": 1.40691187,
+          "defence": 1.36191803,
+          "appearances": 47.7228,
+          "matches_total": 93
+        },
+        "KV Oostende": {
+          "attack": 1.4018546,
+          "defence": 1.38721154,
+          "appearances": 6.7228,
+          "matches_total": 40
+        },
+        "KVC Westerlo": {
+          "attack": 1.44857798,
+          "defence": 1.50354766,
+          "appearances": 41.0,
+          "matches_total": 53
+        },
+        "Oud-Heverlee Leuven": {
+          "attack": 1.08986333,
+          "defence": 1.46138874,
+          "appearances": 46.71438,
+          "matches_total": 87
+        },
+        "RAAL La Louviére": {
+          "attack": 1.0200931,
+          "defence": 0.99088541,
+          "appearances": 13.0,
+          "matches_total": 13
+        },
+        "RSC Anderlecht": {
+          "attack": 1.42001105,
+          "defence": 1.05702723,
+          "appearances": 47.7228,
+          "matches_total": 93
+        },
+        "Royal Antwerp FC": {
+          "attack": 0.84704146,
+          "defence": 1.25923753,
+          "appearances": 48.4228,
+          "matches_total": 94
+        },
+        "Royal Excel Mouscron": {
+          "attack": 1.29249668,
+          "defence": 1.39207949,
+          "appearances": 5.71438,
+          "matches_total": 34
+        },
+        "SV Zulte Waregem": {
+          "attack": 1.45452821,
+          "defence": 1.46698262,
+          "appearances": 18.71438,
+          "matches_total": 47
+        },
+        "Sint-Truidense VV": {
+          "attack": 1.35949188,
+          "defence": 1.40813346,
+          "appearances": 43.91438,
+          "matches_total": 83
+        },
+        "Sporting Charleroi": {
+          "attack": 1.32682176,
+          "defence": 1.46319585,
+          "appearances": 47.41438,
+          "matches_total": 88
+        },
+        "Standard Liège": {
+          "attack": 0.94679734,
+          "defence": 1.298198,
+          "appearances": 47.7228,
+          "matches_total": 93
+        },
+        "Union Saint-Gilloise": {
+          "attack": 2.01960359,
+          "defence": 0.64506019,
+          "appearances": 41.0,
+          "matches_total": 53
+        },
+        "Waasland-Beveren": {
+          "attack": 1.33477395,
+          "defence": 1.43185361,
+          "appearances": 5.71438,
+          "matches_total": 34
+        }
+      }
+    },
+    "en.1": {
+      "home_goal_mean": 1.572653,
+      "away_goal_mean": 1.341792,
+      "training_matches": 2253,
+      "last_result_date": "2026-05-24",
+      "teams": {
+        "AFC Bournemouth": {
+          "attack": 1.68862076,
+          "defence": 1.33960211,
+          "appearances": 91.254,
+          "matches_total": 147
+        },
+        "Arsenal FC": {
+          "attack": 1.85528855,
+          "defence": 0.76800997,
+          "appearances": 109.76446,
+          "matches_total": 226
+        },
+        "Aston Villa FC": {
+          "attack": 1.65339221,
+          "defence": 1.51128159,
+          "appearances": 108.76446,
+          "matches_total": 225
+        },
+        "Brentford FC": {
+          "attack": 1.62743248,
+          "defence": 1.56580314,
+          "appearances": 101.3778,
+          "matches_total": 186
+        },
+        "Brighton & Hove Albion FC": {
+          "attack": 1.38845938,
+          "defence": 1.23163737,
+          "appearances": 109.76446,
+          "matches_total": 226
+        },
+        "Burnley FC": {
+          "attack": 1.00323188,
+          "defence": 2.04221842,
+          "appearances": 70.13046,
+          "matches_total": 150
+        },
+        "Chelsea FC": {
+          "attack": 1.31990529,
+          "defence": 1.60886776,
+          "appearances": 109.76446,
+          "matches_total": 226
+        },
+        "Crystal Palace FC": {
+          "attack": 1.24430587,
+          "defence": 1.78169561,
+          "appearances": 105.76446,
+          "matches_total": 222
+        },
+        "Everton FC": {
+          "attack": 1.35973144,
+          "defence": 1.5347682,
+          "appearances": 109.76446,
+          "matches_total": 226
+        },
+        "Fulham FC": {
+          "attack": 1.23050996,
+          "defence": 1.33667251,
+          "appearances": 100.64066,
+          "matches_total": 188
+        },
+        "Ipswich Town FC": {
+          "attack": 1.05514409,
+          "defence": 1.96969543,
+          "appearances": 26.6,
+          "matches_total": 38
+        },
+        "Leeds United FC": {
+          "attack": 1.42975391,
+          "defence": 1.47509903,
+          "appearances": 62.54446,
+          "matches_total": 148
+        },
+        "Leicester City FC": {
+          "attack": 0.95960278,
+          "defence": 1.74973755,
+          "appearances": 55.14446,
+          "matches_total": 152
+        },
+        "Liverpool FC": {
+          "attack": 1.77062205,
+          "defence": 1.51285886,
+          "appearances": 109.76446,
+          "matches_total": 226
+        },
+        "Luton Town FC": {
+          "attack": 1.36041293,
+          "defence": 1.87482571,
+          "appearances": 18.62,
+          "matches_total": 38
+        },
+        "Manchester City FC": {
+          "attack": 1.97703554,
+          "defence": 0.9565364,
+          "appearances": 110.76446,
+          "matches_total": 227
+        },
+        "Manchester United FC": {
+          "attack": 1.96820564,
+          "defence": 1.25312714,
+          "appearances": 110.76446,
+          "matches_total": 227
+        },
+        "Newcastle United FC": {
+          "attack": 1.48845416,
+          "defence": 1.54871469,
+          "appearances": 107.76446,
+          "matches_total": 224
+        },
+        "Norwich City FC": {
+          "attack": 1.16859168,
+          "defence": 1.56419832,
+          "appearances": 9.1238,
+          "matches_total": 38
+        },
+        "Nottingham Forest FC": {
+          "attack": 1.69429409,
+          "defence": 1.34177076,
+          "appearances": 93.254,
+          "matches_total": 149
+        },
+        "Sheffield United FC": {
+          "attack": 1.14460263,
+          "defence": 2.04677358,
+          "appearances": 25.00666,
+          "matches_total": 76
+        },
+        "Southampton FC": {
+          "attack": 0.87573188,
+          "defence": 1.90565089,
+          "appearances": 55.14446,
+          "matches_total": 152
+        },
+        "Sunderland AFC": {
+          "attack": 1.31074536,
+          "defence": 1.54892902,
+          "appearances": 34.0,
+          "matches_total": 34
+        },
+        "Tottenham Hotspur FC": {
+          "attack": 1.15063614,
+          "defence": 1.57509527,
+          "appearances": 110.76446,
+          "matches_total": 227
+        },
+        "Watford FC": {
+          "attack": 1.19675814,
+          "defence": 1.52170022,
+          "appearances": 9.1238,
+          "matches_total": 38
+        },
+        "West Bromwich Albion FC": {
+          "attack": 1.28804753,
+          "defence": 1.426116,
+          "appearances": 6.38666,
+          "matches_total": 38
+        },
+        "West Ham United FC": {
+          "attack": 1.38025282,
+          "defence": 1.60523185,
+          "appearances": 109.76446,
+          "matches_total": 226
+        },
+        "Wolverhampton Wanderers FC": {
+          "attack": 0.83595313,
+          "defence": 1.74271107,
+          "appearances": 109.76446,
+          "matches_total": 226
+        }
+      }
+    },
+    "de.1": {
+      "home_goal_mean": 1.752101,
+      "away_goal_mean": 1.399895,
+      "training_matches": 1824,
+      "last_result_date": "2026-05-16",
+      "teams": {
+        "1. FC Heidenheim 1846": {
+          "attack": 1.44660735,
+          "defence": 1.96227418,
+          "appearances": 74.46,
+          "matches_total": 102
+        },
+        "1. FC Köln": {
+          "attack": 1.39073432,
+          "defence": 2.05295879,
+          "appearances": 76.19978,
+          "matches_total": 170
+        },
+        "1. FC Union Berlin": {
+          "attack": 1.45244585,
+          "defence": 1.7416356,
+          "appearances": 97.99978,
+          "matches_total": 202
+        },
+        "1. FSV Mainz 05": {
+          "attack": 1.49985637,
+          "defence": 1.50577326,
+          "appearances": 98.99978,
+          "matches_total": 203
+        },
+        "Arminia Bielefeld": {
+          "attack": 1.19636188,
+          "defence": 1.42185225,
+          "appearances": 13.87778,
+          "matches_total": 68
+        },
+        "Bayer 04 Leverkusen": {
+          "attack": 1.96486418,
+          "defence": 1.42280009,
+          "appearances": 99.99978,
+          "matches_total": 204
+        },
+        "Borussia Dortmund": {
+          "attack": 2.07149449,
+          "defence": 1.05296894,
+          "appearances": 99.99978,
+          "matches_total": 204
+        },
+        "Borussia Mönchengladbach": {
+          "attack": 1.49953683,
+          "defence": 1.63216689,
+          "appearances": 94.99978,
+          "matches_total": 199
+        },
+        "Eintracht Frankfurt": {
+          "attack": 1.67139364,
+          "defence": 1.8445057,
+          "appearances": 98.99978,
+          "matches_total": 203
+        },
+        "FC Augsburg": {
+          "attack": 1.42512925,
+          "defence": 1.75803156,
+          "appearances": 98.99978,
+          "matches_total": 203
+        },
+        "FC Bayern München": {
+          "attack": 3.38070342,
+          "defence": 1.23186664,
+          "appearances": 99.99978,
+          "matches_total": 204
+        },
+        "FC Schalke 04": {
+          "attack": 1.29938147,
+          "defence": 1.64014158,
+          "appearances": 17.37638,
+          "matches_total": 68
+        },
+        "FC St. Pauli 1910": {
+          "attack": 0.88922407,
+          "defence": 1.93895407,
+          "appearances": 54.8,
+          "matches_total": 65
+        },
+        "Hamburger SV": {
+          "attack": 1.3756656,
+          "defence": 1.7328832,
+          "appearances": 30.0,
+          "matches_total": 30
+        },
+        "Hertha BSC": {
+          "attack": 1.31922658,
+          "defence": 1.61823236,
+          "appearances": 25.53978,
+          "matches_total": 102
+        },
+        "Holstein Kiel": {
+          "attack": 1.41385361,
+          "defence": 1.88186332,
+          "appearances": 23.8,
+          "matches_total": 34
+        },
+        "RB Leipzig": {
+          "attack": 1.92099797,
+          "defence": 1.53531767,
+          "appearances": 98.99978,
+          "matches_total": 203
+        },
+        "SC Freiburg": {
+          "attack": 1.5774925,
+          "defence": 1.72416729,
+          "appearances": 97.99978,
+          "matches_total": 202
+        },
+        "SV Darmstadt 98": {
+          "attack": 1.02839747,
+          "defence": 1.91597156,
+          "appearances": 16.66,
+          "matches_total": 34
+        },
+        "SV Werder Bremen": {
+          "attack": 1.06878214,
+          "defence": 1.68475295,
+          "appearances": 90.83638,
+          "matches_total": 169
+        },
+        "SpVgg Greuther Fürth 1903": {
+          "attack": 1.21399787,
+          "defence": 1.51489804,
+          "appearances": 8.1634,
+          "matches_total": 34
+        },
+        "TSG 1899 Hoffenheim": {
+          "attack": 1.74749759,
+          "defence": 1.76283742,
+          "appearances": 98.99978,
+          "matches_total": 203
+        },
+        "VfB Stuttgart": {
+          "attack": 2.25908533,
+          "defence": 1.56665675,
+          "appearances": 98.99978,
+          "matches_total": 203
+        },
+        "VfL Bochum 1848": {
+          "attack": 1.10395968,
+          "defence": 1.65800285,
+          "appearances": 60.2854,
+          "matches_total": 136
+        },
+        "VfL Wolfsburg": {
+          "attack": 1.35494859,
+          "defence": 1.97843286,
+          "appearances": 98.99978,
+          "matches_total": 203
+        }
+      }
+    },
+    "es.1": {
+      "home_goal_mean": 1.470236,
+      "away_goal_mean": 1.129507,
+      "training_matches": 2255,
+      "last_result_date": "2026-05-24",
+      "teams": {
+        "Athletic Club": {
+          "attack": 1.23216444,
+          "defence": 1.67154655,
+          "appearances": 110.06446,
+          "matches_total": 226
+        },
+        "CA Osasuna": {
+          "attack": 1.22838804,
+          "defence": 1.50474114,
+          "appearances": 109.06446,
+          "matches_total": 225
+        },
+        "CD Leganés": {
+          "attack": 1.1506515,
+          "defence": 1.47825138,
+          "appearances": 25.9,
+          "matches_total": 37
+        },
+        "Club Atlético de Madrid": {
+          "attack": 1.57774648,
+          "defence": 1.43367956,
+          "appearances": 110.06446,
+          "matches_total": 226
+        },
+        "Cádiz CF": {
+          "attack": 1.01424025,
+          "defence": 1.43621024,
+          "appearances": 47.16446,
+          "matches_total": 152
+        },
+        "Deportivo Alavés": {
+          "attack": 1.33575995,
+          "defence": 1.58255958,
+          "appearances": 97.03046,
+          "matches_total": 188
+        },
+        "Elche CF": {
+          "attack": 1.31050218,
+          "defence": 1.56119343,
+          "appearances": 64.54446,
+          "matches_total": 150
+        },
+        "FC Barcelona": {
+          "attack": 2.20920442,
+          "defence": 0.9408253,
+          "appearances": 111.06446,
+          "matches_total": 227
+        },
+        "Getafe CF": {
+          "attack": 0.91795136,
+          "defence": 0.96438514,
+          "appearances": 109.06446,
+          "matches_total": 225
+        },
+        "Girona FC": {
+          "attack": 1.03226478,
+          "defence": 1.26014646,
+          "appearances": 94.554,
+          "matches_total": 150
+        },
+        "Granada CF": {
+          "attack": 1.1166037,
+          "defence": 1.7464215,
+          "appearances": 34.13046,
+          "matches_total": 114
+        },
+        "Levante UD": {
+          "attack": 1.47049474,
+          "defence": 1.62558565,
+          "appearances": 51.51046,
+          "matches_total": 112
+        },
+        "RC Celta de Vigo": {
+          "attack": 1.49896456,
+          "defence": 1.38224514,
+          "appearances": 109.06446,
+          "matches_total": 225
+        },
+        "RCD Espanyol de Barcelona": {
+          "attack": 1.1689916,
+          "defence": 1.63534379,
+          "appearances": 83.0578,
+          "matches_total": 148
+        },
+        "RCD Mallorca": {
+          "attack": 1.31439618,
+          "defence": 1.41420007,
+          "appearances": 103.6778,
+          "matches_total": 188
+        },
+        "Rayo Vallecano de Madrid": {
+          "attack": 1.30178709,
+          "defence": 1.12755981,
+          "appearances": 101.6778,
+          "matches_total": 186
+        },
+        "Real Betis Balompié": {
+          "attack": 1.65378928,
+          "defence": 1.40138918,
+          "appearances": 109.06446,
+          "matches_total": 225
+        },
+        "Real Madrid CF": {
+          "attack": 1.94784397,
+          "defence": 0.99035262,
+          "appearances": 110.06446,
+          "matches_total": 226
+        },
+        "Real Oviedo": {
+          "attack": 0.83558546,
+          "defence": 1.74962419,
+          "appearances": 33.0,
+          "matches_total": 33
+        },
+        "Real Sociedad de Fútbol": {
+          "attack": 1.63757494,
+          "defence": 1.72987935,
+          "appearances": 111.06446,
+          "matches_total": 227
+        },
+        "Real Valladolid CF": {
+          "attack": 0.92595684,
+          "defence": 2.06859928,
+          "appearances": 45.32066,
+          "matches_total": 113
+        },
+        "SD Eibar": {
+          "attack": 1.24099334,
+          "defence": 1.37203071,
+          "appearances": 6.38666,
+          "matches_total": 38
+        },
+        "SD Huesca": {
+          "attack": 1.2539266,
+          "defence": 1.3126929,
+          "appearances": 6.38666,
+          "matches_total": 38
+        },
+        "Sevilla FC": {
+          "attack": 1.09189054,
+          "defence": 1.49201746,
+          "appearances": 111.06446,
+          "matches_total": 227
+        },
+        "UD Almería": {
+          "attack": 1.36836644,
+          "defence": 1.54994704,
+          "appearances": 31.654,
+          "matches_total": 76
+        },
+        "UD Las Palmas": {
+          "attack": 1.04668544,
+          "defence": 1.43750421,
+          "appearances": 44.52,
+          "matches_total": 75
+        },
+        "Valencia CF": {
+          "attack": 1.45131583,
+          "defence": 1.37102415,
+          "appearances": 110.06446,
+          "matches_total": 226
+        },
+        "Villarreal CF": {
+          "attack": 1.94930734,
+          "defence": 1.34053299,
+          "appearances": 111.06446,
+          "matches_total": 227
+        }
+      }
+    },
+    "it.1": {
+      "home_goal_mean": 1.458946,
+      "away_goal_mean": 1.262057,
+      "training_matches": 2234,
+      "last_result_date": "2026-05-24",
+      "teams": {
+        "AC Milan": {
+          "attack": 1.30927145,
+          "defence": 1.2050539,
+          "appearances": 109.06446,
+          "matches_total": 225
+        },
+        "AC Monza": {
+          "attack": 0.8946204,
+          "defence": 1.82653966,
+          "appearances": 57.554,
+          "matches_total": 113
+        },
+        "AC Pisa 1909": {
+          "attack": 0.70138902,
+          "defence": 2.16247694,
+          "appearances": 34.0,
+          "matches_total": 34
+        },
+        "ACF Fiorentina": {
+          "attack": 1.28002347,
+          "defence": 1.30993321,
+          "appearances": 106.06446,
+          "matches_total": 222
+        },
+        "AS Roma": {
+          "attack": 1.86742381,
+          "defence": 0.90721058,
+          "appearances": 111.06446,
+          "matches_total": 227
+        },
+        "Atalanta BC": {
+          "attack": 1.47933513,
+          "defence": 1.07705556,
+          "appearances": 108.06446,
+          "matches_total": 224
+        },
+        "Benevento Calcio": {
+          "attack": 1.27871954,
+          "defence": 1.43923087,
+          "appearances": 6.38666,
+          "matches_total": 38
+        },
+        "Bologna FC 1909": {
+          "attack": 1.34087062,
+          "defence": 1.37475829,
+          "appearances": 109.06446,
+          "matches_total": 225
+        },
+        "Cagliari Calcio": {
+          "attack": 1.1861869,
+          "defence": 1.53254171,
+          "appearances": 95.03046,
+          "matches_total": 186
+        },
+        "Como 1907": {
+          "attack": 2.11778429,
+          "defence": 0.9295201,
+          "appearances": 57.9,
+          "matches_total": 69
+        },
+        "Empoli FC": {
+          "attack": 1.06019734,
+          "defence": 1.53266402,
+          "appearances": 66.6778,
+          "matches_total": 151
+        },
+        "FC Crotone": {
+          "attack": 1.31530013,
+          "defence": 1.48424072,
+          "appearances": 6.38666,
+          "matches_total": 38
+        },
+        "FC Internazionale Milano": {
+          "attack": 2.34309078,
+          "defence": 1.02707284,
+          "appearances": 111.06446,
+          "matches_total": 227
+        },
+        "Frosinone Calcio": {
+          "attack": 1.16570456,
+          "defence": 1.4755083,
+          "appearances": 18.62,
+          "matches_total": 38
+        },
+        "Genoa CFC": {
+          "attack": 1.21009319,
+          "defence": 1.49084044,
+          "appearances": 92.03046,
+          "matches_total": 183
+        },
+        "Hellas Verona FC": {
+          "attack": 0.67066489,
+          "defence": 1.69859939,
+          "appearances": 105.06446,
+          "matches_total": 221
+        },
+        "Juventus FC": {
+          "attack": 1.6359007,
+          "defence": 0.97158298,
+          "appearances": 108.06446,
+          "matches_total": 224
+        },
+        "Parma Calcio 1913": {
+          "attack": 0.89249029,
+          "defence": 1.33604751,
+          "appearances": 64.28666,
+          "matches_total": 107
+        },
+        "SS Lazio": {
+          "attack": 1.25196768,
+          "defence": 1.33893305,
+          "appearances": 106.06446,
+          "matches_total": 222
+        },
+        "SSC Napoli": {
+          "attack": 1.67363685,
+          "defence": 0.99718018,
+          "appearances": 108.06446,
+          "matches_total": 224
+        },
+        "Spezia Calcio": {
+          "attack": 1.14461705,
+          "defence": 1.44268108,
+          "appearances": 28.54446,
+          "matches_total": 114
+        },
+        "Torino FC": {
+          "attack": 1.37563401,
+          "defence": 1.68699974,
+          "appearances": 107.06446,
+          "matches_total": 223
+        },
+        "UC Sampdoria": {
+          "attack": 1.13704674,
+          "defence": 1.57657667,
+          "appearances": 28.54446,
+          "matches_total": 114
+        },
+        "US Cremonese": {
+          "attack": 0.97969946,
+          "defence": 1.83972171,
+          "appearances": 45.034,
+          "matches_total": 70
+        },
+        "US Lecce": {
+          "attack": 0.92557041,
+          "defence": 1.40642067,
+          "appearances": 90.554,
+          "matches_total": 146
+        },
+        "US Salernitana 1919": {
+          "attack": 1.15187496,
+          "defence": 1.75127305,
+          "appearances": 40.7778,
+          "matches_total": 114
+        },
+        "US Sassuolo Calcio": {
+          "attack": 1.2726287,
+          "defence": 1.42695945,
+          "appearances": 83.16446,
+          "matches_total": 188
+        },
+        "Udinese Calcio": {
+          "attack": 1.2584013,
+          "defence": 1.10068799,
+          "appearances": 110.06446,
+          "matches_total": 226
+        },
+        "Venezia FC": {
+          "attack": 0.96485822,
+          "defence": 1.33354234,
+          "appearances": 35.0238,
+          "matches_total": 75
+        }
+      }
+    },
+    "fr.1": {
+      "home_goal_mean": 1.53122,
+      "away_goal_mean": 1.305771,
+      "training_matches": 2034,
+      "last_result_date": "2026-05-17",
+      "teams": {
+        "AC Ajaccio": {
+          "attack": 1.04406205,
+          "defence": 1.5961441,
+          "appearances": 13.034,
+          "matches_total": 38
+        },
+        "AJ Auxerre": {
+          "attack": 1.4558845,
+          "defence": 1.4244427,
+          "appearances": 65.834,
+          "matches_total": 101
+        },
+        "AS Monaco": {
+          "attack": 1.40094038,
+          "defence": 1.44521967,
+          "appearances": 28.54446,
+          "matches_total": 114
+        },
+        "AS Monaco FC": {
+          "attack": 1.89915537,
+          "defence": 1.74105223,
+          "appearances": 72.46,
+          "matches_total": 100
+        },
+        "AS Saint-Étienne": {
+          "attack": 1.34019082,
+          "defence": 1.94066255,
+          "appearances": 39.31046,
+          "matches_total": 110
+        },
+        "Angers SCO": {
+          "attack": 0.88119128,
+          "defence": 1.66316679,
+          "appearances": 84.34446,
+          "matches_total": 180
+        },
+        "Clermont Foot 63": {
+          "attack": 1.09773893,
+          "defence": 1.61732117,
+          "appearances": 38.8178,
+          "matches_total": 110
+        },
+        "Dijon FCO": {
+          "attack": 1.22323443,
+          "defence": 1.47933782,
+          "appearances": 6.38666,
+          "matches_total": 38
+        },
+        "ESTAC Troyes": {
+          "attack": 1.19868343,
+          "defence": 1.57425271,
+          "appearances": 22.1578,
+          "matches_total": 76
+        },
+        "FC Lorient": {
+          "attack": 1.50968916,
+          "defence": 1.42192218,
+          "appearances": 78.20446,
+          "matches_total": 181
+        },
+        "FC Metz": {
+          "attack": 1.16097428,
+          "defence": 2.62599939,
+          "appearances": 61.17046,
+          "matches_total": 139
+        },
+        "FC Nantes": {
+          "attack": 1.00722684,
+          "defence": 1.6410746,
+          "appearances": 99.00446,
+          "matches_total": 212
+        },
+        "Girondins Bordeaux": {
+          "attack": 1.33784471,
+          "defence": 1.5742172,
+          "appearances": 15.51046,
+          "matches_total": 76
+        },
+        "Le Havre AC": {
+          "attack": 1.18785055,
+          "defence": 1.47733686,
+          "appearances": 69.46,
+          "matches_total": 97
+        },
+        "Lille OSC": {
+          "attack": 1.45688458,
+          "defence": 1.00148315,
+          "appearances": 101.00446,
+          "matches_total": 214
+        },
+        "Montpellier HSC": {
+          "attack": 0.78218544,
+          "defence": 1.93792167,
+          "appearances": 69.00446,
+          "matches_total": 182
+        },
+        "Nîmes Olympique": {
+          "attack": 1.30983027,
+          "defence": 1.40739993,
+          "appearances": 6.38666,
+          "matches_total": 38
+        },
+        "OGC Nice": {
+          "attack": 1.16854307,
+          "defence": 1.87964265,
+          "appearances": 100.00446,
+          "matches_total": 213
+        },
+        "Olympique Lyonnais": {
+          "attack": 1.78290566,
+          "defence": 1.55290101,
+          "appearances": 99.00446,
+          "matches_total": 212
+        },
+        "Olympique Marseille": {
+          "attack": 1.41330625,
+          "defence": 1.28842536,
+          "appearances": 28.54446,
+          "matches_total": 114
+        },
+        "Olympique de Marseille": {
+          "attack": 1.60223858,
+          "defence": 1.4133407,
+          "appearances": 74.46,
+          "matches_total": 102
+        },
+        "Paris FC": {
+          "attack": 1.65907013,
+          "defence": 1.4374105,
+          "appearances": 30.0,
+          "matches_total": 30
+        },
+        "Paris Saint-Germain": {
+          "attack": 1.62214915,
+          "defence": 1.30158142,
+          "appearances": 28.54446,
+          "matches_total": 114
+        },
+        "Paris Saint-Germain FC": {
+          "attack": 2.12816713,
+          "defence": 0.89781806,
+          "appearances": 74.46,
+          "matches_total": 102
+        },
+        "RC Lens": {
+          "attack": 1.5511215,
+          "defence": 1.14712394,
+          "appearances": 28.54446,
+          "matches_total": 114
+        },
+        "RC Strasbourg": {
+          "attack": 1.37083289,
+          "defence": 1.33877088,
+          "appearances": 28.54446,
+          "matches_total": 114
+        },
+        "RC Strasbourg Alsace": {
+          "attack": 1.95779019,
+          "defence": 1.65714177,
+          "appearances": 71.46,
+          "matches_total": 99
+        },
+        "Racing Club de Lens": {
+          "attack": 1.98670403,
+          "defence": 1.18344562,
+          "appearances": 73.46,
+          "matches_total": 101
+        },
+        "Stade Brestois 29": {
+          "attack": 1.23601594,
+          "defence": 1.73413918,
+          "appearances": 101.00446,
+          "matches_total": 214
+        },
+        "Stade Rennais": {
+          "attack": 1.54537174,
+          "defence": 1.20131859,
+          "appearances": 28.54446,
+          "matches_total": 114
+        },
+        "Stade Rennais FC 1901": {
+          "attack": 1.91016988,
+          "defence": 1.6010012,
+          "appearances": 72.46,
+          "matches_total": 100
+        },
+        "Stade de Reims": {
+          "attack": 0.94160335,
+          "defence": 1.30510232,
+          "appearances": 69.00446,
+          "matches_total": 182
+        },
+        "Toulouse FC": {
+          "attack": 1.49282425,
+          "defence": 1.58495229,
+          "appearances": 84.494,
+          "matches_total": 137
+        }
+      }
+    }
+  }
+}
