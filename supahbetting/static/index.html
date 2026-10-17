@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="/style.css">
   <script src="/app.js" defer></script>
   <script src="/live.js" defer></script>
+  <script src="/research.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#wedstrijden">Naar wedstrijden</a>
@@ -18,7 +19,7 @@
         <span class="logo" aria-hidden="true">S</span>
         <div><strong>Supah<span>Betting</span></strong><small>Voetbalanalyse &amp; combinaties</small></div>
       </div>
-      <div class="header-right"><span class="mode-badge"><span class="status-dot"></span> PAPER MODE</span><span class="version">v0.5.0</span></div>
+      <div class="header-right"><span class="mode-badge"><span class="status-dot"></span> PAPER MODE</span><span class="version">v0.6.0</span></div>
     </div>
   </header>
   <main class="container">
@@ -101,6 +102,45 @@
     </section>
 
     <div id="message" class="toast hidden" aria-live="polite"></div>
+
+    <section id="research" class="research-section" aria-labelledby="research-title">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">BRONKOPPELINGEN · V0.6</div>
+          <h2 id="research-title">Modelkansen en bookmakerprijzen vergelijken</h2>
+          <p>Lees CSV/JSON-exports van ProphitBet, OddsHarvester en Prediict in. Wij berekenen een theoretische EV op basis van hun aangeleverde kansen en quoteringen.</p>
+        </div>
+        <button type="button" id="research-refresh" class="btn btn-quiet">↻ Bronbestanden inlezen</button>
+      </div>
+      <div class="notice info research-warning" role="note">
+        <span aria-hidden="true">ⓘ</span>
+        <div><strong>Onderzoeksranglijst, geen gokadvies.</strong> De voorspellingen zijn niet onafhankelijk gekalibreerd.
+        Odds kunnen oud zijn; modellen kunnen bookmakerprijzen al als invoer hebben gebruikt. Dit overzicht verandert je bestaande paperbets niet.</div>
+      </div>
+      <div class="research-stats" id="research-statistics" aria-live="polite">
+        <span>ProphitBet: —</span><span>OddsHarvester: —</span><span>Prediict: —</span>
+      </div>
+      <p class="muted research-location">Plaats je exports in de map <code>.supahbetting/imports/</code>,
+        in de submap <code>prophitbet</code>, <code>oddsharvester</code> of <code>prediict</code>.
+        Er worden geen scrapers of AI-modellen automatisch gestart.</p>
+      <div id="research-message" class="muted" aria-live="polite"></div>
+      <div class="research-filters">
+        <label><input type="checkbox" id="research-only-future"/> Alleen wedstrijden vanaf vandaag</label>
+        <label><input type="checkbox" id="research-only-recent"/> Alleen prijzen met gecontroleerde recente opnametijd</label>
+      </div>
+      <div class="research-scroll" tabindex="0" aria-label="Vergelijkingsresultaten horizontaal scrollen">
+        <table class="research-table">
+          <thead><tr>
+            <th>Wedstrijd</th><th>Markt</th><th>Modelkans</th><th>Odds</th>
+            <th>Model-EV</th><th>Prijsstatus</th><th>Bronnen</th>
+          </tr></thead>
+          <tbody id="research-results">
+            <tr><td colspan="7">Nog geen bronbestanden verwerkt.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="muted research-footnote">Een groene EV betekent alleen dat de ingevoerde modelkans hoger ligt dan de impliciete bookmakerkans. Zeker bij gecombineerde bets kunnen model- en correlatiefouten groot worden.</p>
+    </section>
 
     <section id="wedstrijden" class="workspace" aria-labelledby="matches-title">
       <div class="matches-column">
