@@ -588,15 +588,31 @@ def refresh_upcoming(*, inventory=None, data_dir=LOCAL, now=None,
         nl_status = {"status":"not_checked","league":"nl.1"}
         if provider_fetcher is None:
             from .research_nl_api import refresh_nl_api
-            nl_status = refresh_nl_api(
-                now=now,data_dir=data_dir,model=base_model,inventory=inventory
-            )
-            if nl_status.get("status") in ("subscription_required","rate_limited",
-                                          "api_http_error","stale_api_cache","error"):
-                errors.append("Eredivisie uitslagen: "+nl_status["status"]+
-                              " (bestaande gegevens blijven behouden)")
-            if nl_status.get("model_retrained"):
-                base_model = _load_model()
+            try:
+                nl_status = refresh_nl_api(
+                    now=now,data_dir=data_dir,model=base_model,inventory=inventory
+                )
+                if nl_status.get("status") in (
+                    "subscription_required", "rate_limited", "api_http_error",
+                    "stale_api_cache", "provider_unavailable", "invalid_api_route",
+                    "error"
+                ):
+                    errors.append(
+                        "Eredivisie uitslagen: "+nl_status["status"]+
+                        " (bestaande gegevens blijven behouden)"
+                    )
+                if nl_status.get("model_retrained"):
+                    base_model = _load_model()
+            except (OSError, ValueError, RuntimeError, LiveDataUnavailable,
+                    KeyError, TypeError) as exc:
+                # Even a broken local status file or an unexpected provider
+                # wrapper must not kill the background fixture worker.
+                nl_status = {"status":"error", "error_type":type(exc).__name__,
+                             "league":"nl.1"}
+                errors.append(
+                    "Nederlandse uitslagencontrole mislukt ("+
+                    type(exc).__name__+"); oude modelgegevens behouden"
+                )
         refresh_state = {"updated": False, "added": 0,
                          "conflicts": 0, "local_retrained": False}
         if isinstance(inventory, dict) and len(inventory.get("matches", [])) >= 1000 and base_model:
