@@ -88,7 +88,11 @@ jobs:
           git add models/baseline_v1.json
           if ! git diff --cached --quiet; then
             git commit -m "model: publish trained and chronologically evaluated v0.7 baseline"
-            git push origin HEAD:feature/pretrained-baseline-v0.7
+            # Rebase onto any new app/docs commits made while training was running.
+            # This is a normal fast-forward update: NEVER force push.
+            git fetch origin "refs/heads/${GITHUB_REF_NAME}"
+            git rebase FETCH_HEAD
+            git push origin "HEAD:refs/heads/${GITHUB_REF_NAME}"
           else
             echo "No trained parameter changes"
           fi
