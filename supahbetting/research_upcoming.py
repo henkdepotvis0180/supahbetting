@@ -6,6 +6,7 @@ are presented as confirmed; old OpenFootball fixtures are labelled provisional.
 """
 from __future__ import annotations
 
+from contextlib import contextmanager
 from datetime import date, datetime, timedelta, timezone
 import json
 from pathlib import Path
@@ -24,6 +25,7 @@ from .trained_model import (
 
 UPCOMING_FILE = LOCAL / "upcoming_predictions.json"
 FORECAST_LOG = LOCAL / "provider_forecast_log.json"
+FIXTURE_LOCK = LOCAL / "upcoming.lock"
 RESEARCH_MODEL = LOCAL / "candidate_model.json"
 PUBLISHED_MODEL = Path(__file__).parent / "models" / "research_v0.12.0_experimental.json"
 WINDOW_DAYS = 15
@@ -404,25 +406,62 @@ def fetch_provider_schedules(*, now=None, football_data=None,
     return fetched, sorted(set(warnings))
 
 
+@contextmanager
+def _single_fixture_refresh(directory):
+    """Keep manual BAT and the six-hour monitor from hitting APIs together."""
+    path = Path(directory) / "upcoming.lock"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    stream = path.open("a+b")
+    try:
+        try:
+            if __import__("os").name == "nt":
+                import msvcrt
+                stream.seek(0)
+                if not stream.read(1):
+                    stream.write(b"X")
+                    stream.flush()
+                stream.seek(0)
+                msvcrt.locking(stream.fileno(), msvcrt.LK_NBLCK, 1)
+            else:
+                import fcntl
+                fcntl.flock(stream.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError:
+            raise RuntimeError("Speelschemacontrole loopt al; probeer later opnieuw") from None
+        yield
+    finally:
+        try:
+            if __import__("os").name == "nt":
+                import msvcrt
+                stream.seek(0)
+                msvcrt.locking(stream.fileno(), msvcrt.LK_UNLCK, 1)
+            else:
+                import fcntl
+                fcntl.flock(stream.fileno(), fcntl.LOCK_UN)
+        except OSError:
+            pass
+        stream.close()
+
+
 def refresh_upcoming(*, inventory=None, data_dir=LOCAL, now=None,
                      provider_fetcher=None, model=None):
     now = now or datetime.now(timezone.utc)
     data_dir = Path(data_dir)
-    if inventory is None:
-        path = data_dir / "inventory.json"
-        inventory = json.loads(path.read_text(encoding="utf-8")) if path.is_file() else {}
-    if provider_fetcher is None:
-        fetched, errors = fetch_provider_schedules(now=now)
-    else:
-        fetched, errors = provider_fetcher(now=now)
-    result = build_upcoming(
-        model=model, inventory=inventory, fetched=fetched, now=now,
-        forecast_log=data_dir / "provider_forecast_log.json",
-        output=data_dir / "upcoming_predictions.json",
-    )
-    result["provider_warnings"] = errors
-    atomic_json(data_dir / "upcoming_predictions.json", result)
-    return result
+    with _single_fixture_refresh(data_dir):
+        if inventory is None:
+            path = data_dir / "inventory.json"
+            inventory = json.loads(path.read_text(encoding="utf-8")) if path.is_file() else {}
+        if provider_fetcher is None:
+            fetched, errors = fetch_provider_schedules(now=now)
+        else:
+            fetched, errors = provider_fetcher(now=now)
+        result = build_upcoming(
+            model=model, inventory=inventory, fetched=fetched, now=now,
+            forecast_log=data_dir / "provider_forecast_log.json",
+            output=data_dir / "upcoming_predictions.json",
+        )
+        result["provider_warnings"] = errors
+        atomic_json(data_dir / "upcoming_predictions.json", result)
+        return result
 
 
 def main():
