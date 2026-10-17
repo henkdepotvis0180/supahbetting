@@ -43,3 +43,12 @@ De tools zijn *nog niet* direct aan elkaar gekoppeld. Het importformaat in READM
 - Videoframes zijn uitsluitend opt-in voor handmatig geverifieerde officiële YouTube-nocookie-embeds.
 - Geen video van illegale streamsites, geen inlog- of toegangsrestricties omzeilen.
 - Offline tests voor bronvelden, foutcondities en API-routes verplicht.
+
+## Aanvullende providers (v0.5)
+- supahbetting/external_feeds.py bevat veilige, gecachte adapters voor TheSportsDB v1 en football-data.org v4.
+- OpenLigaDB heeft een community-doelpuntenfeed; TheSportsDB gratis levert hoogstens beperkt schema; football-data.org gratis is vertraagd.
+- Gebruik alleen vastgelegde competities en HTTPS-hosts. Geen willekeurige doel-URL's of API-sleutels via de browser.
+- football-data.org token alleen via lokale environment FOOTBALL_DATA_API_KEY en server-side X-Auth-Token header, nooit in logs, code of GitHub.
+- TheSportsDB gratis niet publiceren als mobiele appstore-app zonder betaald abonnement. Controleer bronvermelding en gebruiksvoorwaarden.
+- Houd de live-scores gescheiden van modelkansen en boekmakerquoteringen; geen verzonnen live odds.
+- Voeg voor elke integratie tests toe met fake providers die offline draaien.
