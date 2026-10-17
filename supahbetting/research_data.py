@@ -1,4 +1,4 @@
-"""Careful 2016-present OpenFootball CC0 ingestion.
+"""Careful calendar-year 2016-present OpenFootball CC0 ingestion.
 
 Runs on the owner's PC: no hidden background process, no unverified matches,
 no claims that the upstream source is current merely because it was fetched.
@@ -33,7 +33,7 @@ def atomic_json(path, value):
 def seasons(today=None):
     today = today or datetime.now(timezone.utc).date()
     final = today.year if today.month >= 7 else today.year - 1
-    return [f"{y}-{(y+1)%100:02d}" for y in range(2016, final + 1)]
+    return [f"{y}-{(y+1)%100:02d}" for y in range(2015, final + 1)]
 
 
 def valid_score(value):
@@ -62,7 +62,8 @@ def parse_source(source, league, season, today=None):
             day = date.fromisoformat(item["date"])
         except (ValueError, TypeError, KeyError):
             continue
-        if day.year not in (int(season[:4]), int(season[:4])+1):
+        if (day.year not in (int(season[:4]), int(season[:4])+1)
+                or day < date(2016, 1, 1)):
             continue
         identifier = hashlib.sha256(
             json.dumps([league, season, day.isoformat(), home.strip(), away.strip()],
