@@ -2,12 +2,15 @@
 setlocal
 cd /d "%~dp0"
 set "PYTHONUTF8=1"
-echo ============================================================
-echo   SupahBetting Research Monitor v0.12 (2016 - heden)
-echo ============================================================
-echo Controles ieder 6 uur. Gecontroleerde nieuwe uitslagen worden
-echo lokaal verwerkt en automatisch geupload naar de testbranch.
-echo Laat dit venster open. Ctrl+C stopt de monitor.
+echo =================================================
+echo  SupahBetting Research Monitor v0.13
+echo =================================================
+echo Controleert modelkwaliteit, nieuwe wedstrijden,
+echo uitslagen en lokaal getrainde parameters.
+echo Het eerste speelschema wordt apart gestart zodat
+echo de oude 2016+ historie de kalender niet blokkeert.
+echo.
+echo Dit venster open laten; Ctrl+C stopt de monitor.
 echo.
 where py >nul 2>&1
 if not errorlevel 1 (
@@ -15,7 +18,7 @@ if not errorlevel 1 (
 ) else (
   where python >nul 2>&1
   if errorlevel 1 (
-    echo Installeer eerst Python 3.11 of nieuwer.
+    echo Installeer Python 3.11+
     pause
     exit /b 1
   )
