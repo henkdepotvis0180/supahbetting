@@ -65,3 +65,70 @@ Een model kan met meer wedstrijden nauwkeuriger worden, maar kan ook verslechter
 De gratis sport-API kan vertraagde uitslagen tonen en sommige abonnementen bevatten geen Nederlandse wedstrijden. Zonder geverifieerde data kan de app **niet** rechtmatig of betrouwbaar claimen dat de wedstrijden van 16–17 oktober allemaal zijn ingelezen. Deze status wordt zichtbaar getoond, in plaats van het model groen te kleuren terwijl er nog gaten zijn.
 
 **Financiële waarschuwing:** als je geld voor rekeningen of levensonderhoud nodig hebt, gebruik dat niet om weddenschappen te plaatsen. SupahBetting is onderzoekssoftware, niet een manier om gegarandeerd inkomen te genereren.
+
+
+## Hotfix 17 oktober 2026 — HTTP 429 / `Databronroute niet toegestaan` / thread-crash
+
+De eerste Windows-praktijkrun met Python 3.14 meldde:
+
+- `football-data HTTP 429` na meerdere aanvragen voor buitenlandse competities;
+- `TheSportsDB HTTP 429` op de gedeelde gratis v1 API;
+- `Databronroute niet toegestaan` bij de officiële full-season URL
+  `/v4/competitions/DED/matches?season=2026`;
+- daarna een traceback van `LiveDataUnavailable` in
+  `research-first-schedule`.
+
+**Dit was een echte fout in de v0.14-koppeling**, niet een probleem in je
+CPU of de eerder getrainde basismodellen. De corrigende commitserie op
+dezelfde `feature/eredivisie-data-v0.14`-branch omvat:
+
+1. De vaste URL-allowlist accepteert nu de door football-data.org gedocumenteerde
+   `?season=YYYY`-query, maar nog steeds geen willekeurige paden, hosts,
+   redirects of API-sleutels in de URL.
+2. Het Eredivisie-verzoek voor het **hele seizoen gaat vóór** eventuele
+   aanvullende buitenlandse competitieaanvragen. Daardoor kan een
+   latere buitenlandse HTTP 429 niet al het Nederlandse onderzoeksbudget
+   opmaken voordat `DED` geprobeerd is. Een tweede dubbele
+   `DED`-aanvraag voor alleen 18 kalenderdagen wordt overgeslagen.
+3. Tussen opeenvolgende football-data.org-schema-aanvragen staat nu
+   minstens **6,5 seconden**. In een oudere versie werkte het pauzeren niet,
+   doordat een optie door een standaard-lambda niet meer `None` was.
+4. Na een echte HTTP 429 blijft een provider tijdens dezelfde procesrun
+   minstens vijf minuten in een netwerk-cooldown (of langer als
+   `Retry-After` dit expliciet verlangt, maximaal een uur). Na HTTP
+   401/403 wordt minstens dertig minuten gewacht. Het HTTP-nummer blijft
+   behouden in de foutenafhandeling. Andere onafhankelijke bronnen blijven
+   beschikbaar.
+5. Zowel `research_nl_api.py`, `research_upcoming.py` als de monitor
+   vangen providerstoringen en ongeldige API-verzoeken gecontroleerd af:
+   **geen ongecontroleerde traceback** en geen wissen van eerdere resultaten.
+6. Offline regressietests simuleren HTTP 429, blokkeren verdere
+   daadwerkelijke netwerkverzoeken, testen de echte seizoenroute en
+   controleren dat KNVB-wedstrijden en opgeslagen brongegevens behouden
+   blijven. De Windows-Python-3.14-combinatie is toegevoegd aan GitHub Actions.
+
+**Zo installeer je de hotfix:**
+
+- Stop **eerst** de oude SupahBetting-monitor én dashboardserver met
+  `Ctrl+C` in hun vensters. Sluit ook eventuele losse
+  `controleer_eredivisie.bat`-vensters.
+- Download de *nieuwste* v0.14-branch opnieuw en pak deze uit in een
+  **nieuwe map**, of voer vanuit een echte Git-clone
+  `update_supahbetting.bat` uit.
+- Behoud je lokale `.supahbetting/` en `data/research/` en je
+  originele vooraf opgeslagen prognoselogboeken; verwijder ze niet.
+- Start `start_supahbetting.bat`. Voer niet tegelijkertijd
+  `controleer_eredivisie.bat` uit terwijl de eerste controle nog loopt.
+- Als er al HTTP 429 was: **laat de API minstens 5–10 minuten met rust**
+  voordat je opnieuw controleert. Een dienst kan een eigen, langere
+  limiet toepassen.
+- De status van het Nederlandse onderzoeksmodel kan voorlopig nog
+  `degraded` tonen zolang er **geen door de provider bevestigde
+  eindstanden na 20 september 2026** zijn ingelezen. De codefix is
+  niet hetzelfde als een succesvolle gegevensimport.
+
+Let op: de officiële documentatie van football-data.org vermeldt
+**10 requests/minuut voor gratis geregistreerde gebruikers**. Dit is
+geen garantie dat je betaald/functiegebonden `DED`-toegang krijgt,
+noch een reden om een API-limiet te proberen omzeilen. Zie
+<https://docs.football-data.org/general/v4/policies.html>.
