@@ -30,7 +30,8 @@ RESEARCH_MODEL = LOCAL / "candidate_model.json"
 PUBLISHED_MODEL = Path(__file__).parent / "models" / "research_v0.12.0_experimental.json"
 AUGMENTED_MODEL = LOCAL / "augmented_model_local.json"
 WINDOW_DAYS = 15
-SOURCE_PRIORITY = {"football-data": 3, "openliga": 2, "sportsdb": 1, "openfootball-archive": 0}
+SOURCE_PRIORITY = {"football-data": 4, "openliga": 3, "knvb": 2,
+                   "sportsdb": 1, "openfootball-archive": 0}
 # Stable exact-name aliases for independent fixture providers. No fuzzy guesses.
 TEAM_NAMES = {
     "nl.1": {
@@ -38,6 +39,9 @@ TEAM_NAMES = {
         "psv eindhoven": "PSV", "az alkmaar": "AZ",
         "nec nijmegen": "NEC", "excelsior": "SBV Excelsior",
         "heerenveen": "SC Heerenveen",
+        "telstar": "Telstar 1963",
+        "n e c": "NEC",
+        "nec nijmegen": "NEC",
     },
     "be.1": {
         "club brugge": "Club Brugge KV",
@@ -141,6 +145,14 @@ def _normalize(event, provider, league, now, window_days=WINDOW_DAYS):
             "openliga": "https://www.openligadb.de/",
         }[provider],
     }
+
+
+def _source_rank(fixture):
+    # Official KNVB live HTML beats API sources, while a verified-but-dated
+    # schedule loses to a fresh licensed football-data.org fixture.
+    if fixture.get("provider") == "knvb":
+        return 5 if fixture.get("source_method") == "official_page_live" else 2
+    return SOURCE_PRIORITY.get(fixture.get("provider"), 0)
 
 
 def _merge_key(fixture):
@@ -302,7 +314,7 @@ def build_upcoming(*, model=None, inventory=None, fetched=None, now=None,
         if fixture["status"] != "scheduled":
             continue
         key = _merge_key(fixture)
-        if key not in scheduled or SOURCE_PRIORITY[fixture["provider"]] > SOURCE_PRIORITY[scheduled[key]["provider"]]:
+        if key not in scheduled or _source_rank(fixture) > _source_rank(scheduled[key]):
             scheduled[key] = fixture
     # Never place stale archive fixtures in the serious upcoming dashboard.
     # They remain in the separate research archive for auditing only.
@@ -371,7 +383,8 @@ def build_upcoming(*, model=None, inventory=None, fetched=None, now=None,
 
 
 def fetch_provider_schedules(*, now=None, football_data=None,
-                             sports_fetcher=None, openliga=None, pause=2.2):
+                             sports_fetcher=None, openliga=None, pause=2.2,
+                             knvb_fetcher=None):
     """Limited API usage: 6 authenticated competition queries, 30 paced free sports requests.
 
     Free TheSportsDB v1 returns at most three day events and one next game,
@@ -402,6 +415,19 @@ def fetch_provider_schedules(*, now=None, football_data=None,
                 time.sleep(max(0.0, pause))
     else:
         warnings.append("football-data.org API-token ontbreekt: beperkt gratis TheSportsDB-schema")
+    # Critical Eredivisie fallback: do not depend exclusively on TheSportsDB.
+    # Live official source is checked once; if blocked, use the explicitly
+    # dated official KNVB schedule snapshot, never fake/demo fixtures.
+    from .research_knvb import get_eredivisie
+    try:
+        official, official_warnings = (
+            knvb_fetcher(now=now) if knvb_fetcher is not None
+            else get_eredivisie(now=now)
+        )
+        fetched.extend(official)
+        warnings.extend(official_warnings)
+    except (OSError, ValueError, RuntimeError) as exc:
+        warnings.append("KNVB schema tijdelijk niet leesbaar: " + type(exc).__name__)
     sports_days = [
         (now.astimezone() + timedelta(days=offset)).date().isoformat()
         for offset in (-1, 0, 1)
