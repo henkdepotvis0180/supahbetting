@@ -263,12 +263,17 @@ class SportsDB(LiveScores):
     def list_matches(self, league):
         if league not in SPORTSDB_LEAGUES:
             raise InvalidLiveRequest("Competitie niet beschikbaar bij TheSportsDB")
-        date_today = self.today().isoformat()
+        current_day = self.today()
         paths = [
             ("/api/v1/json/123/eventsnextleague.php?id=" + league, "events"),
             ("/api/v1/json/123/eventspastleague.php?id=" + league, "events"),
-            ("/api/v1/json/123/eventsday.php?d=" + date_today + "&l=" + league, "events"),
         ]
+        for shift in (-1, 0, 1):
+            day = (current_day + timedelta(days=shift)).isoformat()
+            paths.append((
+                "/api/v1/json/123/eventsday.php?d=" + day + "&l=" + league,
+                "events",
+            ))
         by_id = {}
         errors = []
         timestamps = []
@@ -303,7 +308,7 @@ class SportsDB(LiveScores):
             "warnings": list(dict.fromkeys(errors)),
             "coverage_note": (
                 "TheSportsDB gratis: maximaal één volgende, één vorige en "
-                "hooguit drie wedstrijden op de huidige dag. GEEN live scores of doelpuntenfeed."
+                "hooguit drie wedstrijden per dag (gisteren/vandaag/morgen). GEEN live scores of doelpuntenfeed."
             ),
             "refresh_seconds": 600,
             "source": SPORTSDB_SOURCE,
